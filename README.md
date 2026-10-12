@@ -1,29 +1,43 @@
 # NBA Elo Forecast
 
-NBA team Elo ratings and pregame win probabilities, adapted from our Wharton competition basketball model.
+An NBA forecasting project using dynamic team ratings and pregame win probabilities, informed by a multifactor Elo and Bradley–Terry framework developed for the 2025 Wharton competition.
 
-## Status
+## Project status
 
-Project foundation only. Original basketball code is pending. No fitted NBA model, accuracy claim, Streamlit deployment, or scheduled workflow yet. Initial free-source probes encountered HTTP 403 responses and a timeout; data access remains to be verified.
+Research and development. The model specification and initial technical manuscript are available. NBA data access and coverage are being evaluated; fitted NBA parameters, predictive results, and a deployed application are not yet available.
 
-## Start here
+## Planned application
 
-- [Project plan](PROJECT_PLAN.md): scope, milestones, evaluation, and update rules.
-- [Data and formulas](DATA_AND_FORMULAS.md): appendix transcription, raw input requirements, and implementation questions.
-- [Source probe](scripts/probe_sources.py): repeatable free-data connectivity check.
+- **Teams:** ratings, rating changes, and historical trajectories.
+- **Games:** upcoming win probabilities and archived pregame forecasts alongside outcomes.
+- **Methodology:** equations, feature definitions, parameter estimation, and evaluation.
 
-## Run the source probe
+## Documentation
 
-Requires Python 3.10+; no third-party packages or API keys.
+- [Technical manuscript](paper/main.tex) — self-contained LaTeX working draft.
+- [Project plan](PROJECT_PLAN.md) — milestones and operational requirements.
+- [Data specification](DATA_AND_FORMULAS.md) — inputs, inherited equations, and open implementation decisions.
+
+The manuscript is maintained alongside substantive model and evaluation changes. Proposed methods and verified results are explicitly distinguished.
+
+## Data-source check
+
+Requires Python 3.10+; no third-party dependencies or API keys.
 
 ```sh
 python scripts/probe_sources.py --season 2024-25 --output work/source-probe
 ```
 
-Each run saves timestamped JSON responses and a report locally. Exit status 1 means at least one source failed; a successful probe is not proof of full historical coverage. Raw data and local probe outputs are ignored by Git.
+Responses and a report are saved in a timestamped local directory. Exit status 1 indicates at least one failed source check. Connectivity does not establish historical completeness. Raw data and temporary outputs are excluded from Git.
 
-## Intended architecture
+## Architecture
 
-Scheduled Python ingestion and rating updates -> saved ratings and prediction history -> Streamlit Teams, Games, and Methodology views.
+Scheduled Python ingestion and rating updates produce saved model state and forecast history. A Streamlit application will display these outputs independently of the update process.
 
-Hosting and data must remain free. This repository is private; check included GitHub Actions minutes before enabling automation. Preserve historical pregame forecasts independently of later refits.
+## Research provenance
+
+The [original competition repository](https://github.com/aaravbora22/wharton_game_prediction_model) and team report inform this project. The NBA implementation will document its own conventions, fitted parameters, and validation. See the manuscript for attribution.
+
+## Development constraints
+
+Use free data and hosting within included allowances. Preserve historical forecasts independently of subsequent model refits. Keep credentials out of version control.
