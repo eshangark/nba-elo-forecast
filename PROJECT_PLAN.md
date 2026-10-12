@@ -2,7 +2,7 @@
 
 ## Scope
 
-Adapt the existing Wharton basketball model to NBA data. Preserve its core dynamic Elo and Bradley–Terry approach; refit constants on NBA history. All data collection, hosting, and routine automation must remain free. The repository is private. Original model code is pending from the owner; do not replace it with the teammate's hockey RAPM model.
+Adapt the existing Wharton basketball model to NBA data. Preserve its core dynamic Elo and Bradley–Terry approach; refit constants on NBA history. All data collection, hosting, and routine automation must remain free. The repository is private. Original competition code has been reviewed as reference material. The NBA implementation will preserve the conceptual framework while specifying its own consistent equations and data conventions.
 
 ## Product
 
@@ -14,19 +14,19 @@ Streamlit will display saved outputs. A separate Python process will ingest resu
 
 ## First milestones
 
-1. Import the original basketball code and compare it with the appendix. Document discrepancies before changing equations.
+1. Finalize a coherent NBA specification using the original basketball code and appendix as references. Document deliberate equation changes.
 2. Validate free-source coverage and connectivity on historical and recent games. A response containing fields is not proof of multi-season completeness.
 3. Build canonical game and team-game tables, retaining raw-source timestamps. Derive all feasible model features from basic inputs.
 4. Replay games chronologically, saving predictions before applying game-result updates. Both teams' updates use the same pregame rating state.
 5. Optimize constants on training history; choose changes on validation history; evaluate probabilities on untouched later games.
 6. Build Streamlit views on verified model outputs, then enable scheduled ingestion.
-7. Write the technical paper against a fixed model and dataset version.
+7. Maintain `paper/main.tex` alongside implementation; associate evaluated results with a fixed model and dataset version.
 
 ## Evaluation
 
 Proposed split: 2021–22 through 2023–24 training, 2024–25 validation, 2025–26 final test, subject to verified source coverage. Use earlier history for warm-up if available. No random train/test split. Training-period preprocessing only. Ratings can update as test results arrive; constants cannot be fitted to the test outcomes. Evaluate each game once.
 
-Optimize log loss; report Brier score, calibration, sample sizes, and secondary winner accuracy. No accuracy claims before evaluation. The user does not request a progression of unrelated model families.
+Optimize log loss; report Brier score, calibration, sample sizes, and secondary winner accuracy. No accuracy claims before evaluation. Evaluation focuses on the proposed model family.
 
 ## Prediction records
 
@@ -44,4 +44,4 @@ Store game ID, prediction timestamp, data cutoff, model version, both pregame ra
 
 ## Current status
 
-Private repository created; free-data specification and connectivity probe prepared. No model trained, NBA dataset validated, website deployed, or paid service configured. Original model code is the next input from the owner.
+Private repository created; free-data specification and connectivity probe prepared. No model trained, NBA dataset validated, website deployed, or paid service configured. Original competition reference reviewed; initial LaTeX manuscript compiles successfully. Data coverage and the canonical implementation are the next milestones.
