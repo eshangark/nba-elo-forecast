@@ -1,0 +1,898 @@
+{
+  "header": {
+    "id": "401704652",
+    "season": {
+      "year": 2025,
+      "current": false,
+      "type": 2
+    },
+    "competitions": [
+      {
+        "date": "2024-10-26T02:00Z",
+        "neutralSite": false,
+        "status": {
+          "type": {
+            "id": "3",
+            "name": "STATUS_FINAL",
+            "state": "post",
+            "completed": true,
+            "description": "Final",
+            "detail": "Final",
+            "shortDetail": "Final"
+          }
+        },
+        "competitors": [
+          {
+            "homeAway": "home",
+            "score": "103",
+            "team": {
+              "id": "22",
+              "displayName": "Portland Trail Blazers"
+            }
+          },
+          {
+            "homeAway": "away",
+            "score": "105",
+            "team": {
+              "id": "3",
+              "displayName": "New Orleans Pelicans"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "gameInfo": {
+    "venue": {
+      "id": "3423",
+      "guid": "63cbab82-c76b-38ed-a372-da9d99772a60",
+      "fullName": "Moda Center",
+      "shortName": "Moda Center",
+      "address": {
+        "city": "Portland",
+        "state": "OR"
+      },
+      "grass": false,
+      "images": [
+        {
+          "href": "https://a.espncdn.com/i/venues/nba/day/3423.jpg",
+          "width": 2000,
+          "height": 1125,
+          "alt": "",
+          "rel": [
+            "full",
+            "day"
+          ]
+        }
+      ]
+    }
+  },
+  "boxscore": {
+    "teams": [
+      {
+        "team": {
+          "id": "3",
+          "uid": "s:40~l:46~t:3",
+          "slug": "new-orleans-pelicans",
+          "location": "New Orleans",
+          "name": "Pelicans",
+          "abbreviation": "NO",
+          "displayName": "New Orleans Pelicans",
+          "shortDisplayName": "Pelicans",
+          "color": "0a2240",
+          "alternateColor": "b4975a",
+          "logo": "https://a.espncdn.com/i/teamlogos/nba/500/no.png"
+        },
+        "statistics": [
+          {
+            "name": "fieldGoalsMade-fieldGoalsAttempted",
+            "displayValue": "32-76",
+            "label": "FG"
+          },
+          {
+            "name": "fieldGoalPct",
+            "displayValue": "42",
+            "abbreviation": "FG%",
+            "label": "Field Goal %"
+          },
+          {
+            "name": "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+            "displayValue": "12-31",
+            "label": "3PT"
+          },
+          {
+            "name": "threePointFieldGoalPct",
+            "displayValue": "39",
+            "abbreviation": "3P%",
+            "label": "Three Point %"
+          },
+          {
+            "name": "freeThrowsMade-freeThrowsAttempted",
+            "displayValue": "21-31",
+            "label": "FT"
+          },
+          {
+            "name": "freeThrowPct",
+            "displayValue": "68",
+            "abbreviation": "FT%",
+            "label": "Free Throw %"
+          },
+          {
+            "name": "totalRebounds",
+            "displayValue": "41",
+            "abbreviation": "REB",
+            "label": "Rebounds"
+          },
+          {
+            "name": "offensiveRebounds",
+            "displayValue": "10",
+            "abbreviation": "OR",
+            "label": "Offensive Rebounds"
+          },
+          {
+            "name": "defensiveRebounds",
+            "displayValue": "31",
+            "abbreviation": "DR",
+            "label": "Defensive Rebounds"
+          },
+          {
+            "name": "assists",
+            "displayValue": "22",
+            "abbreviation": "AST",
+            "label": "Assists"
+          },
+          {
+            "name": "steals",
+            "displayValue": "12",
+            "abbreviation": "STL",
+            "label": "Steals"
+          },
+          {
+            "name": "blocks",
+            "displayValue": "5",
+            "abbreviation": "BLK",
+            "label": "Blocks"
+          },
+          {
+            "name": "turnovers",
+            "displayValue": "13",
+            "abbreviation": "TO",
+            "label": "Turnovers"
+          },
+          {
+            "name": "teamTurnovers",
+            "displayValue": "0",
+            "abbreviation": "TTO",
+            "label": "Team Turnovers"
+          },
+          {
+            "name": "totalTurnovers",
+            "displayValue": "13",
+            "abbreviation": "ToTO",
+            "label": "Total Turnovers"
+          },
+          {
+            "name": "technicalFouls",
+            "displayValue": "2",
+            "abbreviation": "TECH",
+            "label": "Technical Fouls"
+          },
+          {
+            "name": "totalTechnicalFouls",
+            "displayValue": "2",
+            "abbreviation": "TECH",
+            "label": "Total Technical Fouls"
+          },
+          {
+            "name": "flagrantFouls",
+            "displayValue": "0",
+            "abbreviation": "FLAG",
+            "label": "Flagrant Fouls"
+          },
+          {
+            "name": "turnoverPoints",
+            "displayValue": "9",
+            "abbreviation": "Points Conceded Off Turnovers",
+            "label": "Points Conceded Off Turnovers"
+          },
+          {
+            "name": "fastBreakPoints",
+            "displayValue": "15",
+            "abbreviation": "FBPs",
+            "label": "Fast Break Points"
+          },
+          {
+            "name": "pointsInPaint",
+            "displayValue": "30",
+            "abbreviation": "PIP",
+            "label": "Points in Paint"
+          },
+          {
+            "name": "fouls",
+            "displayValue": "16",
+            "abbreviation": "PF",
+            "label": "Fouls"
+          },
+          {
+            "name": "largestLead",
+            "displayValue": "6",
+            "abbreviation": "LL",
+            "label": "Largest Lead"
+          }
+        ],
+        "displayOrder": 1,
+        "homeAway": "away"
+      },
+      {
+        "team": {
+          "id": "22",
+          "uid": "s:40~l:46~t:22",
+          "slug": "portland-trail-blazers",
+          "location": "Portland",
+          "name": "Trail Blazers",
+          "abbreviation": "POR",
+          "displayName": "Portland Trail Blazers",
+          "shortDisplayName": "Trail Blazers",
+          "color": "e03a3e",
+          "alternateColor": "000000",
+          "logo": "https://a.espncdn.com/i/teamlogos/nba/500/por.png"
+        },
+        "statistics": [
+          {
+            "name": "fieldGoalsMade-fieldGoalsAttempted",
+            "displayValue": "33-78",
+            "label": "FG"
+          },
+          {
+            "name": "fieldGoalPct",
+            "displayValue": "42",
+            "abbreviation": "FG%",
+            "label": "Field Goal %"
+          },
+          {
+            "name": "threePointFieldGoalsMade-threePointFieldGoalsAttempted",
+            "displayValue": "13-35",
+            "label": "3PT"
+          },
+          {
+            "name": "threePointFieldGoalPct",
+            "displayValue": "37",
+            "abbreviation": "3P%",
+            "label": "Three Point %"
+          },
+          {
+            "name": "freeThrowsMade-freeThrowsAttempted",
+            "displayValue": "12-15",
+            "label": "FT"
+          },
+          {
+            "name": "freeThrowPct",
+            "displayValue": "80",
+            "abbreviation": "FT%",
+            "label": "Free Throw %"
+          },
+          {
+            "name": "totalRebounds",
+            "displayValue": "41",
+            "abbreviation": "REB",
+            "label": "Rebounds"
+          },
+          {
+            "name": "offensiveRebounds",
+            "displayValue": "8",
+            "abbreviation": "OR",
+            "label": "Offensive Rebounds"
+          },
+          {
+            "name": "defensiveRebounds",
+            "displayValue": "33",
+            "abbreviation": "DR",
+            "label": "Defensive Rebounds"
+          },
+          {
+            "name": "assists",
+            "displayValue": "25",
+            "abbreviation": "AST",
+            "label": "Assists"
+          },
+          {
+            "name": "steals",
+            "displayValue": "7",
+            "abbreviation": "STL",
+            "label": "Steals"
+          },
+          {
+            "name": "blocks",
+            "displayValue": "10",
+            "abbreviation": "BLK",
+            "label": "Blocks"
+          },
+          {
+            "name": "turnovers",
+            "displayValue": "18",
+            "abbreviation": "TO",
+            "label": "Turnovers"
+          },
+          {
+            "name": "teamTurnovers",
+            "displayValue": "1",
+            "abbreviation": "TTO",
+            "label": "Team Turnovers"
+          },
+          {
+            "name": "totalTurnovers",
+            "displayValue": "19",
+            "abbreviation": "ToTO",
+            "label": "Total Turnovers"
+          },
+          {
+            "name": "technicalFouls",
+            "displayValue": "1",
+            "abbreviation": "TECH",
+            "label": "Technical Fouls"
+          },
+          {
+            "name": "totalTechnicalFouls",
+            "displayValue": "1",
+            "abbreviation": "TECH",
+            "label": "Total Technical Fouls"
+          },
+          {
+            "name": "flagrantFouls",
+            "displayValue": "0",
+            "abbreviation": "FLAG",
+            "label": "Flagrant Fouls"
+          },
+          {
+            "name": "turnoverPoints",
+            "displayValue": "20",
+            "abbreviation": "Points Conceded Off Turnovers",
+            "label": "Points Conceded Off Turnovers"
+          },
+          {
+            "name": "fastBreakPoints",
+            "displayValue": "8",
+            "abbreviation": "FBPs",
+            "label": "Fast Break Points"
+          },
+          {
+            "name": "pointsInPaint",
+            "displayValue": "34",
+            "abbreviation": "PIP",
+            "label": "Points in Paint"
+          },
+          {
+            "name": "fouls",
+            "displayValue": "22",
+            "abbreviation": "PF",
+            "label": "Fouls"
+          },
+          {
+            "name": "largestLead",
+            "displayValue": "16",
+            "abbreviation": "LL",
+            "label": "Largest Lead"
+          }
+        ],
+        "displayOrder": 2,
+        "homeAway": "home"
+      }
+    ],
+    "players": [
+      {
+        "team": {
+          "id": "3"
+        },
+        "statistics": [
+          {
+            "labels": [
+              "MIN",
+              "PTS",
+              "FG",
+              "3PT",
+              "FT",
+              "REB",
+              "AST",
+              "TO",
+              "STL",
+              "BLK",
+              "OREB",
+              "DREB",
+              "PF",
+              "+/-"
+            ],
+            "athletes": [
+              {
+                "stats": [
+                  "35",
+                  "21",
+                  "8-20",
+                  "4-9",
+                  "1-2",
+                  "8",
+                  "4",
+                  "2",
+                  "2",
+                  "1",
+                  "2",
+                  "6",
+                  "3",
+                  "-3"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "29",
+                  "8",
+                  "4-9",
+                  "0-3",
+                  "0-0",
+                  "1",
+                  "1",
+                  "2",
+                  "2",
+                  "1",
+                  "1",
+                  "0",
+                  "1",
+                  "-4"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "29",
+                  "16",
+                  "4-15",
+                  "0-1",
+                  "8-14",
+                  "11",
+                  "7",
+                  "1",
+                  "1",
+                  "3",
+                  "3",
+                  "8",
+                  "3",
+                  "+7"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "18",
+                  "5",
+                  "1-4",
+                  "0-2",
+                  "3-4",
+                  "6",
+                  "4",
+                  "1",
+                  "0",
+                  "0",
+                  "1",
+                  "5",
+                  "4",
+                  "+14"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "40",
+                  "20",
+                  "8-17",
+                  "4-9",
+                  "0-0",
+                  "2",
+                  "3",
+                  "1",
+                  "4",
+                  "1",
+                  "0",
+                  "2",
+                  "2",
+                  "+9"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "4",
+                  "0",
+                  "0-0",
+                  "0-0",
+                  "0-0",
+                  "2",
+                  "0",
+                  "2",
+                  "0",
+                  "0",
+                  "0",
+                  "2",
+                  "1",
+                  "-3"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "22",
+                  "8",
+                  "2-5",
+                  "0-0",
+                  "4-6",
+                  "6",
+                  "2",
+                  "0",
+                  "0",
+                  "2",
+                  "2",
+                  "4",
+                  "2",
+                  "-11"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "19",
+                  "3",
+                  "1-3",
+                  "0-1",
+                  "1-1",
+                  "2",
+                  "0",
+                  "1",
+                  "0",
+                  "0",
+                  "1",
+                  "1",
+                  "2",
+                  "+6"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "13",
+                  "0",
+                  "0-1",
+                  "0-0",
+                  "0-0",
+                  "1",
+                  "4",
+                  "4",
+                  "3",
+                  "0",
+                  "0",
+                  "1",
+                  "3",
+                  "-6"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "29",
+                  "24",
+                  "8-12",
+                  "4-7",
+                  "4-4",
+                  "5",
+                  "0",
+                  "0",
+                  "0",
+                  "0",
+                  "1",
+                  "4",
+                  "1",
+                  "+1"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": "22"
+        },
+        "statistics": [
+          {
+            "labels": [
+              "MIN",
+              "PTS",
+              "FG",
+              "3PT",
+              "FT",
+              "REB",
+              "AST",
+              "TO",
+              "STL",
+              "BLK",
+              "OREB",
+              "DREB",
+              "PF",
+              "+/-"
+            ],
+            "athletes": [
+              {
+                "stats": [
+                  "40",
+                  "34",
+                  "11-23",
+                  "8-17",
+                  "4-4",
+                  "6",
+                  "1",
+                  "5",
+                  "1",
+                  "3",
+                  "0",
+                  "6",
+                  "3",
+                  "-4"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "25",
+                  "5",
+                  "2-6",
+                  "1-2",
+                  "0-0",
+                  "6",
+                  "2",
+                  "1",
+                  "1",
+                  "0",
+                  "4",
+                  "2",
+                  "4",
+                  "+3"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "31",
+                  "2",
+                  "1-9",
+                  "0-3",
+                  "0-0",
+                  "6",
+                  "6",
+                  "2",
+                  "1",
+                  "2",
+                  "1",
+                  "5",
+                  "1",
+                  "+2"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "33",
+                  "10",
+                  "5-14",
+                  "0-0",
+                  "0-1",
+                  "15",
+                  "2",
+                  "1",
+                  "0",
+                  "2",
+                  "2",
+                  "13",
+                  "4",
+                  "-2"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "36",
+                  "24",
+                  "6-20",
+                  "2-9",
+                  "10-11",
+                  "1",
+                  "7",
+                  "4",
+                  "1",
+                  "0",
+                  "0",
+                  "1",
+                  "2",
+                  "+4"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "17",
+                  "2",
+                  "1-3",
+                  "0-2",
+                  "0-0",
+                  "4",
+                  "0",
+                  "1",
+                  "0",
+                  "0",
+                  "0",
+                  "4",
+                  "2",
+                  "+1"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "15",
+                  "7",
+                  "3-5",
+                  "1-1",
+                  "0-0",
+                  "3",
+                  "2",
+                  "0",
+                  "0",
+                  "0",
+                  "1",
+                  "2",
+                  "1",
+                  "-6"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "14",
+                  "4",
+                  "1-1",
+                  "0-0",
+                  "2-3",
+                  "6",
+                  "0",
+                  "2",
+                  "0",
+                  "4",
+                  "2",
+                  "4",
+                  "3",
+                  "0"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [
+                  "29",
+                  "15",
+                  "7-9",
+                  "1-3",
+                  "0-1",
+                  "1",
+                  "6",
+                  "3",
+                  "3",
+                  "0",
+                  "0",
+                  "1",
+                  "2",
+                  "-8"
+                ],
+                "didNotPlay": false
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              },
+              {
+                "stats": [],
+                "didNotPlay": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "plays": [
+    {
+      "homeScore": 44,
+      "awayScore": 28,
+      "sequenceNumber": "297",
+      "text": "Toumani Camara makes 23-foot three point jumper (Anfernee Simons assists)",
+      "team": {
+        "id": "22"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "4431736"
+          }
+        },
+        {
+          "athlete": {
+            "id": "4351851"
+          }
+        }
+      ],
+      "wallclock": "2024-10-26T03:00:15Z"
+    },
+    {
+      "homeScore": 91,
+      "awayScore": 97,
+      "sequenceNumber": "642",
+      "text": "Daniel Theis makes 8-foot two point shot (Brandon Ingram assists)",
+      "team": {
+        "id": "3"
+      },
+      "participants": [
+        {
+          "athlete": {
+            "id": "2451037"
+          }
+        },
+        {
+          "athlete": {
+            "id": "3913176"
+          }
+        }
+      ],
+      "wallclock": "2024-10-26T04:14:24Z"
+    },
+    {
+      "homeScore": 103,
+      "awayScore": 105,
+      "sequenceNumber": "736",
+      "text": "End of Game",
+      "wallclock": "2024-10-26T04:35:28Z"
+    },
+    {
+      "homeScore": 39,
+      "awayScore": 26,
+      "sequenceNumber": "285",
+      "text": "shot clock turnover ",
+      "team": {
+        "id": "22"
+      },
+      "wallclock": "2024-10-26T02:58:10Z"
+    }
+  ]
+}

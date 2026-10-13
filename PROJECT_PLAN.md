@@ -9,6 +9,7 @@ Adapt the existing Wharton basketball model to NBA data. Preserve its core dynam
 - Teams: teams sorted by Elo, latest change, and team history.
 - Games: upcoming win probabilities; completed games show the saved pregame prediction and actual outcome.
 - Methodology: model equations, derived features, data processing, optimization, and evaluation; eventually a downloadable technical paper.
+- Season selection: default to the current season, with independent historical archives and explicit coverage labels.
 
 Streamlit will display saved outputs. A separate Python process will ingest results, derive features, update ratings, and publish predictions. It must run independently of app visits. Never fit the model or scrape the source on every page interaction.
 
@@ -44,4 +45,6 @@ Store game ID, prediction timestamp, data cutoff, model version, both pregame ra
 
 ## Current status
 
-Private repository created; free-data specification and connectivity probe prepared. No model trained, NBA dataset validated, website deployed, or paid service configured. Original competition reference reviewed; initial LaTeX manuscript compiles successfully. Data coverage and the canonical implementation are the next milestones.
+Private repository created. The initial rating engine, source collector, replay, and Streamlit season browser are implemented. All 151 games in the October 22–November 10, 2024 sample parse successfully, with documented repairs for two games. The 2024–25 partial archive and 2026–27 initialization view are available. The manuscript compiles and records the implemented pilot conventions.
+
+Next milestones: expand historical coverage, establish a multi-season fitting protocol, optimize constants without using final test outcomes, and then publish live forecasts and enable scheduled updates. Parameters are not yet fitted. No hosted application or scheduled job has been deployed, and no paid service is configured.

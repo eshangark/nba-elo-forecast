@@ -1,6 +1,19 @@
 # Data and formula specification
 
-Source: The Billy Beanes, 2025 competition paper, appendix A (pages 7–11). These are transcriptions and implementation questions, not claims that every equation is already suitable for production. Reconcile against the original code when supplied.
+Source: The Billy Beanes, 2025 competition paper, appendix A (pages 7–11). The inherited equations below are retained for provenance. The original competition code has been reviewed as reference material. The canonical implemented pilot and its deliberate revisions are specified in `paper/main.tex` and `nba_forecast/model.py`.
+
+## Implemented pilot
+
+- ESPN scoreboard and game-summary responses supply IDs, dates, venues, box scores, final scores, and largest leads. All 151 regular-season games discovered for October 22–November 10, 2024 were successfully parsed.
+- Missing largest leads can be reconstructed from a validated final-score path. Inconsistent team aggregates can be recovered from complete player rows whose scoring sums match the final score. Repairs are recorded in each game. Unresolved records block archive publication.
+- GeoNames city coordinates and IANA time zones supply a city-centre travel proxy. Raw responses are cached with timestamps and hashes; processed game histories and prediction snapshots are versioned under `data/seasons/`.
+- Natural-log fatigue and one shared complementary probability function are used. The exponent base is fixed at 10 while preserving the paper's initial rating and fatigue log-odds scales. Parameters remain unfitted.
+- Rebound fractions use the opposite rebound category from the opponent. Steal fraction uses estimated opponent possessions. Counts and rates have distinct field names.
+- Lead retention uses final margin divided by the game's peak absolute lead. AGPF uses a bounded logistic transform with documented feature scales; PAF is clipped to [0.25, 4]. See the manuscript for the exact equations.
+- Rest uses intervening Eastern dates. First games use an explicit prior; SOS uses past-only smoothed records. Pilot seasons reset independently and league ratings are centred after each slate.
+- Historical forecasts use a 10:00 Eastern cutoff before each slate. This is distinct from the intended live after-game update policy. Partial archives are labeled, and genuinely issued live forecasts remain pending.
+
+The website defaults to the current season and allows selection of available historical archives. The 2026–27 view is initialized; the 2024–25 archive is partial. Multi-season coverage and parameter fitting remain pending.
 
 ## Raw input contract
 

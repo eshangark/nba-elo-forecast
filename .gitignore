@@ -5,5 +5,12 @@ __pycache__/
 .env.*
 .streamlit/secrets.toml
 data/raw/
+data/processed/
+*.egg-info/
+build/
+dist/
+paper/*.aux
+paper/*.log
+paper/*.out
 work/
 .DS_Store

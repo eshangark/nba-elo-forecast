@@ -1,0 +1,14 @@
+{
+  "seasons": [
+    {
+      "season": "2026-27",
+      "status": "prepared",
+      "file": "2026-27/snapshot.json"
+    },
+    {
+      "season": "2024-25",
+      "status": "partial_historical_replay",
+      "file": "2024-25/snapshot.json"
+    }
+  ]
+}
