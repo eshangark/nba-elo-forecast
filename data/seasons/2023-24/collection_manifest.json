@@ -1,0 +1,2739 @@
+{
+  "season": 2024,
+  "eligible_schedule_games": 1230,
+  "accepted_games": 1230,
+  "teams": 30,
+  "team_game_counts": {
+    "1": 82,
+    "10": 82,
+    "11": 82,
+    "12": 82,
+    "13": 82,
+    "14": 82,
+    "15": 82,
+    "16": 82,
+    "17": 82,
+    "18": 82,
+    "19": 82,
+    "2": 82,
+    "20": 82,
+    "21": 82,
+    "22": 82,
+    "23": 82,
+    "24": 82,
+    "25": 82,
+    "26": 82,
+    "27": 82,
+    "28": 82,
+    "29": 82,
+    "3": 82,
+    "30": 82,
+    "4": 82,
+    "5": 82,
+    "6": 82,
+    "7": 82,
+    "8": 82,
+    "9": 82
+  },
+  "invalid_team_counts": {},
+  "failures": [],
+  "primary_repairs": [
+    {
+      "game_id": "401584692",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584701",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584705",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584706",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584709",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584723",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584729",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584732",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584736",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584748",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584749",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584751",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584090",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584770",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584775",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584778",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584787",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584790",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584096",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584097",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584803",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584819",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584115",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584118",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584120",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584833",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584835",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584845",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584846",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584848",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584851",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584126",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584853",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584857",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584863",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584131",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584132",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584135",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584136",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584140",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584871",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584881",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584143",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584148",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584890",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584911",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584917",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401607489",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401616462",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401616464",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401616469",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401616476",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584922",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584940",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584945",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584950",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584952",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584963",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584974",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584984",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401584990",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585005",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585008",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585015",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585029",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585035",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585039",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585053",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585058",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585059",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585075",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585092",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585100",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585103",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585121",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585132",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585134",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585140",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585142",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585146",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585155",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585159",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585160",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585162",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585167",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585170",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585171",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585173",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585189",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585197",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585201",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585211",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585213",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585225",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585227",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585231",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585232",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585238",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585251",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585267",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585290",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585302",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585310",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585319",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585320",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585324",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585331",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585333",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585336",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585351",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585358",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585359",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585363",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585365",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585366",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585367",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585372",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585379",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585388",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585394",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585402",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585405",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585414",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585415",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401636113",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585426",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585428",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585434",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585444",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585461",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585463",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585469",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585475",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585477",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585482",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585485",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585491",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585506",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585508",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585510",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585524",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585530",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585534",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585536",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585544",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585547",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585556",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585560",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585564",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585572",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585573",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585580",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585589",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585598",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585603",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585607",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585619",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585625",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585628",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585630",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585633",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585641",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585643",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585645",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585649",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585654",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585658",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585662",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585668",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585669",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585673",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585686",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585692",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585696",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585715",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585717",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585730",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585735",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585738",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585746",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585757",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585764",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585766",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585774",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585781",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585782",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585785",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585787",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585790",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585792",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585801",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585802",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585805",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585808",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585814",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585817",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585819",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585821",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585824",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585825",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    },
+    {
+      "game_id": "401585828",
+      "archive_error": "ValueError: Play-by-play final score disagrees with schedule",
+      "resolution": "validated_primary_ESPN_summary",
+      "actions": []
+    }
+  ],
+  "excluded": [
+    {
+      "id": 401656363,
+      "season_type": 3,
+      "type_abbreviation": "FINAL"
+    },
+    {
+      "id": 401656362,
+      "season_type": 3,
+      "type_abbreviation": "FINAL"
+    },
+    {
+      "id": 401656361,
+      "season_type": 3,
+      "type_abbreviation": "FINAL"
+    },
+    {
+      "id": 401656360,
+      "season_type": 3,
+      "type_abbreviation": "FINAL"
+    },
+    {
+      "id": 401656359,
+      "season_type": 3,
+      "type_abbreviation": "FINAL"
+    },
+    {
+      "id": 401672980,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672979,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672001,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672978,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672000,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672977,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401671999,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401672976,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401671998,
+      "season_type": 3,
+      "type_abbreviation": "SEMI"
+    },
+    {
+      "id": 401657188,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658198,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658194,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658197,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657187,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658192,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658228,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657186,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658196,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658191,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658227,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657185,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657423,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658226,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658190,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657184,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657422,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658188,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658225,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657421,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657231,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401658224,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657183,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401657420,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401655123,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401657182,
+      "season_type": 3,
+      "type_abbreviation": "QTR"
+    },
+    {
+      "id": 401655098,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655122,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655110,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655116,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655097,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655103,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655115,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655121,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655109,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655085,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655078,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655102,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655090,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655114,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655096,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655108,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655084,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655101,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655077,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655120,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655089,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655095,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655113,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655083,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655107,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655119,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655076,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655100,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655094,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655112,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655088,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655082,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655106,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401655118,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654762,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654761,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654763,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654760,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654758,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654756,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654759,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654757,
+      "season_type": 3,
+      "type_abbreviation": "RD16"
+    },
+    {
+      "id": 401654661,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401654660,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401654658,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401654659,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401654656,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401654655,
+      "season_type": 5,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401623259,
+      "season_type": 2,
+      "type_abbreviation": "ALLSTAR"
+    },
+    {
+      "id": 401585217,
+      "season_type": 2,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401585204,
+      "season_type": 2,
+      "type_abbreviation": "STD"
+    },
+    {
+      "id": 401607495,
+      "season_type": 2,
+      "type_abbreviation": "CC"
+    }
+  ],
+  "collected_at": "2026-10-13T03:01:51.662552+00:00",
+  "primary_sources": [
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584692",
+      "retrieved_at": "2026-10-13T02:53:54.766358+00:00",
+      "sha256": "58570da20d8861a42d57c8554cbb490011e4cc5b1f5416692644809940f8658f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584701",
+      "retrieved_at": "2026-10-13T02:53:55.265950+00:00",
+      "sha256": "a80a22834a4a99463e23e8781b8193c6b73ffb3157d4e0576af67708a76b727f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584705",
+      "retrieved_at": "2026-10-13T02:53:55.960506+00:00",
+      "sha256": "ad9cccdf239ba17d894f5ac1c91fc9e14be09a32e42175adfcaaf9ccf6e37b2f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584706",
+      "retrieved_at": "2026-10-13T02:53:56.557074+00:00",
+      "sha256": "d8c867446afdfa67d9e99bf869e30184ba107c3acc9dabc430a3d230f6639008"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584709",
+      "retrieved_at": "2026-10-13T02:53:57.092333+00:00",
+      "sha256": "50f803d036962a52454efcec36f44cddfadabf5ad55f6a22e66f3e6004f6dfd4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584723",
+      "retrieved_at": "2026-10-13T02:53:57.729811+00:00",
+      "sha256": "2dfe48bac2eaee9c95f598b823afded26e7c936b2a0bc835996fdb7abb28b6fe"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584729",
+      "retrieved_at": "2026-10-13T02:53:58.325578+00:00",
+      "sha256": "dc2f45dd13e4cdca9e0a1779527a40d03635b59652d9f2039d19f63b07f90e73"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584732",
+      "retrieved_at": "2026-10-13T02:53:58.799505+00:00",
+      "sha256": "39c2f98016929f215333ef554dcfba7d7206492c7fd01d16a78c8f489d2fe563"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584736",
+      "retrieved_at": "2026-10-13T02:53:59.342637+00:00",
+      "sha256": "d3c48c4cfee7b43b00622566a842082508e77d0d72f49e719007fbf968a72ac8"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584748",
+      "retrieved_at": "2026-10-13T02:53:59.938377+00:00",
+      "sha256": "a3ca832b45444cc8d02f649b43da0456926b8375ce3c933cdaf54d16ff6a3515"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584749",
+      "retrieved_at": "2026-10-13T02:54:00.417956+00:00",
+      "sha256": "2705ed3756ff0b30733c04bcbcd7ef92bbf4d7c7bae5bff2223021a0ee252661"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584751",
+      "retrieved_at": "2026-10-13T02:54:01.421466+00:00",
+      "sha256": "3fec4c03e8dcef22734168d41ed6085c52fe220959f451f0c09f8fa2d4f9e25f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584090",
+      "retrieved_at": "2026-10-13T02:54:01.927306+00:00",
+      "sha256": "00cbf612b8b568d3fe2d0bce1cf86a3e23d7898bc4246495bb1ddda7310b8935"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584770",
+      "retrieved_at": "2026-10-13T02:54:02.536711+00:00",
+      "sha256": "f22c80fac993f2c8b9424e658b9643d1c10951891c628134f50a45c2cf8d54a5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584775",
+      "retrieved_at": "2026-10-13T02:54:03.120445+00:00",
+      "sha256": "6f0924e49e331341b4dffa8c1a7cdc61bd5277ebb2ac8d76b70b58d830864546"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584778",
+      "retrieved_at": "2026-10-13T02:54:03.597394+00:00",
+      "sha256": "ff455931068f123ab7908719e1ff6532bee18e3d34f5b11587eba7fca1e4a2b9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584787",
+      "retrieved_at": "2026-10-13T02:54:04.195282+00:00",
+      "sha256": "f0c5c80d77e7ad1360f6e72893b85269c04e90757a1c7e6def1d64b10111bb07"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584790",
+      "retrieved_at": "2026-10-13T02:54:04.685691+00:00",
+      "sha256": "151e5bcb6415b702dc92710e418eb91514b7f8a85edb690ba0a4debf7ce4947b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584096",
+      "retrieved_at": "2026-10-13T02:54:05.276726+00:00",
+      "sha256": "d80c219a6e4af7ac3c569864028abcdccf47e26425017715f98baf321aad35ba"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584097",
+      "retrieved_at": "2026-10-13T02:54:05.854571+00:00",
+      "sha256": "a8d784de8f9efd3b91fcb0edf8311e897eb3ebf3deb040c94f12cb32137bb2f7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584803",
+      "retrieved_at": "2026-10-13T02:54:06.569788+00:00",
+      "sha256": "ed78584040c7e43302f4da9660a15456a7a98cbc0370471f04032a2107053a2d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584819",
+      "retrieved_at": "2026-10-13T02:54:07.248644+00:00",
+      "sha256": "4f34dca0ddbc10c72e12834660a9552829cbfbaecec95015d5a39db33553f5a4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584115",
+      "retrieved_at": "2026-10-13T02:54:07.803528+00:00",
+      "sha256": "ede8dc573191c3618b593423ccbc25789706d09c4c0800c7e806c8ff3a3830b0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584118",
+      "retrieved_at": "2026-10-13T02:54:08.368436+00:00",
+      "sha256": "fbb892b4e0ca4448936b44181a338ce137d22c82837f2f0500b967390ce7f11f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584120",
+      "retrieved_at": "2026-10-13T02:54:08.974030+00:00",
+      "sha256": "3e1347a03ac5893fed42617fc1308110b73a2beb9a649839e20137ae9d6891fb"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584833",
+      "retrieved_at": "2026-10-13T02:54:09.737219+00:00",
+      "sha256": "d91da4454afdf457afa57af0a34a0b30695338ca79e19051eae1368f6fffc2a6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584835",
+      "retrieved_at": "2026-10-13T02:54:10.323966+00:00",
+      "sha256": "35428f30ab188227186b02e85f266c98b83a5a911d70f2c699c41088d6afe176"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584845",
+      "retrieved_at": "2026-10-13T02:54:10.833284+00:00",
+      "sha256": "51c5efc0c3cbaa8652a8bd0e8236c011f835004bde13379ab8e69329ed8d301b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584846",
+      "retrieved_at": "2026-10-13T02:54:11.300939+00:00",
+      "sha256": "51b4077c67fe8ddcb1322a0ac9af8bcf258f52064c73052c13d5b2326d004b08"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584848",
+      "retrieved_at": "2026-10-13T02:54:11.771220+00:00",
+      "sha256": "0f349ea336da357b928bbeb6ba4ec7d4e5ae79b8dfab55daa21a06383bb88b23"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584851",
+      "retrieved_at": "2026-10-13T02:54:12.338615+00:00",
+      "sha256": "92fd0f2c661409014077cfd3dd416e6ad2b9eca7508557edaebe693459a3e47b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584126",
+      "retrieved_at": "2026-10-13T02:54:13.165902+00:00",
+      "sha256": "5638d0216df924974b5057e15f234feb24062a3557ca5f764efffdb66108e687"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584853",
+      "retrieved_at": "2026-10-13T02:54:13.793892+00:00",
+      "sha256": "4872f2a302af51b3977c79e310c1cc120508d0e19c98a0a395d5ae9260d9bdd9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584857",
+      "retrieved_at": "2026-10-13T02:54:14.342576+00:00",
+      "sha256": "adee56d43e22551c1af23376bfa7d831cdd97d72c846446bd2cd91a943948e10"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584863",
+      "retrieved_at": "2026-10-13T02:54:14.853958+00:00",
+      "sha256": "805ac594559cc1f3a935a07e5d4f307f9f95ab0c881bcf88b72fd4b1a24d3624"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584131",
+      "retrieved_at": "2026-10-13T02:54:15.460593+00:00",
+      "sha256": "02f617c97ce3e7a9e0a4015f29ebbfbf8bd837951ecde736865e4efd1d1476e4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584132",
+      "retrieved_at": "2026-10-13T02:54:16.231568+00:00",
+      "sha256": "f55354621b72a606a70a8545880142a62f17abfeb5b3d00912fc2e12d2996759"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584135",
+      "retrieved_at": "2026-10-13T02:54:16.875975+00:00",
+      "sha256": "d1552256bb1ac7705be3740cd9987fa1c361fcc1c6b9dca34756e49b234cff5a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584136",
+      "retrieved_at": "2026-10-13T02:54:17.367738+00:00",
+      "sha256": "1250f9dd3a57507e9134434619969ae3b9156d5a4bd194bef8acdfe83c13319e"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584140",
+      "retrieved_at": "2026-10-13T02:54:17.863358+00:00",
+      "sha256": "d8f2ce8d5b63bf3c19a46dac92319cc042940e04d5c046339fcef6efc96f6a2e"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584871",
+      "retrieved_at": "2026-10-13T02:54:18.521890+00:00",
+      "sha256": "0b3ed0a2cb541d4fd4f5dd38453747e143106fe73d10b57e52f4c5230a605f54"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584881",
+      "retrieved_at": "2026-10-13T02:54:19.060257+00:00",
+      "sha256": "03509c152e0e70ed5c29f4ddbd4de7ef4b10a7ea0e9610a7745a8b4e00fc7ee1"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584143",
+      "retrieved_at": "2026-10-13T02:54:19.604609+00:00",
+      "sha256": "fc8e321ce6169a2a6b59b6a1fa79e49a69bd0aabdef19bee99cf24604644467e"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584148",
+      "retrieved_at": "2026-10-13T02:54:20.158507+00:00",
+      "sha256": "a493830a803d4f1fab261900634387c90d784c9d939b312ef4448c60f2d546d9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584890",
+      "retrieved_at": "2026-10-13T02:54:20.678890+00:00",
+      "sha256": "b13009a8217acfaf52232eeca4d7885f1a0915ebeffd53dbcbc8a0027c3f2adf"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584911",
+      "retrieved_at": "2026-10-13T02:54:21.188695+00:00",
+      "sha256": "7778678255537c26ee73d20d02e13bc00edf65a6c3a8b90c37fea9b9df42fbd9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584917",
+      "retrieved_at": "2026-10-13T02:54:21.678045+00:00",
+      "sha256": "6e24abc9623c49979853323cb11b6f7bb72dc1d55146ce43a566c4014cabbf2b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401607489",
+      "retrieved_at": "2026-10-13T02:54:22.219398+00:00",
+      "sha256": "131e9c2f52a0927ad617860756bc71c43a6efd9fe503f3c20d26f32977105397"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401616462",
+      "retrieved_at": "2026-10-13T02:54:22.691480+00:00",
+      "sha256": "b5dda0c652627c7b2a35ccb5bdf771c042d5e89b12322c8326dea4a3f677970a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401616464",
+      "retrieved_at": "2026-10-13T02:54:23.235602+00:00",
+      "sha256": "401acaf0fad06af2f2da510d5577939f5f2772caa378f57a24a52ca6db9adaca"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401616469",
+      "retrieved_at": "2026-10-13T02:54:23.756821+00:00",
+      "sha256": "379028afdc41ba25029d37fa01dc73a9980a3c94b9d3df7fcd7fdaafe82c08fb"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401616476",
+      "retrieved_at": "2026-10-13T02:54:24.335707+00:00",
+      "sha256": "5264a83893aaa1d1b5123f0a5f95b04345a09602c6b8c15f78ba1237196dfb2b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584922",
+      "retrieved_at": "2026-10-13T02:54:24.918021+00:00",
+      "sha256": "0cf50169f1fc957957ba7946dbfb59666813cb7808dd31d00bb03fba7e65d938"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584940",
+      "retrieved_at": "2026-10-13T02:54:25.475941+00:00",
+      "sha256": "9635dd260af8e4363b961f0ee5190166fbc69d452f1df7388c0827dfead30fdc"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584945",
+      "retrieved_at": "2026-10-13T02:54:25.973029+00:00",
+      "sha256": "67261d2a7165a1dcff459ee3dcf79f62760f4d02966e91a7964bf96e82d96d11"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584950",
+      "retrieved_at": "2026-10-13T02:54:26.804260+00:00",
+      "sha256": "d20a0408b54bb7ac70977af10cdd2d6ba08cf8bb84c8756465e0a69056becdb0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584952",
+      "retrieved_at": "2026-10-13T02:54:27.296472+00:00",
+      "sha256": "cf6e6167f2782d7f76d509d0727b31ab2e9523c0d43d4aa0d99eb3941e44a7bf"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584963",
+      "retrieved_at": "2026-10-13T02:54:27.794656+00:00",
+      "sha256": "058975b7e4979cf1fa23fc4040ac6e5c12f36ab3f361f0498a68c996813ecf01"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584974",
+      "retrieved_at": "2026-10-13T02:54:28.568550+00:00",
+      "sha256": "e7aa1942e6b66429c9779ce948201eedb3985f81415f6bb9688054b7e6bf7f03"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584984",
+      "retrieved_at": "2026-10-13T02:54:29.097260+00:00",
+      "sha256": "854ed75ad041c3ea7336fe4a5da2171eb5bc3456456424639d4debcbac0df1ca"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401584990",
+      "retrieved_at": "2026-10-13T02:54:29.604268+00:00",
+      "sha256": "dfe0ecb33c9ae01d40e857c18369d315cda91bcf54378db7731f731dbf1679ce"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585005",
+      "retrieved_at": "2026-10-13T02:54:30.164227+00:00",
+      "sha256": "5ca26013e6c88e1bc552d4161e447557617b762027d040d4efe02a41bc13477f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585008",
+      "retrieved_at": "2026-10-13T02:54:30.645205+00:00",
+      "sha256": "59b1d699c318587d2ea7b7eff48bd0418c7caab4d1c461678ba460dccf96410a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585015",
+      "retrieved_at": "2026-10-13T02:54:31.121481+00:00",
+      "sha256": "c3be9a87c1e7556c1b11366ba275b99cbcfff9118bc37c38c193edb7c85f9144"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585029",
+      "retrieved_at": "2026-10-13T02:54:31.693806+00:00",
+      "sha256": "28d4be4e2f2b928c267671877a19160fba99d5e68a10f17921ed766667710661"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585035",
+      "retrieved_at": "2026-10-13T02:54:32.224523+00:00",
+      "sha256": "5afa3d6459dff0722ab358b07891a1cb4f091e24268e4b6c5b56b93fd814044c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585039",
+      "retrieved_at": "2026-10-13T02:54:32.772728+00:00",
+      "sha256": "87e147e5da508cea7f57481d8cdbfae69eb61a842c473719a792d5cf6dcfe1a3"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585053",
+      "retrieved_at": "2026-10-13T02:54:34.455860+00:00",
+      "sha256": "b8558fa2b533fe500da8d1154ca79349f6490dfaca9e535e861fe3cbfa491026"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585058",
+      "retrieved_at": "2026-10-13T02:54:34.955442+00:00",
+      "sha256": "de0f7e7881fd33c987305ae974e8fe9b9890dac9aa0259b92844ad5fe70c9419"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585059",
+      "retrieved_at": "2026-10-13T02:54:35.431719+00:00",
+      "sha256": "2e9b50160122da52d400745ce2fef1b8e3b3aedcccf703a2d8bf64e7188d3a26"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585075",
+      "retrieved_at": "2026-10-13T02:54:36.077361+00:00",
+      "sha256": "7c091a1bda0d0263321a7bd5ce2a50e7999804b6bee8d2ffe4b0127774a81c4a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585092",
+      "retrieved_at": "2026-10-13T02:54:36.619167+00:00",
+      "sha256": "0a1010e5406dbb79fcbef5e4a6d82ad065dd75d85837ec40a3f659698b8c8fcc"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585100",
+      "retrieved_at": "2026-10-13T02:54:37.189279+00:00",
+      "sha256": "ec3f4e91764035d199776156011f977c732e88db928a48210c00c13bc418ae1b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585103",
+      "retrieved_at": "2026-10-13T02:54:37.757866+00:00",
+      "sha256": "a890163d6867c066b2f48ad244c295432c6eb93ff870b59da2ecfdc84ae04024"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585121",
+      "retrieved_at": "2026-10-13T02:54:38.425942+00:00",
+      "sha256": "550f30710fd46b1d7d924a35f695c60cf454dde3d880ca09e02afbad53f1e92c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585132",
+      "retrieved_at": "2026-10-13T02:54:39.038535+00:00",
+      "sha256": "e77b368c13d5bed12b06923f932b6bb64928e6bc4cbda8144852deaa369ba70a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585134",
+      "retrieved_at": "2026-10-13T02:54:39.539219+00:00",
+      "sha256": "e4f52d9f0a2fa3b87888e49ba1b6eef20ce4640094b0334bd2748d932bb4f34c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585140",
+      "retrieved_at": "2026-10-13T02:54:40.279679+00:00",
+      "sha256": "fcd7221eace34c6615e528c2fbcaac80011f633a3cfeb3b51e191ddb044bd7ce"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585142",
+      "retrieved_at": "2026-10-13T02:54:40.751962+00:00",
+      "sha256": "8b89d73f9a4a5141f2eb8249d8dd9d5b0b21e8762d7a137b03fb8f75c5bd6361"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585146",
+      "retrieved_at": "2026-10-13T02:54:41.270771+00:00",
+      "sha256": "a0443cdf3c907860609263d9b10a766ed1eb9ddd781604ae28de0b6f5db57a46"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585155",
+      "retrieved_at": "2026-10-13T02:54:41.853075+00:00",
+      "sha256": "c0d24d9f015bd6a4d27f3097272ac85deadb672da27c723ac4f919438fe687be"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585159",
+      "retrieved_at": "2026-10-13T02:54:42.396757+00:00",
+      "sha256": "89de731303a4d87adfc5d6b1d354f7c2aea1583af2887484e7cfae1a71642eea"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585160",
+      "retrieved_at": "2026-10-13T02:54:42.881352+00:00",
+      "sha256": "1a57f20370af98c8f2946b7af75f488b4e2b33dfd27850048c5c15d61bb5d694"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585162",
+      "retrieved_at": "2026-10-13T02:54:43.411917+00:00",
+      "sha256": "d5be0cfd22a57beacd0f4ee1fc6a5bdd272c8c46ea0875549d112c567146e14a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585167",
+      "retrieved_at": "2026-10-13T02:54:43.910597+00:00",
+      "sha256": "c14cad9d4f4fb4c26b0643395a7c5e6af051647a4c491b07979e0f700561665a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585170",
+      "retrieved_at": "2026-10-13T02:54:44.420918+00:00",
+      "sha256": "97d706266b19cf7419501de522ca3d9061a26afa2e3b5de87771a821a8b26f62"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585171",
+      "retrieved_at": "2026-10-13T02:54:44.978335+00:00",
+      "sha256": "983f1c75465f04522198d4dca625a074233ca64bb71608d6ce31f2b76eb54195"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585173",
+      "retrieved_at": "2026-10-13T02:54:45.467076+00:00",
+      "sha256": "8f0b46aac96fae32dcce3d03a7538d23267a789ae7ce43d2d46e24b1c81069fc"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585189",
+      "retrieved_at": "2026-10-13T02:54:45.996171+00:00",
+      "sha256": "8d1a15f342e2b321d02b1497e87bfc0670724bbcf4ce1a75d4de3a2b5173076f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585197",
+      "retrieved_at": "2026-10-13T02:54:46.547543+00:00",
+      "sha256": "337d6d306cc71410997bbcc56f99795e27ff4609c51a6b9232b6981acbb24ce6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585201",
+      "retrieved_at": "2026-10-13T02:54:47.071427+00:00",
+      "sha256": "5a2cecac77a85c2d4981bf177a05ef540bfff02e40d52f4dfb1163ba73a93c7d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585211",
+      "retrieved_at": "2026-10-13T02:54:47.628448+00:00",
+      "sha256": "f59eea9f98b623cc36f0b0e599ee0f2bc26a3f54a6fc2137ecbdbfee3c10d077"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585213",
+      "retrieved_at": "2026-10-13T02:54:48.185878+00:00",
+      "sha256": "a484963d554c4ec264fd8f1033fa852dc69ded5f2be3f84982f05b54dd3c8c80"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585225",
+      "retrieved_at": "2026-10-13T02:54:48.763999+00:00",
+      "sha256": "f672466606386e81043e88652e8c4bd483b1b431c7a82e7a735c489fb87c3ad5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585227",
+      "retrieved_at": "2026-10-13T02:54:49.314100+00:00",
+      "sha256": "2e185bf057ace3a3de0d54fce8ec043ea7fcfa4613cb61e1ff2663c14ee5ec45"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585231",
+      "retrieved_at": "2026-10-13T02:54:49.837018+00:00",
+      "sha256": "2007c8261b389845f83426201d744b5b14c710d437570d266139476430cd4f9f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585232",
+      "retrieved_at": "2026-10-13T02:54:50.343597+00:00",
+      "sha256": "b8468308ae6143dc0ca3b75f168008ec20a64192dc4e52d9f9803af155fcc7ff"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585238",
+      "retrieved_at": "2026-10-13T02:54:50.865578+00:00",
+      "sha256": "460ae23249de88600b9180d2389032fd2ad1ccc3892dc0be2bc07e4655fe975f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585251",
+      "retrieved_at": "2026-10-13T02:54:51.390269+00:00",
+      "sha256": "4b834b371c49b317ff08b00910b669451372ff6cc94c4c4149df6d7d2bc41353"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585267",
+      "retrieved_at": "2026-10-13T02:54:51.982681+00:00",
+      "sha256": "5138bca33e34c96128aba909d38a34b430087420c87f6927df26d31145b3f61f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585290",
+      "retrieved_at": "2026-10-13T02:54:52.618052+00:00",
+      "sha256": "c89934d8472b3a9d79c025ec43f474ed279f7b1fc781db52568d81a3623448a8"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585302",
+      "retrieved_at": "2026-10-13T02:54:53.253469+00:00",
+      "sha256": "575acdeaca55fd5171db3919bdd22f6bab5f4fc4b8212578294f55144ffcfac0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585310",
+      "retrieved_at": "2026-10-13T02:54:53.778445+00:00",
+      "sha256": "cc1fb47597c0f1f23ba74158591d6a1e6adfeb1e11910de27dcdc875b90a2c89"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585319",
+      "retrieved_at": "2026-10-13T02:54:54.269050+00:00",
+      "sha256": "5557d13d935ee0ca18516561ad1318631e3c144ecea9b27627292161015bf221"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585320",
+      "retrieved_at": "2026-10-13T02:54:54.759395+00:00",
+      "sha256": "58e8887e17e7537394cc19077cc930ac11a040e726f50d10ba6f2e06fe6c7d41"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585324",
+      "retrieved_at": "2026-10-13T02:54:55.254251+00:00",
+      "sha256": "a6c05896809be11fe745828733e484019ff4e62349527259cb6b7bb7a34e4754"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585331",
+      "retrieved_at": "2026-10-13T02:54:55.916480+00:00",
+      "sha256": "c2fa4773b00a645347d5dd28de8269661adb515602c5b93f09dbd5c36552e679"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585333",
+      "retrieved_at": "2026-10-13T02:54:56.678917+00:00",
+      "sha256": "701da63b880518a6f790774f1d0f32e5c0e88f9c2c516f67f22fbf418e7b94f5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585336",
+      "retrieved_at": "2026-10-13T02:54:57.226611+00:00",
+      "sha256": "c55cfd85f5855a6eb1254f4552d4a0d54630025e8f948059bb5d52057c76ef90"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585351",
+      "retrieved_at": "2026-10-13T02:54:57.793939+00:00",
+      "sha256": "ede340b936e0b45165e243b5aa2255f104690f46b0342841c3ebd947bb9557b5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585358",
+      "retrieved_at": "2026-10-13T02:54:58.306686+00:00",
+      "sha256": "7877dbce403b16260e3d0bd24d01e478d46de4998b2c7baa5f0352e8b456e209"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585359",
+      "retrieved_at": "2026-10-13T02:54:58.877531+00:00",
+      "sha256": "a88e6a9793edf3aaa49485a1c5b489a08f0e8cd99176a78fcbd0bc291189f90d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585363",
+      "retrieved_at": "2026-10-13T02:54:59.412344+00:00",
+      "sha256": "81bf99bed77681541b92a22eb632c0d5b7c8309e2366f8900081fabd28a70498"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585365",
+      "retrieved_at": "2026-10-13T02:54:59.891675+00:00",
+      "sha256": "5ad32a8144b4fa11386e93dd337478527171ee24f31c89f491a262e9f5d7f601"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585366",
+      "retrieved_at": "2026-10-13T02:55:00.431773+00:00",
+      "sha256": "a1cf21eb6e080be1ece9f5a9ab127826557fb310286d506c0de0b171fb14613b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585367",
+      "retrieved_at": "2026-10-13T02:55:01.020503+00:00",
+      "sha256": "04678f7738c0068004d1f3f0ae5b905c0e2417d82802c0f11dbd69f0624dd328"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585372",
+      "retrieved_at": "2026-10-13T02:55:01.500870+00:00",
+      "sha256": "fccc08a4667413a58184e91e2002ba8a150c200362b92cc423f1c903ad6e7145"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585379",
+      "retrieved_at": "2026-10-13T02:55:02.049085+00:00",
+      "sha256": "22ac466805d5cb968d9c2017d6904e1e01b96d543478de346aa76546885a5452"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585388",
+      "retrieved_at": "2026-10-13T02:55:02.575556+00:00",
+      "sha256": "ebe234790302f8d8320c497c0221bfa3b33ad2d4e9db424b6a257e9cc70d78b5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585394",
+      "retrieved_at": "2026-10-13T02:55:03.092681+00:00",
+      "sha256": "962f82a7e3a371adce993cbe27b0f957ad3599ca76c51f0442727fbb46194ef5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585402",
+      "retrieved_at": "2026-10-13T02:55:03.574481+00:00",
+      "sha256": "7aa56b1122c22df0221532e37e00be6b03cdd557155972d72794ffa66bbf245f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585405",
+      "retrieved_at": "2026-10-13T02:55:04.091794+00:00",
+      "sha256": "7d9fbc9bda9f001b87ba800ba535d42edf549bd5256d02c6e080cd96bd656cc2"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585414",
+      "retrieved_at": "2026-10-13T02:55:04.580530+00:00",
+      "sha256": "39b225727e743ff90fc62ef50d200f06a4a49d1b5ad1d53160835c7f97c80472"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585415",
+      "retrieved_at": "2026-10-13T02:55:05.062343+00:00",
+      "sha256": "c3719d717cf7a3313b3c26fe2cbb705cdce8eebcfd0a0094d2439ed5f70f443c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401636113",
+      "retrieved_at": "2026-10-13T02:55:05.541917+00:00",
+      "sha256": "e1fa5224eb5b2f8fa05a2726e35e4ce97aa8544579f101b180be392c2a55eba6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585426",
+      "retrieved_at": "2026-10-13T02:55:06.104372+00:00",
+      "sha256": "e1fd0f4ce57accb233a83cedef2be8d41b174b7cb6c606e879d97ef61479648d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585428",
+      "retrieved_at": "2026-10-13T02:55:06.596886+00:00",
+      "sha256": "d787f16f18e8020140e25d8b3447b973a9f8ddd2d66daeac29007c94ee801e67"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585434",
+      "retrieved_at": "2026-10-13T02:55:07.124164+00:00",
+      "sha256": "a6933eeefbef2b8905d4f21d7effc889c36aaf0893092fb62984273f8adede41"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585444",
+      "retrieved_at": "2026-10-13T02:55:07.670025+00:00",
+      "sha256": "e822b350959b17c7b4831aaca61e855e92daffc25248452e8513a46b59c157da"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585461",
+      "retrieved_at": "2026-10-13T02:55:08.229666+00:00",
+      "sha256": "df87d4add72b23dc5810392d69dd1224d72b71ab4ecaaeb4f8f7482a6002399a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585463",
+      "retrieved_at": "2026-10-13T02:55:08.775729+00:00",
+      "sha256": "b72ce08bce6995d0dc4ac00c41bf94929f3be5423975105dd0a716370075cc62"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585469",
+      "retrieved_at": "2026-10-13T02:55:09.469287+00:00",
+      "sha256": "1112f6af480cd520979214c9e69042be1c1f42d9377b653b52b9401c1e9e93f7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585475",
+      "retrieved_at": "2026-10-13T02:55:09.993145+00:00",
+      "sha256": "7f844ec415eee4f8ae44eb5cf237a4e53ac898924558c51c55e9774ef444b9cf"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585477",
+      "retrieved_at": "2026-10-13T02:55:10.525774+00:00",
+      "sha256": "8e4eccbc332b681cb2f2ba251395f503acfa13d36f9a06a8a334f40929d67ae6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585482",
+      "retrieved_at": "2026-10-13T02:55:11.090435+00:00",
+      "sha256": "7042fe16bc75119108470e01860cb23c0454e696b4b0daf677572f9794d90160"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585485",
+      "retrieved_at": "2026-10-13T02:55:11.600459+00:00",
+      "sha256": "adaa82765c83f2e7ca1ae608d1b958bc5c1ae0c5131d9f6b1a3445f1d636f3a0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585491",
+      "retrieved_at": "2026-10-13T02:55:12.116897+00:00",
+      "sha256": "63e3a42687480973a4115eb942bddd9a2ac4b6d75f5fc3556760e114acfc12b3"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585506",
+      "retrieved_at": "2026-10-13T02:55:12.759492+00:00",
+      "sha256": "8c5af562812cae625881b3bfb7dca472b7148cd66b002b4362b8d0831fcffb4f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585508",
+      "retrieved_at": "2026-10-13T02:55:13.239628+00:00",
+      "sha256": "0c3cd13a17e87f1a59e3bd7cdce524235d74c69f5b4cd394bfb1c35985e593a9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585510",
+      "retrieved_at": "2026-10-13T02:55:13.789708+00:00",
+      "sha256": "3b4daf761d010060005260c4820a414335676909c3916ee4c3e4751d96b105c9"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585524",
+      "retrieved_at": "2026-10-13T02:55:14.313193+00:00",
+      "sha256": "63943bb9761315eb4090ffdfce8b1d820639d09c7404995cb625ab6b45acd0d5"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585530",
+      "retrieved_at": "2026-10-13T02:55:14.811958+00:00",
+      "sha256": "477d8286886cadb601de80186299b14e6725b2c18bfcf48b8917da431b09c950"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585534",
+      "retrieved_at": "2026-10-13T02:55:15.315089+00:00",
+      "sha256": "ce13a91cd4f33e18f45ba5a4413a54f167ce98f05d95e327917966cbf481952d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585536",
+      "retrieved_at": "2026-10-13T02:55:15.885605+00:00",
+      "sha256": "58381a0095913792ef663b6deb5618b14aca5f2dcfb45a62d05d0fccade978ae"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585544",
+      "retrieved_at": "2026-10-13T02:55:16.420979+00:00",
+      "sha256": "37fc85f4109f6d138d75399ec56c0f9ed81a0049ca20d95afafb946b3c9e35f3"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585547",
+      "retrieved_at": "2026-10-13T02:55:17.129320+00:00",
+      "sha256": "5a6b6c0c73cb99ab10e2e538b4dc19fbaa0adbc05e46fa5269c5e546b230a369"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585556",
+      "retrieved_at": "2026-10-13T02:55:17.619891+00:00",
+      "sha256": "60e703c5be34b259687aa1287368eec7b093b6963a4ac93ef7a7434f691131a8"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585560",
+      "retrieved_at": "2026-10-13T02:55:18.121411+00:00",
+      "sha256": "e73b2884a126dac1ea7442002e991d8626cadaece27bbbfa9c0a372ca33c3bf3"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585564",
+      "retrieved_at": "2026-10-13T02:55:18.644451+00:00",
+      "sha256": "05a2ccc48ac522fe1710b97ec8b1e770833ba6a2527192bf7e618ae5747a82df"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585572",
+      "retrieved_at": "2026-10-13T02:55:19.166417+00:00",
+      "sha256": "d28e4298c53f9172165dd969fe3e3d51e6798af8b6fce6d5fc724add0b87677d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585573",
+      "retrieved_at": "2026-10-13T02:55:19.657359+00:00",
+      "sha256": "6bb7956696d0e6d636d07d26bf79849d22dab782ef91912f27f39bddcc907790"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585580",
+      "retrieved_at": "2026-10-13T02:55:20.153658+00:00",
+      "sha256": "c7911a570292c4994eef4a46a7102a35a7663d22312beab9df8c55d9bb6c1672"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585589",
+      "retrieved_at": "2026-10-13T02:55:20.641523+00:00",
+      "sha256": "963cdb15a6521c821ea9de51ee8dc8c528995ecc6958af753fd0ed3b1f5a33ab"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585598",
+      "retrieved_at": "2026-10-13T02:55:21.241466+00:00",
+      "sha256": "c1a33e8e147ae81f0d887091f288cde0f9b8d165c154ed8a3502a894dbc66e5d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585603",
+      "retrieved_at": "2026-10-13T02:55:21.770817+00:00",
+      "sha256": "fe2fb3a2313312def1c1b5aae35ac121a69a7b642de08a03c25b313f6970289c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585607",
+      "retrieved_at": "2026-10-13T02:55:22.265981+00:00",
+      "sha256": "e3145c085204cbc51df55b1ab8df266df1c8c689cb42337e1c42de56256e2812"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585619",
+      "retrieved_at": "2026-10-13T02:55:22.819536+00:00",
+      "sha256": "91a9d927c2b4cd25b07f1c98f582f3f46d604e8418faf1b9aefa6a8754d5aed8"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585625",
+      "retrieved_at": "2026-10-13T02:55:23.356805+00:00",
+      "sha256": "bd1afdde794dc77a1f6f6b9260446c50d1da092c7a6635a41855053a0c18424f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585628",
+      "retrieved_at": "2026-10-13T02:55:23.869877+00:00",
+      "sha256": "b3c55bc02ab50f42af8adf4c3c7fbcb2d3a78fe9223a8f2035d4bd19636bf55d"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585630",
+      "retrieved_at": "2026-10-13T02:55:24.571598+00:00",
+      "sha256": "d1dc8852920a5989ffe2e84049de39befb33a375b51c496fc9dbd577e43c06d4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585633",
+      "retrieved_at": "2026-10-13T02:55:25.103815+00:00",
+      "sha256": "a31667dfac0936311890c967dbf3a97997dc217dd8d5be0fe8995a096c598cf1"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585641",
+      "retrieved_at": "2026-10-13T02:55:25.730541+00:00",
+      "sha256": "b288ebb06963ad23d2f94d4c50997f99d729322a65b19af890f5ea57a83bd7b6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585643",
+      "retrieved_at": "2026-10-13T02:55:26.248122+00:00",
+      "sha256": "0c289bd4a11c610484133156146a3530358fa83e78e9965583647bf3f671c7e4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585645",
+      "retrieved_at": "2026-10-13T02:55:26.744809+00:00",
+      "sha256": "2f47ae5b942df0e3a89758239ad7a1a6e18789cd3a4d71364dc4ef309c56b713"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585649",
+      "retrieved_at": "2026-10-13T02:55:27.247047+00:00",
+      "sha256": "b0c513cd9b572be36fbd2ac258fab4fde115ffcbeb5bce72438ae6f89a17f1d0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585654",
+      "retrieved_at": "2026-10-13T02:55:27.953027+00:00",
+      "sha256": "91bfbd18a083a4bec0f1558982e07272cab29c60b3bcb54b2db164f38f02df50"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585658",
+      "retrieved_at": "2026-10-13T02:55:28.469840+00:00",
+      "sha256": "76499718f1f8ef829c7fa58e8ec49fa5aba6259db1357bdfa650d50331660af6"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585662",
+      "retrieved_at": "2026-10-13T02:55:29.005813+00:00",
+      "sha256": "99fbc53f2c8ce5f4a542a95f5982820d99dfaa46dd92ba84c0136678125900fd"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585668",
+      "retrieved_at": "2026-10-13T02:55:29.592455+00:00",
+      "sha256": "784d86f839ea5eb7157f3528575db9e2cab69a628c57898674d5f9312ef98040"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585669",
+      "retrieved_at": "2026-10-13T02:55:30.071918+00:00",
+      "sha256": "ee3936c346493a86cfdd3c99f94b5fde777db60ee5bb6203333e4eb217b01925"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585673",
+      "retrieved_at": "2026-10-13T02:55:30.627437+00:00",
+      "sha256": "44cd3cb5a0ca2dd0e78089b2b7bbf4a8f415494f07b1edf376975ad82651dd7b"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585686",
+      "retrieved_at": "2026-10-13T02:55:31.133402+00:00",
+      "sha256": "9efa29345b2fcf679348f0d2358cfbef16435157a85c22417a628acc91f50b5e"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585692",
+      "retrieved_at": "2026-10-13T02:55:31.641779+00:00",
+      "sha256": "d31ce6b1339632c9e5285a54bd45d58ed57f7f4a794324850b178dbec701fb5f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585696",
+      "retrieved_at": "2026-10-13T02:55:32.210103+00:00",
+      "sha256": "8c3f38f37bb2b159ea1a2e3a9a5ebbeca518215a04157f53d4a0e9266cb9fb1c"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585715",
+      "retrieved_at": "2026-10-13T02:55:32.805101+00:00",
+      "sha256": "31367d05de07e9f5c52028f1d819bdc0808195389b0bcdfd80fae0896fde956f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585717",
+      "retrieved_at": "2026-10-13T02:55:33.416980+00:00",
+      "sha256": "ab5b3d6a2febf129ac1951b265eab06a71fc4d489800f715eb9f5572062ed122"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585730",
+      "retrieved_at": "2026-10-13T02:55:33.958605+00:00",
+      "sha256": "a35c0d840dd4440c49fcd44a1dffc1548baab673eabfad8942b772d7e1a760b0"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585735",
+      "retrieved_at": "2026-10-13T02:55:34.453577+00:00",
+      "sha256": "3588f96957f18a3b0d7d8296f0d40c79d207d65f9374ea4a2c2dc8b4e0d09b38"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585738",
+      "retrieved_at": "2026-10-13T02:55:34.941903+00:00",
+      "sha256": "7f095e99614880cce6e676035e191b7c84eb7ae8bd8a2932427fa670f52e47e8"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585746",
+      "retrieved_at": "2026-10-13T02:55:35.450081+00:00",
+      "sha256": "69b92f5341c4d3ab740a8efcb0be509e0b3796e964861d698f245937db1e84b7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585757",
+      "retrieved_at": "2026-10-13T02:55:35.967747+00:00",
+      "sha256": "1c7721d19c800819c00851e01f45b61bb9ad2571471d1b6743af396109242ba1"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585764",
+      "retrieved_at": "2026-10-13T02:55:36.461457+00:00",
+      "sha256": "1e5808927770766e3f61f63fbdb8dc226d8e9ebcf4b2c179b3c7b3f01c55039f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585766",
+      "retrieved_at": "2026-10-13T02:55:36.942378+00:00",
+      "sha256": "612dcf054cbdbbd56836d247897690e5f6ff10d135d1bde431b0effb22d240b7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585774",
+      "retrieved_at": "2026-10-13T02:55:37.504969+00:00",
+      "sha256": "83199f03fbd59040b273cc925ebd36f41b404a11f90f7e6b78706a93ff7d2797"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585781",
+      "retrieved_at": "2026-10-13T02:55:37.993856+00:00",
+      "sha256": "2fd53df49935a74185510e642f3a8778655ed07ce87698e5fd8d74d6a644a862"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585782",
+      "retrieved_at": "2026-10-13T02:55:38.522849+00:00",
+      "sha256": "3167b60a6840a1e59e52f7633c1fb149671ce095b8a75caae4c207aff6066c8f"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585785",
+      "retrieved_at": "2026-10-13T02:55:39.057230+00:00",
+      "sha256": "15514390f855c1555133445a838e5badd15d56e14aeb2903305b67030966f56a"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585787",
+      "retrieved_at": "2026-10-13T02:55:39.789705+00:00",
+      "sha256": "71fe82dea80225798e0aea2c6cba7c1f8da7ceda83ee3c38e0bb5dda069001b7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585790",
+      "retrieved_at": "2026-10-13T02:55:40.284515+00:00",
+      "sha256": "4f23df412781dada6963499a16e8be92d433785c8c0cdd51d4aca5567d36b4a2"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585792",
+      "retrieved_at": "2026-10-13T02:55:40.855466+00:00",
+      "sha256": "ce382540b767b713e303ed9aff825e846765b31b38c10d40d1b8096fa3bdb759"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585801",
+      "retrieved_at": "2026-10-13T02:55:41.449625+00:00",
+      "sha256": "fd0b5eef59be304ea13f0d2b373de0f9583a21b3590fd6e9b0398773ffb00a71"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585802",
+      "retrieved_at": "2026-10-13T02:55:41.967707+00:00",
+      "sha256": "f0eb0f7063d9251b849d0e3f11d5b4aac1e9b0f7d900c383dffe5fc1bd444bc4"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585805",
+      "retrieved_at": "2026-10-13T02:55:42.943611+00:00",
+      "sha256": "c8141afa340777c76e85ebaf46712feefc16fbf8cccd17e7cde5786da71d13cf"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585808",
+      "retrieved_at": "2026-10-13T02:55:43.474135+00:00",
+      "sha256": "1e6ab83e40efa9a6499d73ceb4e5418815d6011c2f04d810054f604ce3d638ff"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585814",
+      "retrieved_at": "2026-10-13T02:55:44.007785+00:00",
+      "sha256": "b314a75e0969bb551484b583a37cc9cfeabf6f69640834c1c0cf858c4bcdd106"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585817",
+      "retrieved_at": "2026-10-13T02:55:44.507143+00:00",
+      "sha256": "0fe447d214494b32859b834cd292bd56d3bd608b1522adafd4058412b6d5ac42"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585819",
+      "retrieved_at": "2026-10-13T02:55:45.127585+00:00",
+      "sha256": "de76d9288175d692d596e32c16202d48add8ed976637fab81a19eccea5e866e1"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585821",
+      "retrieved_at": "2026-10-13T02:55:45.624484+00:00",
+      "sha256": "3316d0b6e3f05354792de571dc7e353da5d5f45bea774093505ccb8d87a865c7"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585824",
+      "retrieved_at": "2026-10-13T02:55:46.133435+00:00",
+      "sha256": "536d4bbcb1c0f94074990ee10e8f74190032bd19068a1de7a19d9f6abc6bb624"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585825",
+      "retrieved_at": "2026-10-13T02:55:46.685136+00:00",
+      "sha256": "78d927907048338aa6ad8c5499fc851523aa31e6c7a0aa22d9568b9e83fb3fae"
+    },
+    {
+      "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401585828",
+      "retrieved_at": "2026-10-13T02:55:47.186486+00:00",
+      "sha256": "5743d2ac04b3c96503cbde49739795cb7803bb0e63ac35cf429841e97b4e366d"
+    }
+  ],
+  "archive_sources": [
+    {
+      "name": "team_box_2024.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_team_boxscores/team_box_2024.parquet",
+      "bytes": 135889,
+      "sha256": "5e4d1b7a2ccc287f212f65888dcd674e370adec8a0e32d7ae0825eecacaaa8a9"
+    },
+    {
+      "name": "nba_schedule_2024.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_schedules/nba_schedule_2024.parquet",
+      "bytes": 143706,
+      "sha256": "2069783562b531b91ee9ad6a85358761ad6a611ce3291a60ed124bb978969b63"
+    },
+    {
+      "name": "play_by_play_2024.parquet",
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_pbp/play_by_play_2024.parquet",
+      "bytes": 20618404,
+      "sha256": "62b609ea487d23aec11e6756d7477a8b1df3a1e57e97fc90c7230b62a5835af1"
+    }
+  ],
+  "geonames_sha256": "8c2390a973087b9f42671a01c401ccbbc4d1346fe1d0371c15d1090b21d2d725"
+}

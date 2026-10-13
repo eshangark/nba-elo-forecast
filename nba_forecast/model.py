@@ -6,7 +6,8 @@ from datetime import datetime
 from statistics import mean
 from zoneinfo import ZoneInfo
 
-MODEL_VERSION = "0.1.0-pilot"
+MODEL_VERSION = "0.2.0"
+ALPHA_BASE = (0.25, 0.20, 0.15, 0.10, 0.10, 0.10, 0.05, 0.05)
 EASTERN = ZoneInfo("America/New_York")
 
 
@@ -20,15 +21,22 @@ class Parameters:
     travel_weight: float = 0.000001
     lead_weight: float = 0.7
     performance_weight: float = 0.02
+    schedule_weight: float = 1.0
+    alpha_weights: tuple = ALPHA_BASE
 
     def __post_init__(self):
-        if not all(math.isfinite(v) for v in asdict(self).values()):
+        values = [v for k,v in asdict(self).items() if k != "alpha_weights"] + list(self.alpha_weights)
+        if not all(math.isfinite(v) for v in values):
             raise ValueError("Parameters must be finite")
         if self.k <= 0 or self.c <= 0 or min(self.home_advantage, self.fatigue_weight,
                                           self.travel_weight, self.lead_weight) < 0:
             raise ValueError("Invalid parameter domain")
         if not 0 <= self.performance_weight <= 0.25:
             raise ValueError("Performance weight must be in [0, 0.25]")
+        if not 0 <= self.schedule_weight <= 1:
+            raise ValueError("Schedule weight must be in [0, 1]")
+        if len(self.alpha_weights) != 8 or min(self.alpha_weights) < 0 or abs(sum(self.alpha_weights)-1) > 1e-9:
+            raise ValueError("Eight nonnegative performance weights must sum to one")
 
 
 def timestamp(value):
@@ -76,11 +84,10 @@ def box_features(team, opponent):
     ]
 
 
-def performance(team, opponent):
+def performance(team, opponent, weights=ALPHA_BASE):
     x = box_features(team, opponent)
     # Fixed, documented units; no sample-wide statistics or future-data scaling.
     scaled = [x[0] / 10, x[1], x[2], x[3], x[4], x[5] / 3, -x[6], x[7]]
-    weights = [0.25, 0.20, 0.15, 0.10, 0.10, 0.10, 0.05, 0.05]
     return max(1e-6, min(1 - 1e-6, logistic(sum(a * b for a, b in zip(weights, scaled)))))
 
 
@@ -166,11 +173,11 @@ class Engine:
             state = self.team(game[side]["id"])
             win = int(game[side]["points"] > game[other]["points"])
             sign = 2 * win - 1
-            current = performance(game[side], game[other])
+            current = performance(game[side], game[other], self.params.alpha_weights)
             baseline = mean(state.performances) if state.performances else current
             ratio = max(0.25, min(4.0, current / baseline))
             p = self.params
-            delta = p.k * (win - prediction[side + "_probability"]) * (1 + sign * prediction[side + "_sos"])
+            delta = p.k * (win - prediction[side + "_probability"]) * (1 + sign * p.schedule_weight * prediction[side + "_sos"])
             delta *= (1 + p.lead_weight * math.log2(1 + lead_ratio)) * (1 + sign * p.performance_weight * (ratio - 1))
             pending.append((state, side, other, win, current, delta))
         # Commit both teams only after both calculations succeed.

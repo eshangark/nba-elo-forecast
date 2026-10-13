@@ -4,7 +4,7 @@ import hashlib
 import json
 import math
 from dataclasses import asdict
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from itertools import groupby
 from statistics import mean
 
@@ -32,7 +32,12 @@ def metrics(rows):
             "tie_policy": "pick home when probability equals 0.5", "calibration": bins}
 
 
-def replay(games, params=None, evaluate_from=None):
+def slate_cutoff(day, games):
+    return min(datetime.combine(day, time(10), tzinfo=EASTERN),
+               min(timestamp(g["start"]) for g in games) - timedelta(hours=1))
+
+
+def replay(games, params=None, evaluate_from=None, fitted=False, warmup_games=0):
     if not games:
         raise ValueError("No games to replay")
     if len({g["game_id"] for g in games}) != len(games):
@@ -49,7 +54,7 @@ def replay(games, params=None, evaluate_from=None):
     last_completion = None
     for day, batch_iterator in groupby(games, slate_date):
         batch = list(batch_iterator)
-        cutoff = datetime.combine(day, time(10), tzinfo=EASTERN)
+        cutoff = slate_cutoff(day, batch)
         if last_completion and last_completion >= cutoff:
             raise ValueError("Previous slate was not complete at forecast cutoff")
         if any(timestamp(g["start"]) <= cutoff for g in batch):
@@ -60,6 +65,8 @@ def replay(games, params=None, evaluate_from=None):
         if len(team_ids) != len(set(team_ids)):
             raise ValueError("Multiple games for one team on the same slate")
         forecasts = [engine.predict(g) for g in batch]
+        for g, row in zip(batch, forecasts):
+            row["eligible_for_evaluation"] = all(engine.team(g[s]["id"]).games >= warmup_games for s in ["home", "away"])
         for g, row in zip(batch, forecasts):
             row.update(forecast_cutoff=cutoff.isoformat(), kind="historical_replay",
                        home_win=int(g["home"]["points"] > g["away"]["points"]),
@@ -72,13 +79,14 @@ def replay(games, params=None, evaluate_from=None):
                 row[side + "_rating_after"] = engine.team(g[side]["id"]).rating
                 row[side + "_rating_change"] = row[side + "_rating_after"] - row[side + "_rating"]
         last_completion = max(timestamp(g["last_play_at"]) for g in batch)
-    evaluated = [p for p in predictions if not evaluate_from or slate_date(p).isoformat() >= evaluate_from]
-    return {"model_version": MODEL_VERSION, "status": "unfitted_pipeline_pilot",
-            "parameters": asdict(engine.params), "cutoff_policy": "10:00 America/New_York; prior slates only",
+    evaluated = [p for p in predictions if p["eligible_for_evaluation"] and (not evaluate_from or slate_date(p).isoformat() >= evaluate_from)]
+    return {"model_version": MODEL_VERSION, "status": "fitted_historical_replay" if fitted else "unfitted_pipeline_pilot",
+            "parameters": asdict(engine.params), "cutoff_policy": "Earlier of 10:00 Eastern and one hour before first tip-off; prior slates only",
+            "warmup_games": warmup_games,
             "start": games[0]["start"], "end": games[-1]["start"], "evaluation_from": evaluate_from,
             "dataset_sha256": hashlib.sha256(json.dumps(games, sort_keys=True).encode()).hexdigest(),
-            "limitations": ["Parameters not fitted on NBA data", "Short historical sample, not final test performance",
-                            "Cold-start ratings", "City-centre travel estimates", "Historical source corrections may be present"],
+            "limitations": ([] if fitted else ["Parameters not fitted on NBA data", "Short historical sample, not final test performance"])
+                            + ["Independent season initialization", "City-centre travel estimates", "Historical source corrections may be present"],
             "metrics": metrics(evaluated), "predictions": predictions,
             "rankings": sorted([{"team_id": k, "team": names[k], "elo": v.rating, "games": v.games,
                                   "wins": v.wins} for k,v in engine.teams.items()], key=lambda r: -r["elo"])}

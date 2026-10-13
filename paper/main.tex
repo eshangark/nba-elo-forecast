@@ -2,339 +2,351 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,booktabs,tabularx}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{microtype}
+\usepackage{lmodern,microtype}
 \usepackage[hidelinks]{hyperref}
-\usepackage{enumitem}
-\setlist{nosep}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt}
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
-\large Model Specification and Evaluation Protocol}
+\large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.2 --- October 12, 2026}
-
+\date{Working draft 0.3 --- October 12, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
-This project develops an NBA forecasting system that maintains team strength
-ratings and estimates pregame win probabilities. It adapts a multifactor
-Elo-style and Bradley--Terry framework developed for the 2025 Wharton High
-School Data Science Competition. The proposed system combines rating
-differences with home-court, rest, travel, and time-zone effects, and adjusts
-ratings after completed games using schedule strength and performance
-information. This draft specifies the model family, data requirements, and
-chronological evaluation protocol. An initial implementation and a 151-game
-historical pipeline check are available. NBA parameters have not yet been
-fitted and multi-season coverage remains unverified. Pilot scores establish
-execution of the pipeline; they are not a final estimate of predictive
-performance. Implemented pilot conventions are distinguished from the
-planned fitted model.
+An NBA forecasting system maintains team ratings and estimates pregame win
+probabilities using an adaptation of the Billy Beanes' 2025 Wharton competition
+framework. Rating differences, home court, rest, estimated travel, and time-zone
+changes determine pregame probabilities. Outcomes, schedule strength, lead
+retention, and box-score performance determine subsequent rating updates.
+Model version 0.2.0 is fitted on 2021--22 through 2023--24 regular-season
+history and frozen before evaluation on 2024--25 and 2025--26. Five validated
+full seasons contain 6,150 games. On 1,075 eligible games in the held-out
+2025--26 season, log loss is 0.5925, Brier score is 0.2035, and winner accuracy
+is 68.56\%. These are reconstructed historical forecasts, not predictions
+issued live. The manuscript specifies feature derivations, bounded parameter
+estimation, data repairs, and the limitations of this first NBA calibration.
 \end{abstract}
 
 \section{Scope and provenance}
-The intended outputs are a team list ordered by rating, probabilities for
-upcoming games, and a permanent record of previously issued predictions and
-outcomes. Ratings update after completed games. In-game win probability is
-outside the present scope.
+The system produces teams ordered by rating, matchup probabilities, and a
+record of forecasts and outcomes. Live ratings are intended to update after
+completed games; in-game probability is outside scope. The original competition
+report supplies the framework \cite{billybeanes}; associated code is reference
+material \cite{referencecode}. This implementation adopts explicit feature
+units, stable transformations, one complementary probability function, and
+NBA-specific calibration. Changes to inherited expressions are described below.
+The website and historical replay are implemented; scheduled live ingestion and
+hosting remain pending.
 
-The original team report supplies the conceptual framework and feature
-definitions \cite{billybeanes}. Associated competition code is reference
-material rather than the canonical NBA implementation \cite{referencecode}.
-The NBA adaptation will define one consistent probability function, explicit
-feature units, reproducible fitting, and timestamped evaluation. Any revision
-to the inherited equations will be documented with the model version.
+\section{Forecast timing}
+Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
+available by then. A home-team forecast estimates
+$p_g=\Pr(y_g=1\mid\mathcal F_{\tau_g})$, where $y_g$ is the home-win indicator.
+The historical replay freezes all forecasts for an Eastern-calendar daily
+slate at the earlier of 10:00 America/New\_York and one hour before its first
+tip-off. It requires all prior slates to have completed before that cutoff;
+current-slate results cannot enter its forecasts. Ratings update after the
+slate. A team cannot appear twice on one slate, and duplicate games are rejected.
 
-\section{Forecast timing and notation}
-For a game $g$ between teams $i$ and $j$, let $\tau_g$ denote its forecast
-cutoff and let $\mathcal{F}_{\tau_g}$ contain only information available by
-that time. The result is $y_g=1$ when team $i$ wins and $0$ otherwise.
-The forecast is
-\begin{equation}
- p_g=\Pr(y_g=1\mid\mathcal{F}_{\tau_g}).
-\end{equation}
-The deployed policy will record the last eligible pregame forecast, its
-timestamp, data cutoff, and model version. The pilot instead fixes each day's
-forecasts at 10:00 America/New\_York using completed prior slates only, then
-updates after that day's games. Replay rejects a prior slate whose final-play
-timestamp is at or after the next cutoff, as well as a game starting before
-the cutoff. Final-play times are an availability proxy; they do not establish
-when a historical provider first published corrected statistics. Historical
-replays are reported separately from genuinely issued pregame forecasts.
+Completion availability is proxied by terminal EndGame wallclock timestamps,
+rather than later edited play timestamps. Seventeen games use dated final-recap
+publication times. One game with source play dates shifted by a day uses an
+explicitly flagged conservative tip-off-plus-eight-hours availability bound;
+this is not an observed completion time. Replays check these proxies against
+the next cutoff but cannot establish when historical corrections first reached
+a live feed. Genuinely issued forecasts will require their actual issue time,
+data cutoff, and model version, and must be preserved separately.
 
-\begin{table}[ht]
-\centering\small
-\begin{tabularx}{\textwidth}{lX}
-\toprule
-Symbol & Meaning \\
-\midrule
-$r_{i,g}$ & Team $i$'s rating immediately before game $g$ \\
-$h_{i,g}$ & Venue indicator: $+1$ home, $-1$ away, $0$ neutral \\
-$H$ & Home-court offset in rating units \\
-$RD_{i,g}$ & Rest days under a fixed calendar convention \\
-$TD_{i,g}$ & Estimated distance from the preceding venue, in kilometres \\
-$TZ_{i,g}$ & Dated time-zone offset change, in hours \\
-$S_{i,g}$ & Opponent-based schedule-strength feature \\
-$L_{i,g}$ & Lead-retention feature observed after the game \\
-$Q_{i,g}$ & Performance relative to prior history, observed after the game \\
-\bottomrule
-\end{tabularx}
-\caption{Core notation. The subscript $g$ is suppressed where unambiguous.}
-\end{table}
-
-\section{Pregame probability model}
-The inherited fatigue construction is
+\section{Pregame probability}
+For home team $i$ and away team $j$, define pregame ratings $r_i,r_j$, rest
+$RD$ in days, travel $TD$ in kilometres, and time-zone change $TZ$ in hours.
+Let $h=1$ at a home venue and $h=0$ at a neutral venue. The inherited fatigue
+indices, with an empirically fitted travel coefficient $\nu$, are
 \begin{align}
- F_{i,g}&=RD_{j,g}+\exp(|TZ_{i,g}|/3)+\nu TD_{i,g},\\
- G_{i,g}&=RD_{i,g}+\exp(|TZ_{j,g}|/3)+\nu TD_{j,g}.
+ F_i&=RD_j+\exp(|TZ_i|/3)+\nu TD_i,\\
+ G_i&=RD_i+\exp(|TZ_j|/3)+\nu TD_j.
 \end{align}
-These correspond to opponent rest/team fatigue and team rest/opponent fatigue.
-This functional form is implemented for the pilot. The factor 3 specifies a time-zone
-scale in hours, and $\nu$ converts the travel contribution to the numerical
-scale of this index. These are empirical indices, not measurements of
-physiological fatigue.
-
-Using natural logarithms, the implemented pilot probability is
+They are empirical indices, not physiological measurements. The probability is
 \begin{equation}
- p_{i,g}=\left[1+b^{z_{i,g}}\right]^{-1},\qquad
- z_{i,g}=\frac{r_{j,g}-r_{i,g}-Hh_{i,g}}{c}
-       +\gamma\log\frac{F_{i,g}}{G_{i,g}},
+ p_i=\left[1+10^{z_i}\right]^{-1},\qquad
+ z_i=\frac{r_j-r_i-Hh}{c}+\gamma\ln(F_i/G_i),\qquad p_j=1-p_i.
  \label{eq:probability}
 \end{equation}
-where $b>1$, $c>0$, and the fatigue indices must be positive.
-The opponent probability is computed as $1-p_{i,g}$. Full-precision
-probabilities are retained; rounding is only for display.
-
-The probability can equivalently be written
+All logarithms are natural unless explicitly subscripted. Equivalently,
 \begin{equation}
- \operatorname{logit}(p_{i,g})=
- a(r_{i,g}-r_{j,g}+Hh_{i,g})-d\log(F_{i,g}/G_{i,g}),
- \quad a=\frac{\log b}{c},\quad d=\gamma\log b.
+ \operatorname{logit}(p_i)=\ln(10)
+ \left[\frac{r_i-r_j+Hh}{c}-\gamma\ln(F_i/G_i)\right].
 \end{equation}
-This exposes redundant parameterizations. The pilot fixes $b=10$ and preserves
-the original report's initial log-odds scales by setting
-\begin{equation}
- c=993.39\frac{\log 10}{\log 99.39},\qquad
- \gamma=0.02\frac{\log 99.39}{\log 10}.
-\end{equation}
-It uses $K=32$, $H=72.52$, $\nu=10^{-6}$, $\phi=0.7$, and $\lambda=0.02$ as
-unfitted starting values. A
-Bayesian optimization algorithm for constants, if used, does not itself make
-the rating model a Bayesian posterior model.
+The exponent base and rating scale cannot both be freely identified. Moreover,
+rescaling ratings, $K$, $H$, and $c$ together preserves probabilities. We fix
+the base at 10 and $c=993.39\ln(10)/\ln(99.39)=497.3558141396255$ to anchor
+the inherited rating scale, then fit $K$, $H$, and $\gamma$. Display rounding
+does not affect calculations.
 
-\section{Updates after completed games}
-Let $s_{i,g}=2y_{i,g}-1$. The inherited update family is
+\section{Rating updates}
+For either team, let $y$ denote its own win indicator, $p$ its complementary
+pregame probability, and $s=2y-1$. The implemented update is
 \begin{equation}
 \begin{split}
- r_{i,g}^{+}=r_{i,g}+K(y_{i,g}-p_{i,g})
- &(1+s_{i,g}S_{i,g})\\[-2pt]
- {}\times &(1+\phi\log_2(1+L_{i,g}))
- (1+s_{i,g}\lambda(Q_{i,g}-1)).
+ r^+=r+K(y-p)(1+s\beta S)
+ (1+\phi\log_2(1+L))
+ (1+s\lambda(Q-1)).
 \end{split}
 \label{eq:update}
 \end{equation}
-Both teams' updates use the same pregame rating state, their own performance
-features, and complementary probabilities. Schedule strength uses past data;
-the current result, largest lead, and box score become available only after
-completion. No current-game box-score feature enters its pregame forecast.
-
-Equation~\ref{eq:update} is implemented with the pilot conventions below;
-it is not yet a fitted NBA estimator. The pilot starts ratings at 1500,
-constrains $0\leq\lambda\leq0.25$, and centres the mean rating at 1500 after
-each daily slate. Asymmetric updates need not conserve the sum of ratings;
-centring preserves pairwise differences. Each season is replayed independently.
-Inter-season carryover remains a future modeling choice. Duplicate game IDs
-are rejected, and both team updates are committed only after both calculations
-succeed.
+Here $\beta$ is a fitted schedule-strength multiplier, $\phi$ weights lead
+retention, and $\lambda$ weights relative performance. Both teams use their
+pregame ratings and their own performance history. The result and all
+current-game box-score features enter only after completion. Each season
+starts independently at 1500. Asymmetric updates can shift the league mean;
+recentering it at 1500 after each slate preserves all pairwise differences.
+Inter-season carryover is not part of this release.
 
 \subsection{Schedule strength}
-The original feature has the form
+For team $i$ facing $j$, define
 \begin{equation}
- S_{i,g}=\frac{2W_{j,g}+\overline{W}_{\mathcal{O}(j),g}}{3},
+ S_i=\frac{2W_j+\overline W_{\mathcal O(j)}}{3},\qquad
+ W_t=\frac{w_t+1}{n_t+2}.
 \end{equation}
-where $W_{j,g}$ is the opponent's pregame win fraction and
-$\overline{W}_{\mathcal{O}(j),g}$ summarizes that opponent's prior opponents.
-The pilot uses Laplace-smoothed win fractions $(w+1)/(n+2)$ and weights repeated
-opponents by their frequency in the opponent's prior schedule. An empty
-opponent history receives 0.5. History resets at the season boundary.
-Full-season win fractions cannot be substituted into an earlier game's features.
+All wins $w_t$ and games $n_t$ precede the cutoff. The second term averages
+smoothed win rates of $j$'s previous opponents, including repeated opponents
+in proportion to their frequency. Empty opponent history receives 0.5.
+This is a past-only adaptation of the report's schedule feature.
 
-\subsection{Lead retention and performance}
-The implemented pilot lead-retention ratio is
+\subsection{Lead retention and relative performance}
+For largest leads $LL_i,LL_j$ and final scores $PTS_i,PTS_j$, use
 \begin{equation}
- L_{i,g}=\frac{|PTS_{i,g}-PTS_{j,g}|}{\max(LL_{i,g},LL_{j,g})},
+ L=\frac{|PTS_i-PTS_j|}{\max(LL_i,LL_j)}.
 \end{equation}
-where $LL$ denotes the team's largest lead. Using the peak absolute lead
-extends the inherited denominator to teams that never led, with $0<L\leq1$
-for a non-tied completed game. This is a deliberate pilot revision: it measures
-final margin relative to the game's peak advantage for either side. Source
-records are rejected if the peak lead is smaller than the final margin.
+The denominator extends the inherited ratio to teams that never led.
+Valid non-tied completed games satisfy $0<L\leq1$; peak leads below the final
+margin are rejected. This measures final margin relative to either side's
+peak advantage, not a separate losing-team retention ratio.
 
-For eight box-score features $X_{k,i,g}$, the pilot scales are
+For the eight Appendix~\ref{app:features} features, fixed scales are
 \begin{equation}
  \widetilde{\boldsymbol X}=(X_1/10,X_2,X_3,X_4,X_5,X_6/3,-X_7,X_8).
 \end{equation}
-The negative sign on the turnover fraction encodes poorer performance from
-more turnovers. These fixed numerical scales have not been optimized.
-With $\boldsymbol\alpha=(0.25,0.20,0.15,0.10,0.10,0.10,0.05,0.05)$,
+The turnover sign rewards fewer turnovers. Positive weights sum to one:
 \begin{align}
- U_{i,g}&=\sum_{k=1}^{8}\alpha_k\widetilde X_{k,i,g},\\
- A_{i,g}&=\operatorname{clip}\!\left((1+e^{-U_{i,g}})^{-1},10^{-6},1-10^{-6}\right),\\
- Q_{i,g}&=\operatorname{clip}\!\left(A_{i,g}/\overline A_{i,<g},0.25,4\right).
+ U&=\sum_{k=1}^8\alpha_k\widetilde X_k,\\
+ A&=\operatorname{clip}\left((1+e^{-U})^{-1},10^{-6},1-10^{-6}\right),\\
+ Q&=\operatorname{clip}\left(A/\overline A_{<g},0.25,4\right).
 \end{align}
-The reference history is the mean of eligible prior games, excluding the
-current game. An opening game receives $Q=1$. The logistic transformation
-replaces the inherited $U/(1+U)$ singularity at $U=-1$ while retaining signed
-net efficiency. These changes require validation before adoption in the
-final fitted model.
+$A$ is the aggregate game performance factor (AGPF), and $Q$ is the performance
+adjustment factor (PAF). The reference is the expanding mean of that team's
+prior games only. Openers use $Q=1$. The sigmoid replaces the inherited
+$U/(1+U)$ singularity while preserving signed net efficiency. With
+$0\leq\lambda\leq0.25$ and the stated PAF range, the performance multiplier
+cannot become negative. These transformations and scales were fixed before
+fitting; the eight weights were fitted.
 
-\section{Data construction and quality control}
-The implemented collection uses ESPN's publicly accessible scoreboard and
-game-summary responses for game IDs, teams, tip-off times, venues, statuses,
-final scores, box scores, and largest leads \cite{espn}. These endpoints have
-no documented availability guarantee. GeoNames city coordinates and IANA
-time zones supply a city-centre travel proxy \cite{geonames}. Exact arena
-coordinates and multi-season source coverage remain future work.
-NBA endpoints through \texttt{nba\_api} remain an alternative candidate
-\cite{nbaapi}. Data acquisition must use free access.
+\section{Data construction}
+Free ESPN-derived schedule, team-box-score, and play-by-play parquet files from
+SportsDataverse provide the initial history \cite{sportsdataverse}. Primary
+ESPN game summaries replace incomplete or inconsistent archival records
+\cite{espn}. GeoNames supplies venue-city coordinates and IANA time zones
+\cite{geonames}. Each of the five seasons contains 1,230 completed standard
+regular-season games, 30 teams, and 82 games per team. Preseason, playoffs,
+All-Star games, and the NBA Cup final are excluded; Cup games that count
+toward the regular season remain included.
 
-Canonical tables contain one record per game and one record per team-game.
-Count and fraction fields receive distinct names. Validation checks include
-unique keys, two opponents per completed game, score agreement, field types,
-and missing-value flags. Genuine blowouts are retained. Source responses,
-retrieval timestamps, and hashes support reproducibility and correction handling.
-For missing largest lead, a play-by-play score path may supply the value only
-when its final scores agree with the header. If team shooting totals disagree
-with the final score, complete player rows may replace the aggregate only
-when their point sum, shooting sum, and the final score path agree. Non-player
-turnovers are then derived from participant-free turnover events. Each repair
-is recorded in the game data; unresolved records prevent archive publication.
+Validation requires unique game/team identities, matching opponent rows and
+header scores, finite nonnegative integer counts, made shots no greater than
+attempts, scoring identities, plausible assists and steals, valid feature
+denominators, and peak leads consistent with final margins. Missing values
+are not converted to zero. Largest leads can be recovered from a score path
+only when its final scores match the header. Inconsistent team aggregates
+can be replaced by complete player rows with matching points and shooting
+identities. Turnovers consistently mean summed player turnovers, excluding
+provider non-player team turnovers. This choice preserves the distinction
+between player and team turnovers in the original feature family.
 
-Rest is the number of intervening dates in America/New\_York, making a
-back-to-back zero. The opening-game prior is three rest days, zero travel,
-and zero time-zone change, flagged as an initialization convention.
-Travel is estimated between consecutive venue cities, not the actual team
-itinerary. Time-zone differences compare both locations' UTC offsets at the
-current tip-off instant, so a daylight-saving transition alone does not count
-as geographic travel. Unknown or ambiguous cities cause validation failure.
-
-\section{Parameter fitting and evaluation protocol}
-For parameters $\theta$, replay the training games in chronological order,
-predicting before updating. A proposed objective is mean binary log loss:
-\begin{equation}
- \mathcal{L}(\theta)=-\frac{1}{N}\sum_{g=1}^{N}
- \left[y_g\log p_g(\theta)+(1-y_g)\log(1-p_g(\theta))\right].
-\end{equation}
-Every candidate parameter set requires its own rating replay. Numerical
-probability clipping, if needed, is fixed and disclosed. Feature scaling,
-imputation, constraints, and any regularization are learned or selected
-without access to the final test outcomes.
-
-Subject to data coverage, the proposed split is 2021--22 through 2023--24 for
-training, 2024--25 for validation, and 2025--26 for final testing. Parameters
-and formula choices are frozen before test evaluation. Ratings may update
-after each observed test result, matching the intended live process.
-
-Probability evaluation includes log loss, the Brier score
-\begin{equation}
- BS=\frac{1}{N}\sum_{g=1}^{N}(p_g-y_g)^2,
-\end{equation}
-and calibration plots comparing forecast probabilities with observed win
-fractions. Report bin counts and uncertainty alongside calibration estimates.
-Winner accuracy is secondary, with a stated tie rule for $p=0.5$. Evaluation
-must disclose sample counts, excluded games, and the forecast cutoff policy.
-
-\section{Current evidence and pending results}
-As a reference check, the original prediction function reproduced all ten
-rounded home-team probabilities in the competition report using the repository's
-supplied matchup ratings. This verifies that example's probability outputs;
-it does not reproduce the historical rating path or establish forecast accuracy.
-
-The first pipeline check covers October 22 through November 10, 2024: all
-151 discovered regular-season games were parsed, involving all 30 teams.
-One game's largest leads were recovered from play-by-play; another game's
-two team aggregates were recovered from player rows. Earlier games initialize
-the rating state. The 58 games from November 4 through November 10 yield
-the following diagnostic scores with unfitted starting parameters:
-\begin{center}
-\begin{tabular}{lr}
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrr}
 \toprule
-Diagnostic & Value \\
+Season & Accepted games & Primary replacements & Unresolved failures\\
 \midrule
-Evaluation games & 58 \\
-Mean log loss & 0.6110 \\
-Brier score & 0.2104 \\
-Winner accuracy & 70.69\% \\
+2021--22 & 1230 & 132 & 0\\
+2022--23 & 1230 & 158 & 0\\
+2023--24 & 1230 & 201 & 0\\
+2024--25 & 1230 & 165 & 0\\
+2025--26 & 1230 & 217 & 0\\
+\bottomrule
+\end{tabular}
+\caption{Source audit. The 873 primary replacements mostly address incomplete
+archived play-by-play; they are not a count of corrupt final box scores.}
+\end{table}
+
+All required numerical formula inputs are complete. Repair actions, availability
+proxies, source URLs, retrieval times where available, and SHA-256 hashes are
+stored with the data or collection manifests. This establishes internal
+consistency, not perfect measurement of every real-world quantity. Travel is
+estimated between successive venue cities, not actual itineraries. Rest counts
+intervening Eastern dates, so back-to-backs have zero. Openers receive three
+rest days and zero travel/time-zone change, with an initialization flag.
+Both venue offsets are evaluated at the current tip-off instant, preventing
+a daylight-saving change alone from creating geographic travel. Ambiguous
+or unknown cities cause validation failure.
+
+\section{Parameter estimation}
+Training uses 2021--22 through 2023--24; 2024--25 is validation and 2025--26 is
+a held-out test. The objective is mean binary log loss,
+\begin{equation}
+ \mathcal L(\theta)=-\frac1N\sum_g
+ [y_g\ln p_g(\theta)+(1-y_g)\ln(1-p_g(\theta))].
+\end{equation}
+A game is scored after both teams have played ten prior games, giving 3,220
+training observations. Earlier games still initialize histories, update
+ratings, and retain forecasts. Every candidate recomputes parameter-dependent
+ratings and AGPF history. An accelerated Numba replay is checked against the
+canonical Python engine before fitting and at the fitted solution, to
+probability tolerance $10^{-11}$.
+
+SciPy differential evolution with L-BFGS-B polishing \cite{scipy} fits 14 free
+dimensions: seven scalar coefficients and seven softmax logits. With the eighth
+logit fixed to zero, $\alpha_k=\exp(u_k)/\sum_l\exp(u_l)$ and $u_8=0$.
+Travel is optimized on a base-10 logarithmic scale. Settings are random seed
+42, population multiplier 8, maximum 150 generations, relative tolerance
+$10^{-5}$, one worker, and polishing enabled. The run converged in 44 generations
+and 5,520 objective evaluations. Training log loss decreased from 0.637588 at
+the inherited starting configuration to 0.628210. Constants were frozen at
+03:04:25 UTC on October 13, 2026 (October 12 Eastern), before validation/test
+evaluation. No parameters or formula choices were changed after those scores.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{llr}
+\toprule
+Parameter & Search interval & Fitted value\\
+\midrule
+$K$ & $[1,80]$ & 12.217347\\
+$H$ & $[0,180]$ & 41.552847\\
+$\gamma$ & $[0,0.5]$ & 0.164724\\
+$\nu$ & $10^{[-8,-1]}$ & 0.000109735\\
+$\phi$ & $[0,2]$ & 2.000000\\
+$\lambda$ & $[0,0.25]$ & 0.250000\\
+$\beta$ & $[0,1]$ & 0.978548\\
+$u_1,\ldots,u_7$ & $[-5,5]$ & softmax weights below\\
+\bottomrule
+\end{tabular}
+\caption{Rounded fitted constants. Full precision is retained in the versioned
+configuration. Base 10, $c$, initial rating 1500, and time-zone scale 3 are fixed.}
+\end{table}
+
+\begin{center}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$\alpha_1$&$\alpha_2$&$\alpha_3$&$\alpha_4$&$\alpha_5$&$\alpha_6$&$\alpha_7$&$\alpha_8$\\
+\midrule
+0.161954&0.004365&0.006380&0.002774&0.686992&0.073041&0.007926&0.056568\\
 \bottomrule
 \end{tabular}
 \end{center}
-These figures are a short-sample execution check, not final predictive
-performance or evidence of generalization. The sample has been inspected
-during development and is not an untouched test set. No parameters were
-selected against these scores. Fitted multi-season evaluation and genuinely
-issued live forecasts remain pending.
+The lead and performance coefficients reached their upper bounds. This is a
+converged bounded solution, not proof of a global optimum or uniquely identified
+causal effects. Fixed feature scales also influence weight interpretation.
+Future constraint changes require a new model version and new prospective
+evidence; the observed test season is no longer untouched for such revisions.
 
-\section{Deployment and reproducibility}
-A scheduled Python process will ingest completed games, validate features,
-update rating state, and save forecasts. Streamlit will display those outputs
-without refitting on page visits. Failed ingestion preserves the previous
-valid snapshot and exposes its age. Corrected results may require replaying
-rating state but must not overwrite previously issued forecasts.
-The implemented interface includes a season selector shared across Teams,
-Games, and Methodology. It defaults to the current season, including a pending
-or initialization view before forecasts are available. Processed historical
-game records and forecast snapshots are stored by season in GitHub; raw
-provider responses remain outside Git history. Partial season coverage and
-historical replay status are displayed explicitly. All pilot seasons start
-independently; archival support does not imply fitted inter-season carryover.
+\section{Historical evaluation}
+Probability quality is assessed by log loss, Brier score
+$N^{-1}\sum_g(p_g-y_g)^2$, and ten equal-width calibration bins with counts,
+mean forecasts, and observed home-win fractions. Lower log loss and Brier
+score are better. Winner accuracy is secondary, choosing home at exactly
+$p=0.5$. It is not an accuracy percentage for probabilities.
 
-Each release will identify the source-code revision, model configuration,
-data snapshot or manifest, preprocessing rules, random seed, and evaluation
-interval. This manuscript will be revised alongside material changes to
-features, equations, fitting, or evaluation. The repository remains private
-during development; manuscript draft status does not imply deployment.
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{llrrrr}
+\toprule
+Season & Role & Scored & Log loss & Brier & Winner accuracy\\
+\midrule
+2021--22 & Training & 1073 & 0.6298 & 0.2191 & 66.64\%\\
+2022--23 & Training & 1073 & 0.6457 & 0.2273 & 62.26\%\\
+2023--24 & Training & 1074 & 0.6092 & 0.2109 & 66.01\%\\
+2024--25 & Validation & 1075 & 0.6043 & 0.2088 & 66.42\%\\
+2025--26 & Held-out test & 1075 & 0.5925 & 0.2035 & 68.56\%\\
+\bottomrule
+\end{tabular}
+\caption{Frozen-model chronological replay. All 1,230 forecasts per season are
+retained; primary scoring excludes games before both teams' ten-game warmup.}
+\end{table}
+
+Across five seasons, 5,370 games are scored and 780 are warmup-only. Test
+ratings continue updating after observed outcomes, matching an adaptive rating
+system while coefficients remain frozen. Training scores are in-sample.
+A single held-out season does not establish performance across all future
+seasons, and sparse extreme-probability bins limit calibration inference.
+The recorded bin summaries are descriptive; no uncertainty-adjusted calibration
+or repeated-season confidence claim is made.
+
+The original competition function reproduced ten rounded example probabilities
+from the team report using supplied matchup ratings. That reference check does
+not reproduce the original rating history or establish NBA accuracy. The earlier
+151-game pipeline pilot is superseded by the complete fitted archives; its
+short-sample diagnostic was not used to choose NBA coefficients.
+
+\section{Reproducibility and application}
+The repository stores clean game records, two-row-per-game box-score tables,
+derived-feature tables, and reconstructed forecasts under season directories.
+Pregame and postgame feature columns are explicitly distinguished. Model
+configuration, optimizer bounds, seed, convergence trace, coverage audits,
+and source manifests identify the release. Large raw parquet downloads and
+ESPN response caches stay outside Git. The documented scripts reproduce
+acquisition, validation, fitting, and export; provider archives may change,
+so hashes identify the exact source snapshots used here.
+
+Streamlit displays Teams, Games, and Methodology for a shared selected season,
+defaulting to the current season. Archived seasons expose scores and downloadable
+CSV files. The 2026--27 view currently holds initial ratings, not issued live
+forecasts. Light/dark appearance modes and fixed dropdowns are supported.
+A future scheduled collector will validate completed games, apply the frozen
+model, and save upcoming forecasts without fitting during page interactions.
+Failed ingestion must preserve the last valid output and expose freshness.
+Corrected records may trigger rating replay but cannot overwrite genuinely
+issued forecasts. The repository remains private during development.
 
 \appendix
-\section{Box-score feature derivations}
-Let $O$ denote the opponent, with all quantities belonging to one completed
-game. Percentages are represented as fractions unless explicitly stated.
-Possessions are estimated as
+\section{Box-score feature derivations}\label{app:features}
+All quantities below refer to one completed team-game; $O$ denotes its opponent.
+Counts retain count units; rate features are fractions. Using player turnovers,
 \begin{equation}
- \widehat{P}=FGA+0.44FTA-OREB+TOV.
+ \widehat P=FGA+0.44FTA-OREB+TOV.
 \end{equation}
-The following definitions form the implemented pilot feature contract:
+The eight derived features are
 \begin{align}
- X_1&=100(PTS-PTS_O)/\widehat{P},\\
+ X_1&=100(PTS-PTS_O)/\widehat P,\\
  X_2&=(FGM+0.5\,3PM)/FGA,\\
  X_3&=PTS/[2(FGA+0.44FTA)],\\
  X_4&=OREB/(OREB+DREB_O),\\
  X_5&=DREB/(DREB+OREB_O),\\
  X_6&=AST/\max(TOV,1),\\
  X_7&=TOV/(FGA+0.44FTA+TOV),\\
- X_8&=STL/\widehat{P}_O.
+ X_8&=STL/\widehat P_O.
 \end{align}
-$X_1$ retains the inherited shared-possession approximation for net
-efficiency. Possession estimation conventions must be consistent across
-teams and seasons. $X_4$ and $X_5$ explicitly use the opposite rebound
-category from the opponent. $X_8$ proposes an opponent-possession denominator,
-revising the report's expression that omitted offensive rebounds. These
-choices are implemented for the pilot and require validation before final
-fitting. Zero turnovers use one in the assist-ratio denominator; other
-nonpositive denominators cause validation failure.
+$X_1$ uses the inherited shared-possession net-efficiency approximation.
+$X_2$ credits three-point makes with half an additional made shot; $X_3$ scales
+points by estimated shooting opportunities. Offensive and defensive rebound
+fractions use opposite opponent rebound categories, correcting the report's
+same-category denominators. $X_6$ uses one for zero turnovers. $X_7$ is a
+turnover fraction. $X_8$ uses opponent estimated possessions, including the
+offensive-rebound subtraction omitted in the inherited expression. Other
+nonpositive denominators fail validation. All these features affect subsequent
+ratings, never the same game's pregame probability.
 
-\section{Travel derivation}
-For venue latitude $\varphi$ and longitude $\ell$ in radians, estimated
-great-circle distance is
+\section{Travel and time-zone derivation}
+For venue latitude $\varphi$ and longitude $\ell$ in radians,
 \begin{align}
- a_v&=\sin^2\!\left(\frac{\varphi_2-\varphi_1}{2}\right)
- +\cos\varphi_1\cos\varphi_2
- \sin^2\!\left(\frac{\ell_2-\ell_1}{2}\right),\\
- TD&=2R\arcsin\sqrt{a_v},\qquad R=6371\ \text{km}.
+ a_v&=\sin^2((\varphi_2-\varphi_1)/2)
+ +\cos\varphi_1\cos\varphi_2\sin^2((\ell_2-\ell_1)/2),\\
+ TD&=2R\arcsin\sqrt{\operatorname{clip}(a_v,0,1)},\qquad R=6371\ \text{km}.
 \end{align}
-The computation clips $a_v$ to $[0,1]$ for floating-point safety. The pilot
-uses the actual game venue's city, including neutral venues, rather than
-always substituting the franchise's home city. Exact arena coordinates remain
-an intended improvement.
+Neutral-game venue cities are used rather than substituting a franchise home
+city. If $o(v,t)$ is a venue's dated UTC offset in hours, then
+$TZ=o(v_{\mathrm{current}},t_g)-o(v_{\mathrm{previous}},t_g)$.
+Exact arenas and actual itineraries are not measured by these proxies.
 
 \begin{thebibliography}{9}
 \bibitem{billybeanes}
@@ -347,17 +359,21 @@ Advisor: C. Hasija. Team-provided report.
 A. Bora. \emph{wharton\_game\_prediction\_model}.
 \url{https://github.com/aaravbora22/wharton_game_prediction_model}.
 Reviewed revision \texttt{a27759d}, October 12, 2026.
-\bibitem{nbaapi}
-\emph{nba\_api: An API Client Package to Access the APIs of NBA.com}.
-\url{https://github.com/swar/nba_api}. Candidate data-access tooling.
+\bibitem{sportsdataverse}
+SportsDataverse. \emph{sportsdataverse-data}, ESPN NBA schedules, team box scores,
+and play-by-play releases, ending years 2022--2026.
+\url{https://github.com/sportsdataverse/sportsdataverse-data}.
+Retrieved October 12, 2026; exact URLs and hashes in collection manifests.
 \bibitem{espn}
-ESPN. NBA scoreboard and game-summary public responses.
-\url{https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard}.
-Historical responses retrieved October 12, 2026; raw URLs and hashes are
-retained in the collection manifest.
+ESPN. NBA public game-summary responses.
+\url{https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary}.
+Primary replacements retrieved October 12, 2026; event URLs/hashes recorded.
 \bibitem{geonames}
 GeoNames. \emph{cities15000 geographical database}.
 \url{https://download.geonames.org/export/dump/}.
 Retrieved October 12, 2026. Creative Commons Attribution 4.0.
+\bibitem{scipy}
+SciPy. \emph{scipy.optimize.differential\_evolution}, version 1.18.1.
+\url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html}.
 \end{thebibliography}
 \end{document}

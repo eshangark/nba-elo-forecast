@@ -1,0 +1,66 @@
+[
+  {
+    "season": "2021-22",
+    "games": 1230,
+    "team_rows": 2460,
+    "teams": 30,
+    "missing_required_formula_inputs": 0,
+    "unresolved_failures": 0,
+    "primary_replacements": 132,
+    "repair_actions": {},
+    "evaluation_role": "training"
+  },
+  {
+    "season": "2022-23",
+    "games": 1230,
+    "team_rows": 2460,
+    "teams": 30,
+    "missing_required_formula_inputs": 0,
+    "unresolved_failures": 0,
+    "primary_replacements": 158,
+    "repair_actions": {
+      "availability_from_final_recap": 1
+    },
+    "evaluation_role": "training"
+  },
+  {
+    "season": "2023-24",
+    "games": 1230,
+    "team_rows": 2460,
+    "teams": 30,
+    "missing_required_formula_inputs": 0,
+    "unresolved_failures": 0,
+    "primary_replacements": 201,
+    "repair_actions": {},
+    "evaluation_role": "training"
+  },
+  {
+    "season": "2024-25",
+    "games": 1230,
+    "team_rows": 2460,
+    "teams": 30,
+    "missing_required_formula_inputs": 0,
+    "unresolved_failures": 0,
+    "primary_replacements": 165,
+    "repair_actions": {
+      "largest_lead_from_archive_plays": 2,
+      "recovered_player_totals": 2
+    },
+    "evaluation_role": "validation"
+  },
+  {
+    "season": "2025-26",
+    "games": 1230,
+    "team_rows": 2460,
+    "teams": 30,
+    "missing_required_formula_inputs": 0,
+    "unresolved_failures": 0,
+    "primary_replacements": 217,
+    "repair_actions": {
+      "availability_from_final_recap": 16,
+      "availability_bound_for_shifted_play_dates": 1,
+      "largest_lead_from_archive_plays": 1
+    },
+    "evaluation_role": "held_out_test"
+  }
+]

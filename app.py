@@ -1,6 +1,7 @@
 """Streamlit season browser over versioned forecast snapshots."""
 
 from datetime import datetime
+import json
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -35,7 +36,7 @@ if archive is None:
     result = None
 elif archive["status"] == "prepared":
     with teams_tab:
-        st.info("Season setup: all teams start at 1500. Calibrated ratings and forecasts will appear when the model is ready.")
+        st.info("All teams start at 1500. NBA parameters are fitted; live forecasts for this season have not been published yet.")
         st.dataframe(pd.DataFrame(archive["teams"])[["team", "elo"]].rename(columns={"team": "Team", "elo": "Initial Elo"}),
                      hide_index=True, width="stretch")
     with games_tab:
@@ -43,7 +44,8 @@ elif archive["status"] == "prepared":
     result = None
 else:
     result = archive["result"]
-    st.caption(f"Historical model replay · {archive['coverage']['start']} to {archive['coverage']['end']} · Partial season")
+    coverage_label = "Complete regular season" if archive["status"] == "complete_historical_replay" else "Partial season"
+    st.caption(f"Historical model replay · {archive['coverage']['start']} to {archive['coverage']['end']} · {coverage_label}")
     with teams_tab:
         st.subheader("Team ratings")
         rankings = pd.DataFrame(result["rankings"])
@@ -87,23 +89,36 @@ else:
                            "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
         st.caption("These probabilities were reconstructed from historical data. They were not issued live before those games.")
     with method_tab:
-        st.warning("Development model: constants have not been fitted to NBA history. This short sample verifies the pipeline; it is not a final accuracy estimate.")
+        if result["status"] == "fitted_historical_replay":
+            role = {"training": "Training history", "validation": "Validation season", "held_out_test": "Held-out test season"}[result["evaluation_role"]]
+            st.info(f"{role} · Parameters fitted on 2021–22 through 2023–24 and frozen before validation and testing.")
+        else:
+            st.warning("Unfitted development replay; these scores are a pipeline check.")
         m = result["metrics"]
         if m["games"]:
-            cols = st.columns(3)
+            cols = st.columns(4)
             cols[0].metric("Evaluation games", m["games"])
             cols[1].metric("Brier score", f"{m['brier_score']:.3f}")
             cols[2].metric("Log loss", f"{m['log_loss']:.3f}")
-        st.caption(f"Evaluation from {result['evaluation_from']}; earlier games initialize ratings. Model {result['model_version']}.")
+            cols[3].metric("Winner accuracy", f"{m['winner_accuracy']:.1%}")
+        st.caption(f"Model {result['model_version']}. Evaluation begins once both teams have played 10 games; opening games still update ratings and retain forecasts.")
         calibration = pd.DataFrame(m["calibration"])
         if not calibration.empty:
             st.dataframe(calibration.rename(columns={"games": "Games", "mean_probability": "Mean forecast",
                                                      "observed_home_win_rate": "Observed home win rate"}), hide_index=True)
+        st.subheader("Season datasets")
+        for filename, label in [("team_games.csv", "Clean box scores"), ("model_features.csv", "Model inputs and derived features")]:
+            path = ARCHIVES / selected / filename
+            if path.exists():
+                st.download_button(label, path.read_bytes(), file_name=f"{selected}-{filename}", mime="text/csv")
 
 with method_tab:
     st.subheader("How the model works")
     st.write("Pregame probabilities combine the teams' Elo difference with home court, rest, estimated travel, and time-zone changes. After completed games, ratings update using the result, schedule strength, lead retention, and box-score performance.")
     st.write("Each season has its own stored history. Model versions and data coverage are preserved so archived results remain interpretable.")
+    st.caption("Sources: ESPN records archived by SportsDataverse, validated against primary ESPN summaries where needed; GeoNames supplies venue-city coordinates and time zones. Travel is an estimate between cities.")
+    with st.expander("Fitted NBA constants"):
+        st.json(json.loads((ROOT / "models" / "nba-v0.2" / "parameters.json").read_text()))
     st.markdown("[Technical manuscript on GitHub](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.tex)")
     with st.expander("Technical manuscript source"):
         st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),

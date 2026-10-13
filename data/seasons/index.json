@@ -6,9 +6,29 @@
       "file": "2026-27/snapshot.json"
     },
     {
+      "season": "2025-26",
+      "status": "complete_historical_replay",
+      "file": "2025-26/snapshot.json"
+    },
+    {
       "season": "2024-25",
-      "status": "partial_historical_replay",
+      "status": "complete_historical_replay",
       "file": "2024-25/snapshot.json"
+    },
+    {
+      "season": "2023-24",
+      "status": "complete_historical_replay",
+      "file": "2023-24/snapshot.json"
+    },
+    {
+      "season": "2022-23",
+      "status": "complete_historical_replay",
+      "file": "2022-23/snapshot.json"
+    },
+    {
+      "season": "2021-22",
+      "status": "complete_historical_replay",
+      "file": "2021-22/snapshot.json"
     }
   ]
 }

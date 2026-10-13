@@ -6,7 +6,7 @@ import math
 import time
 import unicodedata
 import zipfile
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
@@ -86,7 +86,10 @@ class Cities:
         state = address.get("state", "")
         # ESPN uses state abbreviations for US venues and country for overseas venues.
         country = address.get("country", "")
-        country = {"USA": "US", "United States": "US", "Canada": "CA", "Mexico": "MX"}.get(country, country)
+        country = {"USA": "US", "United States": "US", "Canada": "CA", "Mexico": "MX",
+                   "France": "FR", "United Kingdom": "GB", "Germany": "DE"}.get(country, country)
+        if not state and not country:
+            country = {"paris": "FR", "mexico city": "MX", "london": "GB", "berlin": "DE"}.get(city, "")
         candidates = [r for r in self.rows if city in r["aliases"]]
         if state and len(state) == 2 and state not in {"ON", "BC", "QC"}:
             candidates = [r for r in candidates if r["country"] == "US" and r["state"] == state]
@@ -183,22 +186,16 @@ def parse_summary(payload, cities):
                 raise ValueError(f"Made shots exceed attempts: {team_id}")
         for field, source in [("oreb", "offensiveRebounds"), ("dreb", "defensiveRebounds"),
                               ("ast", "assists"), ("stl", "steals"),
-                              ("tov", "totalTurnovers")]:
+                              ("tov", "turnovers")]:
             team[field] = integer(stats[source], source)
         if team["points"] != 2 * team["fgm"] + team["threem"] + team["ftm"]:
             recovered = player_totals(payload, team_id)
             if recovered["points"] != team["points"] or recovered["points"] != 2 * recovered["fgm"] + recovered["threem"] + recovered["ftm"]:
                 raise ValueError(f"Both team and player totals contradict final score: {team_id}")
-            if not valid_score_path:
-                raise ValueError("Cannot verify recovery against final play-by-play score")
-            # Non-player turnovers have no athlete participants in this feed.
-            team_turnovers = sum(1 for p in plays if p.get("team", {}).get("id") == team_id
-                                 and "turnover" in p.get("text", "").lower()
-                                 and not p.get("participants"))
-            recovered["tov"] += team_turnovers
+            # TOV consistently means summed player turnovers, matching the
+            # competition's separate TOV and team-turnover columns.
             team.update(recovered)
-            game["quality_actions"].append({"team_id": team_id, "action": "recovered_player_totals",
-                                             "team_turnovers_from_plays": team_turnovers})
+            game["quality_actions"].append({"team_id": team_id, "action": "recovered_player_totals"})
         if "largestLead" in stats:
             team["largest_lead"] = integer(stats["largestLead"], "largestLead")
         elif valid_score_path:
@@ -216,6 +213,28 @@ def parse_summary(payload, cities):
     if winner["largest_lead"] < abs(game["home"]["points"] - game["away"]["points"]):
         raise ValueError("Largest lead cannot be smaller than the winning margin")
     # Final event time is an availability proxy, not the historical data publication time.
-    wallclocks = [p["wallclock"] for p in payload.get("plays", []) if p.get("wallclock")]
-    game["last_play_at"] = max(wallclocks) if wallclocks else None
+    end_events = [p for p in sorted(plays, key=lambda p: int(p.get("sequenceNumber", 0)))
+                  if str(p.get("type", {}).get("id")) == "402" and p.get("wallclock")]
+    # Later corrections to earlier plays can carry timestamps from the next day.
+    # The terminal game event is the completion proxy, not the maximum edit time.
+    game["last_play_at"] = end_events[-1]["wallclock"] if end_events else None
+    game["completion_time_source"] = "terminal_play_event"
+    start = datetime.fromisoformat(game["start"].replace("Z", "+00:00"))
+    end = datetime.fromisoformat(game["last_play_at"].replace("Z", "+00:00")) if game["last_play_at"] else None
+    if (end is None or not 0 < (end-start).total_seconds() <= 8*3600) and payload.get("article", {}).get("published"):
+        # A dated final-game recap supplies a conservative availability proxy
+        # when play-by-play is truncated; do not invent a completion time.
+        game["last_play_at"] = payload["article"]["published"]
+        game["completion_time_source"] = "final_recap_publication"
+        game["quality_actions"].append({"action": "availability_from_final_recap"})
+    elif end and 24*3600 < (end-start).total_seconds() <= 32*3600 and valid_score_path:
+        first_text = payload.get("meta", {}).get("firstPlayWallClock")
+        first = datetime.fromisoformat(first_text.replace("Z", "+00:00")) if first_text else None
+        if first and 24*3600 <= (first-start).total_seconds() <= 25*3600:
+            # Known one-day shifts in a provider's play timestamps. Retain the
+            # raw payload and use an explicitly flagged conservative bound,
+            # rather than presenting a corrected clock as an observed fact.
+            game["last_play_at"] = (start + timedelta(hours=8)).isoformat()
+            game["completion_time_source"] = "conservative_8h_bound_for_shifted_play_dates"
+            game["quality_actions"].append({"action": "availability_bound_for_shifted_play_dates"})
     return game

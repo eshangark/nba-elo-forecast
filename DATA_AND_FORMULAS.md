@@ -1,100 +1,57 @@
 # Data and formula specification
 
-Source: The Billy Beanes, 2025 competition paper, appendix A (pages 7–11). The inherited equations below are retained for provenance. The original competition code has been reviewed as reference material. The canonical implemented pilot and its deliberate revisions are specified in `paper/main.tex` and `nba_forecast/model.py`.
+The canonical model is `nba_forecast/model.py`, version 0.2.0; `paper/main.tex` gives the mathematical specification and appendix derivations. The original Billy Beanes report and competition code supply provenance, with deliberate NBA revisions recorded in the manuscript.
 
-## Implemented pilot
+## Coverage and validation
 
-- ESPN scoreboard and game-summary responses supply IDs, dates, venues, box scores, final scores, and largest leads. All 151 regular-season games discovered for October 22–November 10, 2024 were successfully parsed.
-- Missing largest leads can be reconstructed from a validated final-score path. Inconsistent team aggregates can be recovered from complete player rows whose scoring sums match the final score. Repairs are recorded in each game. Unresolved records block archive publication.
-- GeoNames city coordinates and IANA time zones supply a city-centre travel proxy. Raw responses are cached with timestamps and hashes; processed game histories and prediction snapshots are versioned under `data/seasons/`.
-- Natural-log fatigue and one shared complementary probability function are used. The exponent base is fixed at 10 while preserving the paper's initial rating and fatigue log-odds scales. Parameters remain unfitted.
-- Rebound fractions use the opposite rebound category from the opponent. Steal fraction uses estimated opponent possessions. Counts and rates have distinct field names.
-- Lead retention uses final margin divided by the game's peak absolute lead. AGPF uses a bounded logistic transform with documented feature scales; PAF is clipped to [0.25, 4]. See the manuscript for the exact equations.
-- Rest uses intervening Eastern dates. First games use an explicit prior; SOS uses past-only smoothed records. Pilot seasons reset independently and league ratings are centred after each slate.
-- Historical forecasts use a 10:00 Eastern cutoff before each slate. This is distinct from the intended live after-game update policy. Partial archives are labeled, and genuinely issued live forecasts remain pending.
+Five complete regular seasons, 2021–22 through 2025–26, contain 1,230 games each, 30 teams, and 82 games per team. Completed standard regular-season games are included; preseason, playoffs, All-Star games, and the NBA Cup final are excluded. Cup games that count toward the regular season remain included.
 
-The website defaults to the current season and allows selection of available historical archives. The 2026–27 view is initialized; the 2024–25 archive is partial. Multi-season coverage and parameter fitting remain pending.
+Schedules, box scores, and play-by-play come from SportsDataverse's ESPN archives. Validation enforces unique game keys, opponent pairing, header-score agreement, finite nonnegative integer counts, shot-attempt constraints, point identities, plausible assists/steals, positive feature denominators, and peak lead at least final margin. Missing is never silently converted to zero. Unresolved records block publication.
 
-## Raw input contract
+873 games required validated primary ESPN replacements, mostly because archived play-by-play was incomplete. Repairs to largest leads and team aggregates are recorded separately. Largest lead recovery requires a score path ending at the header score. Player aggregate recovery requires complete rows and matching point/shooting totals. TOV consistently means summed **player turnovers**, excluding provider non-player team turnovers. See `models/nba-v0.2/data_quality.json` and each season's manifest.
 
-| Input | Purpose | Candidate free source |
+## Fields and timing
+
+| Stored input | Source | Use |
 | --- | --- | --- |
-| Game ID, teams, date, status, final points | Outcomes, chronological replay, margin, SOS | NBA game logs; schedule and box-score feeds |
-| Tip-off timestamp, venue ID and location | Prediction cutoff, home/neutral status, rest/travel | Schedule and box-score metadata |
-| PTS, FGM, FGA, 3PM, FTA, OREB, DREB, AST, TOV, STL for both teams | All eight PAF components | Team game logs or box scores |
-| Largest lead for each team | LRE | BoxScoreSummaryV3 OtherStats documents biggestLead; verify coverage |
-| Arena latitude, longitude, IANA timezone | Haversine distance and dated UTC offsets | Small versioned venue lookup; not yet sourced |
-| Prior results and opponent histories | Dynamic SOS and rolling performance | Derived locally |
+| Stable game/team IDs, tip-off, season, status, final scores | ESPN schedule/header | Chronology, outcomes, margin, schedule strength |
+| Venue city, neutral status | ESPN venue metadata | Home advantage and travel context |
+| PTS, FGM, FGA, 3PM, 3PA, FTM, FTA, OREB, DREB, AST, player TOV, STL | ESPN team/player box scores | Postgame performance features |
+| Largest lead for both teams | ESPN box score or validated score path | Lead retention |
+| Latitude, longitude, IANA timezone | GeoNames cities15000 | City-distance/timezone proxy |
+| Completion-time proxy | Terminal EndGame wallclock or dated final recap | Prior-slate availability check |
 
-Use stable IDs, not team names, as keys. Keep one games row and two team-game rows per completed game. Treat null as missing, not zero. Check totals against the opponent row and official final score. A team's never having led is a valid zero requiring a model rule.
+Seventeen games use final-recap publication times. One game has play dates shifted by a day and uses an explicitly flagged conservative tip-off-plus-eight-hours availability bound. This bound is not an observed completion timestamp. Historical provider corrections may also be present; replays do not prove what a live feed showed at the time.
 
-## Published formulas
+Pregame fields use prior games only. Historical forecasts share a daily cutoff at the earlier of 10:00 Eastern and one hour before the day's first tip-off. All prior slates must be complete by that cutoff. After the slate, results and box-score features update ratings. Live after-game forecasting is a separate pending operational policy.
 
-Let i be the home team and j the away team for a non-neutral game. Below, beta numbering follows the appendix, not the differing notation in the body.
+Rest equals intervening Eastern calendar dates; back-to-back is zero. Openers use three rest days, zero travel/timezone change, and a flag. Travel uses Haversine kilometres between consecutive venue cities. Both cities' timezone offsets are compared at the current tip-off, avoiding DST-only artificial travel.
 
-    ORTF = RD_j + exp(abs(TzD_i) / 3) + beta_2 * TD_i
-    TROF = RD_i + exp(abs(TzD_j) / 3) + beta_2 * TD_j
-    z = (r_j - (r_i + HFA)) / c + beta_1 * log(ORTF) - beta_1 * log(TROF)
-    p_home = 1 / (1 + b ** z)
-    p_away = 1 - p_home
+## Canonical equations
 
-The paper does not clearly specify the unqualified log base. Confirm it in code. HFA is a rating offset, not a probability percentage. Neutral-site handling requires an explicit rule. Compute one home probability and its complement; do not give both teams home advantage.
+For home team i, away team j, and h=1 (0 at neutral venues):
 
-    SOS_t = (2 * WR_opponent + mean(WR_opponents_of_opponent)) / 3
-    LRE = abs(final_point_margin) / largest_lead
-    POSS = FGA + 0.44 * FTA - OREB + TOV
-    X1 = 100 * (PTS - opponent_PTS) / POSS
-    X2 = (FGM + 0.5 * three_PM) / FGA
-    X3 = PTS / (2 * (FGA + 0.44 * FTA))
-    X4_paper = OREB / (OREB + opponent_OREB)
-    X5_paper = DREB / (DREB + opponent_DREB)
-    X6 = AST / TOV
-    X7 = TOV / (FGA + 0.44 * FTA + TOV)
-    X8 = STL / (opponent_FGA + 0.44 * opponent_FTA + opponent_TOV)
-    S = sum(alpha_k * Xk for k in 1..8)
-    AGPF = S / (1 + S)
-    PAF = AGPF / prior_average_AGPF
+    F = RD_j + exp(abs(TZ_i)/3) + nu * TD_i
+    G = RD_i + exp(abs(TZ_j)/3) + nu * TD_j
+    logit(p_i) = ln(10) * ((r_i-r_j+H*h)/c - gamma*ln(F/G))
+    p_j = 1-p_i
 
-The paper prints X7 and X8 as percentages. Confirm whether the original implementation used fractions or 0–100 values; mixing units changes the fitted weights. The prior_average above is an intended chronological implementation rule; the appendix's averaging bounds need reconciliation with the code.
+For each team, s=2*y-1:
 
-    win_delta = k * (1 - p) * (1 + SOS_t) * (1 + beta_3 * log2(1 + LRE)) * (1 + beta_4 * (PAF - 1))
-    loss_delta = k * (0 - p) * (1 - SOS_t) * (1 + beta_3 * log2(1 + LRE)) * (1 - beta_4 * (PAF - 1))
-    new_rating = old_rating + delta
+    delta = K*(y-p)*(1+s*beta*S)*(1+phi*log2(1+L))*(1+s*lambda*(Q-1))
 
-## Derivation timing
+S uses opponent and opponent-of-opponent prior records with Laplace-smoothed win rates and repeated-opponent weighting. L is absolute final margin divided by the largest lead of either team. The eight X features are derived from the committed raw counts using the manuscript's appendix; rebound rates use opposite opponent categories and steal rate uses opponent estimated possessions.
 
-Before tip-off: ratings, home/neutral context, past-only SOS, rest, estimated venue-to-venue travel, timezone changes, and historical performance averages. After final: result, margin, largest lead, current box-score metrics and PAF; then rating updates.
+    scaled_X = (X1/10, X2, X3, X4, X5, X6/3, -X7, X8)
+    AGPF = clip(sigmoid(sum(alpha_k*scaled_Xk)), 1e-6, 1-1e-6)
+    Q = clip(AGPF/prior_mean_AGPF, .25, 4)
 
-Rest: propose calendar days between game dates minus one (back-to-back = zero), with an explicit season-opener prior. Verify the original convention. No full-season average imputation using future games.
+Openers receive Q=1. Current box scores never enter their own pregame prediction. Each season starts independently at 1500 and league mean ratings are recentered after each slate.
 
-Travel: Haversine between consecutive known venues in kilometres; actual itineraries are unknown. Timezones: dated offsets via IANA zones, accounting for daylight saving. Missing venue details remain flagged.
+`model_features.csv` labels pregame and postgame fields explicitly. The prior AGPF mean is an opening-game initialization value for the first game, not historical observations. Full-precision frozen constants live in `models/nba-v0.2/parameters.json`; fixed numerical conventions and optimizer bounds are documented in the paper/report.
 
-## Questions to resolve before optimization
+## Fitting and evaluation
 
-- Rebound denominators: standard team OREB fraction uses opponent DREB; standard DREB fraction uses opponent OREB. Preserve a record of any correction to the paper.
-- LRE: zero largest lead, and the intended denominator for losing teams.
-- AGPF: negative net efficiency can make S negative and S/(1+S) singular near -1; PAF can also divide by zero. Define a stable revision before fitting.
-- SOS: season openers, repeated-opponent weighting, and whether histories reset each season.
-- Rating drift: asymmetric adjustments are not zero-sum. Define season carryover and centring rules.
-- Multiplier bounds: guard against a winning update becoming negative because a fitted performance factor changes sign.
-- Identifiability: b and c encode a shared rating-to-log-odds scale; constrain the parameterization rather than freely tuning redundant parameters.
-- Regularization and feature scales: fit only from the training partition. Record every formula change and its rationale.
+2021–22 through 2023–24 train the 14-dimensional bounded model; 2024–25 validates and 2025–26 tests the frozen result. Differential evolution (seed 42) plus L-BFGS-B polishing minimizes chronological training log loss. Every candidate recomputes rating and performance history. Exponent base 10 and c=497.3558141396255 anchor the rating scale; eight positive alpha weights are fitted through seven softmax logits.
 
-## Original constants (reference only; not NBA estimates)
-
-Initial Elo 1500; b 99.39; c 993.39; HFA 72.52; k 32; beta_1 0.02; beta_2 0.000001; beta_3 0.7; beta_4 0.02. Alphas: 0.25, 0.20, 0.15, 0.10, 0.10, 0.10, 0.05, 0.05.
-
-## Connectivity observations — 2026-10-12
-
-Direct requests from the development host, outside its restricted-network sandbox:
-
-- NBA CDN sample box score 0022400001: HTTP 403.
-- NBA CDN scheduleLeagueV2_1: HTTP 403.
-- stats.nba.com LeagueGameLog, 2024–25: read timeout at 15 seconds.
-
-These failures do not establish worldwide unavailability or field coverage. No NBA raw dataset was successfully downloaded. Do not bypass access denials. Test from the intended execution environment and consider another documented free source if necessary.
-
-References:
-- https://github.com/swar/nba_api
-- https://github.com/swar/nba_api/blob/master/docs/nba_api/stats/endpoints/leaguegamelog.md
-- https://github.com/swar/nba_api/blob/master/docs/nba_api/stats/endpoints/boxscoresummaryv3.md
+All 6,150 forecasts are saved; primary scoring requires both teams to have played ten prior games. Probability metrics are log loss, Brier score, and calibration-bin summaries. Winner accuracy picks home at probability exactly 0.5. Training scores are not out-of-sample evidence. The held-out test has 1,075 scored games, log loss 0.5925, Brier 0.2035, and winner accuracy 68.56%.
