@@ -14,6 +14,8 @@ Research and development. A working Python pipeline and Streamlit season browser
 
 A season selector applies to all three views and defaults to the current season. The 2026–27 view currently shows initial ratings; it does not contain calibrated forecasts. The 2024–25 pilot is labeled as a partial archive.
 
+Selectors use fixed native dropdowns. Light and dark appearance modes are available in the top-right menu; recording and development controls are hidden from the application interface.
+
 ## Run locally
 
 Requires Python 3.10+.

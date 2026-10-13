@@ -15,12 +15,14 @@ class AppTests(unittest.TestCase):
         app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=20)
         app.run()
         self.assertFalse(app.exception)
-        self.assertEqual(app.selectbox(key="selected_season").value, current_season())
-        app.selectbox(key="selected_season").select("2024-25").run()
+        self.assertEqual(app.session_state["selected_season"]["value"], current_season())
+        app.session_state["selected_season"] = {"value": "2024-25"}
+        app.run()
         self.assertFalse(app.exception)
         self.assertEqual(len(app.dataframe[0].value), 30)
         self.assertGreater(len(app.dataframe[1].value), 0)
-        app.selectbox(key="selected_season").select(current_season()).run()
+        app.session_state["selected_season"] = {"value": current_season()}
+        app.run()
         self.assertFalse(app.exception)
         self.assertEqual(len(app.dataframe[0].value), 30)
         self.assertTrue(any("No forecasts" in i.value for i in app.info))

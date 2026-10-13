@@ -1,9 +1,20 @@
 [theme]
-base = "dark"
+font = "sans serif"
+
+[theme.dark]
 primaryColor = "#5DD6C5"
 backgroundColor = "#10151E"
 secondaryBackgroundColor = "#1B2432"
 textColor = "#E8EDF5"
+
+[theme.light]
+primaryColor = "#007F73"
+backgroundColor = "#F6F8FB"
+secondaryBackgroundColor = "#E9EEF5"
+textColor = "#182230"
+
+[client]
+toolbarMode = "minimal"
 
 [browser]
 gatherUsageStats = false

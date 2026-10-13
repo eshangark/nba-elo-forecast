@@ -8,18 +8,20 @@ import pandas as pd
 import streamlit as st
 
 from nba_forecast.seasons import load_index, load_season
+from nba_forecast.ui import native_select
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
 
-st.set_page_config(page_title="NBA Elo Forecast", page_icon="🏀", layout="wide")
+st.set_page_config(page_title="NBA Elo Forecast", page_icon="🏀", layout="wide",
+                   menu_items={"About": "NBA Elo Forecast — team ratings and pregame probabilities."})
 st.title("NBA Elo Forecast")
 st.caption("Team strength, matchup probabilities, and the record behind each forecast.")
 
 today = datetime.now(ZoneInfo("America/New_York")).date()
 entries, current = load_index(ARCHIVES, today)
 lookup = {e["season"]: e for e in entries}
-selected = st.selectbox("Season", list(lookup), index=list(lookup).index(current),
+selected = native_select("Season", list(lookup), index=list(lookup).index(current),
                         format_func=lambda s: s + (" · Current" if s == current else " · Archive"),
                         key="selected_season")
 archive = load_season(ARCHIVES, lookup[selected])
@@ -49,7 +51,7 @@ else:
         shown["Record"] = shown["wins"].astype(str) + "–" + (shown["games"] - shown["wins"]).astype(str)
         shown = shown[["team", "elo", "Record", "games"]].rename(columns={"team": "Team", "elo": "Elo", "games": "Games"})
         st.dataframe(shown, hide_index=True, width="stretch", column_config={"Elo": st.column_config.NumberColumn(format="%.1f")})
-        team = st.selectbox("Team history", sorted(rankings["team"].tolist()), key="team_history")
+        team = native_select("Team history", sorted(rankings["team"].tolist()), key="team_history")
         history = []
         for game in result["predictions"]:
             side = "home" if game["home"] == team else "away" if game["away"] == team else None
@@ -73,7 +75,7 @@ else:
         frame = pd.DataFrame(result["predictions"])
         frame["Date"] = pd.to_datetime(frame["start"], utc=True).dt.tz_convert("America/New_York").dt.date
         dates = sorted(frame["Date"].unique(), reverse=True)
-        picked_date = st.selectbox("Game date", dates, key=f"game_date_{selected}")
+        picked_date = native_select("Game date", dates, key=f"game_date_{selected}")
         daily = frame[frame["Date"] == picked_date].copy()
         daily["Home win %"] = daily["home_probability"] * 100
         daily["Away win %"] = daily["away_probability"] * 100
