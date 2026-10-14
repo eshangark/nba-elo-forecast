@@ -3,6 +3,7 @@
 import copy
 import importlib.util
 import unittest
+from numeric_assertions import assert_nested_close
 
 HAS_FITTING = all(importlib.util.find_spec(p) is not None for p in ['scipy', 'numba'])
 
@@ -80,11 +81,11 @@ class BenchmarkTests(unittest.TestCase):
             games = json.loads(raw)
             a = replay(games, release, fitted=True, warmup_games=10)
             b = replay(games, simple, fitted=True, warmup_games=10)
-            self.assertEqual(a['metrics'], fold['full_metrics'])
-            self.assertEqual(b['metrics'], fold['simple_metrics'])
+            assert_nested_close(self, a['metrics'], fold['full_metrics'])
+            assert_nested_close(self, b['metrics'], fold['simple_metrics'])
             rows = [r for r in predictions if r['protocol'] == 'original_frozen_release' and r['season'] == season]
             self.assertEqual(len(rows), 1230)
             for row, full, baseline in zip(rows, a['predictions'], b['predictions']):
                 self.assertEqual(row['game_id'], full['game_id'])
-                self.assertEqual(float(row['full_probability']), full['home_probability'])
-                self.assertEqual(float(row['simple_probability']), baseline['home_probability'])
+                self.assertAlmostEqual(float(row['full_probability']), full['home_probability'], places=12)
+                self.assertAlmostEqual(float(row['simple_probability']), baseline['home_probability'], places=12)

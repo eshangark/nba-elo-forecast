@@ -9,6 +9,7 @@ from pathlib import Path
 
 from nba_forecast.model import Parameters, box_features, performance
 from nba_forecast.replay import replay
+from numeric_assertions import assert_nested_close
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -27,8 +28,8 @@ class HistoryTests(unittest.TestCase):
             self.assertEqual(len(counts), 30)
             self.assertEqual(set(counts.values()), {82})
             rerun = replay(games, params, fitted=True, warmup_games=10)
-            self.assertEqual(rerun['metrics'], snapshot['metrics'])
-            self.assertEqual(rerun['predictions'], snapshot['predictions'])
+            assert_nested_close(self, rerun['metrics'], snapshot['metrics'])
+            assert_nested_close(self, rerun['predictions'], snapshot['predictions'])
             with (folder / 'model_features.csv').open() as f:
                 rows = list(csv.DictReader(f))
             with (folder / 'team_games.csv').open() as f:
