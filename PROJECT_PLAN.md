@@ -11,10 +11,11 @@
 
 - Manual after-game collector, single-writer locking, atomic live snapshots, immutable forecast revisions, correction replay, and freshness/failure display.
 - First three observed upcoming regular-season forecasts published for 2026–27; no completed regular-season games yet in the initial snapshot.
+- Two-hour GitHub Actions schedule, pinned vendor actions, bounded runtimes, core checks, and safe data-only publishing.
 
 ## Next milestones
 
-1. Deploy the Streamlit app to free hosting and configure GitHub Actions within private-repository included allowances. No paid overage; no schedule is enabled yet.
+1. Complete the prepared private Streamlit deployment after explicit hosting approval. The two-hour Actions schedule is enabled within included allowances and existing zero-dollar paid-usage controls.
 2. Monitor real completed-game updates and genuinely issued forecasts. Record ingestion failures and source latency; compare live probability calibration with historical results.
 3. Review subsequent seasons prospectively; maintain the manuscript and version models when changing formulas, constraints, or training data. The 2025–26 results are observed and cannot serve as an untouched test for future revisions.
 
@@ -22,4 +23,4 @@
 
 Process completed games once and require every formula input. Failed ingestion preserves valid prior outputs. Keep credentials and bulky raw caches outside Git. Distinguish regular season from playoffs and other game types. Preserve private visibility until explicitly authorized to publish.
 
-No hosted app or scheduled job is enabled yet. The current-season screen shows an observed snapshot and upcoming issued forecasts. Historical archives are reconstructed replays; backfilled current-season games never acquire fabricated live predictions.
+The scheduled updater is enabled. Hosted frontend deployment remains pending private-hosting approval. The current-season screen shows an observed snapshot and upcoming issued forecasts. Historical archives are reconstructed replays; backfilled current-season games never acquire fabricated live predictions.

@@ -48,7 +48,7 @@ else:
     if is_live:
         updated = pd.to_datetime(archive["published_at"], utc=True).tz_convert("America/New_York")
         st.caption(f"Observed forecast snapshot · Last updated {updated:%b %d, %Y at %I:%M %p %Z}")
-        st.caption("The collector updates ratings and forecasts when run. Automatic updates are not enabled yet.")
+        st.caption("Forecast updates are scheduled every two hours. The timestamp shows the last successful collection.")
         status_path = ARCHIVES / selected / "update_status.json"
         if status_path.exists() and json.loads(status_path.read_text())["state"] == "failed":
             st.warning("The latest update failed. Showing the last valid ratings and forecasts.")

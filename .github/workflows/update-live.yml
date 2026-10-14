@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && inputs.full_refresh && 10 || 3 }}
     env:
       NBA_FULL_REFRESH: ${{ inputs.full_refresh && 'true' || 'false' }}

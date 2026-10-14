@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.4 --- October 13, 2026}
+\date{Working draft 0.5 --- October 13, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -36,7 +36,8 @@ material \cite{referencecode}. This implementation adopts explicit feature
 units, stable transformations, one complementary probability function, and
 NBA-specific calibration. Changes to inherited expressions are described below.
 The website, historical replay, and manually invoked live collector are
-implemented. Automatic scheduling and hosting remain pending.
+implemented. Automatic collection is scheduled through GitHub Actions; private frontend
+hosting remains pending explicit deployment approval.
 
 \section{Forecast timing}
 Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
@@ -383,7 +384,7 @@ upcoming regular-season forecasts. No regular-season results have arrived in
 that snapshot; preseason outcomes are excluded. Light/dark appearance modes and fixed dropdowns are supported.
 The manual collector validates completed games, applies the frozen model,
 and saves upcoming forecasts without fitting during page interactions.
-Automatic scheduling remains pending.
+GitHub Actions schedules collection every two hours.
 Failed ingestion must preserve the last valid output and expose freshness.
 Corrected records may trigger rating replay but cannot overwrite genuinely
 issued forecasts. The repository remains private during development.
@@ -432,8 +433,36 @@ three forecasts were saved on October 13, 2026 Eastern; prospective results
 remain pending. Tests cover repeated polling, corrected outcomes, preservation
 of revisions, missed-game backfill, invalid future timestamps, failed
 collection, writer locking, and empty/issued/backfilled interface states.
-Manual source connectivity has been verified; automatic operation and hosting
-are not yet enabled.
+Source connectivity has been verified and automatic collection is scheduled.
+Private frontend hosting remains pending deployment approval.
+
+\section{Scheduled operation and hosting status}
+The GitHub Actions workflow invokes core checks and collection at minute 17
+of every two UTC hours. Scheduled jobs have a three-minute timeout; manually
+requested full-refresh jobs allow ten minutes. Official checkout and Python
+setup actions are pinned to verified commit hashes. No source cache or workflow
+artifact is uploaded. The collector commits processed season data and status
+only, and refuses publication if the branch advanced during collection. An
+ingestion failure can publish failure status while retaining valid ratings.
+Scheduling is best-effort rather than an immediate final-score push service.
+The first hosted Ubuntu 24.04 run passed 36 core checks (nine optional
+frontend/fitting checks skipped), refreshed sources, and committed a valid
+snapshot in 40 seconds. The complete local suite passes all 45 tests.
+The runner platform is pinned to the verified Ubuntu release.
+
+The workflow uses included private-repository allowances; the account's existing
+zero-dollar Actions budget blocks paid usage. Allowances are shared with other
+repositories, so exhaustion may interrupt updates. No paid service, billing
+limit increase, or new credentials are configured. Cross-platform verification
+requires identical record structures and identities, with floating-point
+agreement within relative/absolute tolerance $10^{-12}$; this permits platform
+rounding without changing the model or its stored forecasts.
+
+The Streamlit deployment form is prepared for the private repository's main
+branch, root application, and tested Python 3.12 runtime. Deployment has not
+completed: specific private-hosting authorization remains pending.
+Hosting must retain private access and the GitHub repository remains private.
+No hosted URL is claimed in this release.
 
 \appendix
 \section{Box-score feature derivations}\label{app:features}

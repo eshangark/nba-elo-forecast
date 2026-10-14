@@ -1,6 +1,6 @@
 # Observed forecasts and after-game updates
 
-The collector uses the frozen NBA v0.2 configuration. It has been run against the actual free ESPN feed, publishing the first three regular-season forecasts for 2026–27. There are no completed regular-season games in that initial snapshot; preseason results are excluded and all teams still start at 1500. The pipeline is ready to run manually. Scheduling and hosting are not enabled.
+The collector uses the frozen NBA v0.2 configuration. It has been run against the actual free ESPN feed, publishing the first three regular-season forecasts for 2026–27. There are no completed regular-season games in that initial snapshot; preseason results are excluded and all teams still start at 1500. The pipeline supports manual runs and a two-hour GitHub Actions schedule. Private Streamlit hosting is prepared but not deployed.
 
 ## Run an update
 
@@ -41,3 +41,13 @@ Live updates are processed after individual completions when the collector runs;
 ## Checks
 
 Tests exercise duplicate polling, correction replay, preservation of issued probabilities, missed-game backfill, future-time rejection, failed collection, single-writer locking, preseason/Cup exclusion, and live UI views. A successful manual feed fetch verifies current source connectivity, not automatic operation or guaranteed endpoint availability.
+
+## Scheduled operation
+
+`.github/workflows/update-live.yml` runs at minute 17 every two hours in UTC and can also be started manually from GitHub Actions. Actions scheduling is best-effort and may be delayed; this is periodic collection rather than a push feed. Standard jobs time out after three minutes; a manual full refresh can run for ten minutes. Checkout and Python setup actions are pinned to verified vendor commit hashes.
+
+Core checks precede ingestion. Failed collection leaves the valid bundle intact and publishes the failure status when possible; the workflow still fails so GitHub records the error. A branch-head check and ordinary fast-forward push protect newer commits. No GitHub secrets, paid API keys, Actions caches, or artifacts are required. Only processed season data is committed.
+
+The schedule is designed to fit the shared free Actions allowance; paid usage is blocked by the account’s existing zero-dollar Actions budget. Other repositories and manual runs share that allowance. If it is exhausted, updates can stop until the allowance resets. Hosting remains a separate pending private deployment.
+
+The first successful cloud run passed 36 core checks, skipped nine optional frontend/fitting checks, refreshed the ESPN feed, and committed the new snapshot in 40 seconds. The full local suite passes all 45 tests. Ubuntu 24.04 is pinned to the verified runner platform.
