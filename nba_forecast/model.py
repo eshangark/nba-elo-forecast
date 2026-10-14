@@ -1,4 +1,4 @@
-"""Versioned, deterministic rating engine; pilot parameters are NOT fitted."""
+"""Deterministic rating engine; fitted configurations are loaded explicitly."""
 
 import math
 from dataclasses import asdict, dataclass, field

@@ -2,8 +2,8 @@
   "seasons": [
     {
       "season": "2026-27",
-      "status": "prepared",
-      "file": "2026-27/snapshot.json"
+      "status": "live",
+      "file": "2026-27/live.json"
     },
     {
       "season": "2025-26",

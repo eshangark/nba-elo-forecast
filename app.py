@@ -44,10 +44,21 @@ elif archive["status"] == "prepared":
     result = None
 else:
     result = archive["result"]
-    coverage_label = "Complete regular season" if archive["status"] == "complete_historical_replay" else "Partial season"
-    st.caption(f"Historical model replay · {archive['coverage']['start']} to {archive['coverage']['end']} · {coverage_label}")
+    is_live = archive["status"] == "live"
+    if is_live:
+        updated = pd.to_datetime(archive["published_at"], utc=True).tz_convert("America/New_York")
+        st.caption(f"Observed forecast snapshot · Last updated {updated:%b %d, %Y at %I:%M %p %Z}")
+        st.caption("The collector updates ratings and forecasts when run. Automatic updates are not enabled yet.")
+        status_path = ARCHIVES / selected / "update_status.json"
+        if status_path.exists() and json.loads(status_path.read_text())["state"] == "failed":
+            st.warning("The latest update failed. Showing the last valid ratings and forecasts.")
+    else:
+        coverage_label = "Complete regular season" if archive["status"] == "complete_historical_replay" else "Partial season"
+        st.caption(f"Historical model replay · {archive['coverage']['start']} to {archive['coverage']['end']} · {coverage_label}")
     with teams_tab:
         st.subheader("Team ratings")
+        if is_live and not archive["coverage"]["parsed"]:
+            st.info("Season initialization: all teams start at 1500. Preseason results are excluded; ratings will change after regular-season games.")
         rankings = pd.DataFrame(result["rankings"])
         shown = rankings[["team", "elo", "games", "wins"]].copy()
         shown["Record"] = shown["wins"].astype(str) + "–" + (shown["games"] - shown["wins"]).astype(str)
@@ -66,6 +77,7 @@ else:
         upcoming = archive.get("upcoming", [])
         if upcoming:
             future = pd.DataFrame(upcoming)
+            future["start"] = pd.to_datetime(future["start"], utc=True).dt.tz_convert("America/New_York").dt.strftime("%b %d, %I:%M %p %Z")
             future["Home win %"] = future["home_probability"] * 100
             future["Away win %"] = future["away_probability"] * 100
             st.markdown("**Upcoming**")
@@ -73,23 +85,37 @@ else:
                 columns={"start": "Tip-off", "home": "Home", "away": "Away"}), hide_index=True,
                 column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
                                "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
-        st.markdown("**Past games**")
-        frame = pd.DataFrame(result["predictions"])
-        frame["Date"] = pd.to_datetime(frame["start"], utc=True).dt.tz_convert("America/New_York").dt.date
-        dates = sorted(frame["Date"].unique(), reverse=True)
-        picked_date = native_select("Game date", dates, key=f"game_date_{selected}")
-        daily = frame[frame["Date"] == picked_date].copy()
-        daily["Home win %"] = daily["home_probability"] * 100
-        daily["Away win %"] = daily["away_probability"] * 100
-        daily["Final score"] = daily["home_score"].astype(str) + "–" + daily["away_score"].astype(str)
-        daily["Winner"] = daily.apply(lambda g: g["home"] if g["home_win"] else g["away"], axis=1)
-        st.dataframe(daily[["home", "away", "Home win %", "Away win %", "Final score", "Winner"]].rename(
-            columns={"home": "Home", "away": "Away"}), hide_index=True, width="stretch",
-            column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
-                           "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
-        st.caption("These probabilities were reconstructed from historical data. They were not issued live before those games.")
+        if is_live:
+            st.caption("Upcoming probabilities use current ratings and announced rest/travel schedules, and are revised when new results or schedule changes arrive.")
+        if archive.get("awaiting_final"):
+            st.info(f"{len(archive['awaiting_final'])} started or delayed game(s) awaiting validated final data.")
+        if result["predictions"]:
+            st.markdown("**Past games**")
+            frame = pd.DataFrame(result["predictions"])
+            frame["Date"] = pd.to_datetime(frame["start"], utc=True).dt.tz_convert("America/New_York").dt.date
+            dates = sorted(frame["Date"].unique(), reverse=True)
+            picked_date = native_select("Game date", dates, key=f"game_date_{selected}")
+            daily = frame[frame["Date"] == picked_date].copy()
+            daily["Home win %"] = daily["home_probability"] * 100
+            daily["Away win %"] = daily["away_probability"] * 100
+            daily["Final score"] = daily["home_score"].astype(str) + "–" + daily["away_score"].astype(str)
+            daily["Winner"] = daily.apply(lambda g: g["home"] if g["home_win"] else g["away"], axis=1)
+            st.dataframe(daily[["home", "away", "Home win %", "Away win %", "Final score", "Winner"]].rename(
+                columns={"home": "Home", "away": "Away"}), hide_index=True, width="stretch",
+                column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
+                               "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
+            if is_live:
+                st.caption("Probabilities are the last stored forecast before tip-off. A blank probability means the game was backfilled without an issued forecast.")
+            else:
+                st.caption("These probabilities were reconstructed from historical data. They were not issued live before those games.")
+        else:
+            st.info("No completed regular-season games are stored for this season yet.")
     with method_tab:
-        if result["status"] == "fitted_historical_replay":
+        if result["status"] == "live_forecasts":
+            st.info("Frozen NBA model · Evaluation includes genuinely issued pregame forecasts only. Backfilled games can update ratings but never become live predictions.")
+            st.download_button("Download issued forecast history", json.dumps(archive["_internal"]["forecasts"], indent=2),
+                               file_name=f"{selected}-issued-forecasts.json", mime="application/json")
+        elif result["status"] == "fitted_historical_replay":
             role = {"training": "Training history", "validation": "Validation season", "held_out_test": "Held-out test season"}[result["evaluation_role"]]
             st.info(f"{role} · Parameters fitted on 2021–22 through 2023–24 and frozen before validation and testing.")
         else:
@@ -102,6 +128,8 @@ else:
             cols[2].metric("Log loss", f"{m['log_loss']:.3f}")
             cols[3].metric("Winner accuracy", f"{m['winner_accuracy']:.1%}")
         st.caption(f"Model {result['model_version']}. Evaluation begins once both teams have played 10 games; opening games still update ratings and retain forecasts.")
+        if is_live and not m["games"]:
+            st.caption(f"{result['metrics_all_issued']['games']} completed games have issued forecasts. Primary evaluation waits until both teams have ten prior games.")
         calibration = pd.DataFrame(m["calibration"])
         if not calibration.empty:
             st.dataframe(calibration.rename(columns={"games": "Games", "mean_probability": "Mean forecast",

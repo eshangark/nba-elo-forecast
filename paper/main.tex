@@ -35,8 +35,8 @@ report supplies the framework \cite{billybeanes}; associated code is reference
 material \cite{referencecode}. This implementation adopts explicit feature
 units, stable transformations, one complementary probability function, and
 NBA-specific calibration. Changes to inherited expressions are described below.
-The website and historical replay are implemented; scheduled live ingestion and
-hosting remain pending.
+The website, historical replay, and manually invoked live collector are
+implemented. Automatic scheduling and hosting remain pending.
 
 \section{Forecast timing}
 Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
@@ -378,13 +378,62 @@ so hashes identify the exact source snapshots used here.
 
 Streamlit displays Teams, Games, and Methodology for a shared selected season,
 defaulting to the current season. Archived seasons expose scores and downloadable
-CSV files. The 2026--27 view currently holds initial ratings, not issued live
-forecasts. Light/dark appearance modes and fixed dropdowns are supported.
-A future scheduled collector will validate completed games, apply the frozen
-model, and save upcoming forecasts without fitting during page interactions.
+CSV files. The first observed 2026--27 snapshot holds initial ratings and three issued
+upcoming regular-season forecasts. No regular-season results have arrived in
+that snapshot; preseason outcomes are excluded. Light/dark appearance modes and fixed dropdowns are supported.
+The manual collector validates completed games, applies the frozen model,
+and saves upcoming forecasts without fitting during page interactions.
+Automatic scheduling remains pending.
 Failed ingestion must preserve the last valid output and expose freshness.
 Corrected records may trigger rating replay but cannot overwrite genuinely
 issued forecasts. The repository remains private during development.
+
+\section{Observed after-game pipeline}
+The current-season collector refreshes individual ESPN scoreboard dates and
+validated final summaries. Provider whitelist calendar metadata restricts
+requests to known season dates; the default checks a seven-day lookback,
+unresolved events, and seven Eastern-calendar dates ahead. A full-refresh
+option revisits the season calendar for older corrections. Unknown regular
+categories, missing known finals, incomplete box scores, or inconsistent
+identities block publication. Preseason, All-Star, and Cup-final events remain
+excluded. A single-writer filesystem lock and atomic bundle replacement
+protect concurrent updates and preserve a valid snapshot on ingestion failure.
+The application shows last-successful freshness and failed-attempt status.
+
+Rating-state reconstruction and forecast issuance are separate. An internal
+timeline predicts the rating-update expectation at each tip-off from earlier
+source-completion events, then updates and recenters at individual completions.
+These estimates enable backfill and correction replay, but are not treated as
+genuinely issued predictions. Completion proxies do not establish when a live
+provider first made every historical statistic available.
+
+Observed runs issue probabilities only for scheduled games still in the future,
+using an actual timestamp after source retrieval; the CLI cannot backdate.
+A change in rating state, configuration, or announced context creates a new
+revision. Identical inputs reuse the previous revision. Current ratings are
+held fixed while announced intervening schedules project future rest and venue
+travel; unknown future results are never fabricated. Revisions retain their
+probabilities, timestamps, input hashes, pregame context, and configuration
+registry references. Correction replay changes current state and future
+forecasts without rewriting earlier issued probabilities.
+
+For a completed game, evaluation selects the latest stored revision issued
+before its recorded start with matching opponents. A game discovered only
+after completion receives no issued probability and is excluded from live
+forecast metrics, even though it updates ratings. Primary live scoring requires
+both teams to have ten observed prior games at issuance; all-issued descriptive
+scores are stored separately. Evaluation joins forecasts to the latest
+validated outcomes.
+
+This live policy updates after individual completions when the collector runs,
+whereas the historical evaluation froze daily slates. Consequently, the
+historical accuracy is not a measured accuracy of the live service. The first
+three forecasts were saved on October 13, 2026 Eastern; prospective results
+remain pending. Tests cover repeated polling, corrected outcomes, preservation
+of revisions, missed-game backfill, invalid future timestamps, failed
+collection, writer locking, and empty/issued/backfilled interface states.
+Manual source connectivity has been verified; automatic operation and hosting
+are not yet enabled.
 
 \appendix
 \section{Box-score feature derivations}\label{app:features}

@@ -42,7 +42,7 @@ The frozen configuration, optimizer report, and quality summary are under [`mode
 
 ## Application
 
-Streamlit has Teams, Games, and Methodology views, with a shared season selector defaulting to the current season. Historical seasons show ratings, reconstructed probabilities, outcomes, evaluation, and downloadable CSVs. The current 2026–27 view is initialized at 1500; live forecasts are not yet published. Native fixed dropdowns and light/dark themes are available.
+Streamlit has Teams, Games, and Methodology views, with a shared season selector defaulting to the current season. Historical seasons show ratings, reconstructed probabilities, outcomes, evaluation, and downloadable CSVs. The current 2026–27 view reads an observed live snapshot with three upcoming regular-season forecasts. Teams remain at 1500 until regular-season results arrive; preseason games are excluded. The collector currently runs manually. Native fixed dropdowns and light/dark themes are available.
 
 ```sh
 python -m venv .venv
@@ -52,6 +52,15 @@ streamlit run app.py
 ```
 
 The app reads saved outputs. It does not scrape or fit during page interactions.
+
+## Update current-season forecasts
+
+```sh
+python scripts/download_geography.py
+python scripts/update_live.py --cities data/raw/geography/cities15000.zip
+```
+
+The macOS/Linux collector loads the frozen constants, validates final games, rebuilds current ratings, and atomically saves upcoming probabilities with actual issue times. Unchanged inputs do not add revisions; previous issued forecasts survive corrections and missed collections. `--full-refresh` rechecks older season records. The app shows snapshot freshness and failed-update status. See [LIVE_PIPELINE.md](LIVE_PIPELINE.md) for data storage, projected schedule context, scoring, and the distinction between live and historical cutoff policies.
 
 ## Reproduce the fitted release
 
@@ -75,6 +84,6 @@ Source archives can change; the committed manifests identify the release's exact
 - [Data specification](DATA_AND_FORMULAS.md): canonical field and timing contract.
 - [Project plan](PROJECT_PLAN.md): live pipeline and deployment milestones.
 
-Live after-game updates, stored upcoming-game forecasts, scheduling, and hosting remain pending. No paid service or scheduled workflow is configured. Preserve genuinely issued forecasts when refitting or correcting data. The repository remains private during development.
+The after-game collector and immutable upcoming-forecast revisions are implemented and have been run against the actual feed. Scheduling and hosting remain pending. No paid service or scheduled workflow is configured. Preserve genuinely issued forecasts when refitting or correcting data. The repository remains private during development.
 
 The [competition repository](https://github.com/aaravbora22/wharton_game_prediction_model) and team report provide research provenance; the NBA implementation documents its own conventions and revisions.

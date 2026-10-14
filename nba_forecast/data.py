@@ -149,7 +149,7 @@ def parse_summary(payload, cities):
     if not competition["status"]["type"]["completed"]:
         raise ValueError("Game is not completed")
     if int(header["season"]["type"]) != 2:
-        raise ValueError("Only regular-season games supported in this pilot")
+        raise ValueError("Only regular-season games supported")
     venue = payload["gameInfo"]["venue"]
     location = cities.resolve(venue["address"])
     competitors = {c["homeAway"]: c for c in competition["competitors"]}

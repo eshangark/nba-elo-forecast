@@ -23,7 +23,7 @@ Schedules, box scores, and play-by-play come from SportsDataverse's ESPN archive
 
 Seventeen games use final-recap publication times. One game has play dates shifted by a day and uses an explicitly flagged conservative tip-off-plus-eight-hours availability bound. This bound is not an observed completion timestamp. Historical provider corrections may also be present; replays do not prove what a live feed showed at the time.
 
-Pregame fields use prior games only. Historical forecasts share a daily cutoff at the earlier of 10:00 Eastern and one hour before the day's first tip-off. All prior slates must be complete by that cutoff. After the slate, results and box-score features update ratings. Live after-game forecasting is a separate pending operational policy.
+Pregame fields use prior games only. Historical forecasts share a daily cutoff at the earlier of 10:00 Eastern and one hour before the day's first tip-off. All prior slates must be complete by that cutoff. After the slate, results and box-score features update ratings. Live after-game forecasting is implemented separately in `nba_forecast/live.py`; the observed forecast ledger is distinct from reconstructed rating-state estimates. See `LIVE_PIPELINE.md` for the operational policy.
 
 Rest equals intervening Eastern calendar dates; back-to-back is zero. Openers use three rest days, zero travel/timezone change, and a flag. Travel uses Haversine kilometres between consecutive venue cities. Both cities' timezone offsets are compared at the current tip-off, avoiding DST-only artificial travel.
 
