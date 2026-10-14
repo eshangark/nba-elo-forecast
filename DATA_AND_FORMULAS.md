@@ -55,3 +55,7 @@ Openers receive Q=1. Current box scores never enter their own pregame prediction
 2021–22 through 2023–24 train the 14-dimensional bounded model; 2024–25 validates and 2025–26 tests the frozen result. Differential evolution (seed 42) plus L-BFGS-B polishing minimizes chronological training log loss. Every candidate recomputes rating and performance history. Exponent base 10 and c=497.3558141396255 anchor the rating scale; eight positive alpha weights are fitted through seven softmax logits.
 
 All 6,150 forecasts are saved; primary scoring requires both teams to have played ten prior games. Probability metrics are log loss, Brier score, and calibration-bin summaries. Winner accuracy picks home at probability exactly 0.5. Training scores are not out-of-sample evidence. The held-out test has 1,075 scored games, log loss 0.5925, Brier 0.2035, and winner accuracy 68.56%.
+
+## Baseline and stability checks
+
+`MODEL_COMPARISON.md` records the fitted simple Elo comparison and expanding-window diagnostics. Both models use identical chronology, initialization, and scoring eligibility. Original frozen v0.2 outperforms the three-season-fitted comparator on both later seasons; four expanding-window evaluations also favor the multifactor model on probability scores. Individual travel/feature weights are unstable and several coefficients reach bounds. These retrospective checks neither eliminate overfitting nor supply a new untouched test. The original configuration remains unchanged.

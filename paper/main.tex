@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.3 --- October 12, 2026}
+\date{Working draft 0.4 --- October 13, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -287,6 +287,84 @@ from the team report using supplied matchup ratings. That reference check does
 not reproduce the original rating history or establish NBA accuracy. The earlier
 151-game pipeline pilot is superseded by the complete fitted archives; its
 short-sample diagnostic was not used to choose NBA coefficients.
+
+\section{Simple Elo comparison and chronological diagnostics}
+A comparator estimates only $K$ and $H$, with the same fixed $c$, season
+initialization, cutoff, and warmup as the full model. Its equations are
+\begin{equation}
+ p_i=[1+10^{(r_j-r_i-Hh)/c}]^{-1},\qquad
+ r_i^+=r_i+K(y_i-p_i),\quad r_j^+=r_j-K(y_i-p_i).
+\end{equation}
+Fatigue, schedule, lead, and performance coefficients are zero. Both models
+fit training log loss with identical bounds on $K$ and $H$, seed 42, and the
+same differential-evolution and polishing settings. Comparator predictions
+are checked against the canonical engine. Data and scored games are paired.
+This diagnostic was added after viewing original results; it is not a new
+untouched test or prospective evaluation.
+
+First, compare the original three-season frozen configuration with simple
+Elo fitted on those same seasons:
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+Season & Model & Scored & Log loss & Brier & Accuracy\\
+\midrule
+2024--25 & Multifactor & 1075 & 0.6043 & 0.2088 & 66.42\% \\
+2024--25 & Simple Elo & 1075 & 0.6137 & 0.2129 & 65.95\% \\
+2025--26 & Multifactor & 1075 & 0.5925 & 0.2035 & 68.56\% \\
+2025--26 & Simple Elo & 1075 & 0.6018 & 0.2073 & 66.79\% \\
+\bottomrule
+\end{tabular}\end{center}
+
+Second, expanding-window checks fit the first available season and evaluate
+the next, then add one training season per fold. Only the training prefix
+enters either objective. Full-model equations and bounds remain fixed; the
+three-season full fit is reused from the original release. Other fits are
+research configurations and do not overwrite archived release predictions.
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Evaluation & Train seasons & Scored & Full LL & Simple LL & Full BS & Simple BS\\
+\midrule
+2022--23 & 1 & 1073 & 0.6469 & 0.6522 & 0.2280 & 0.2300 \\
+2023--24 & 2 & 1074 & 0.6105 & 0.6168 & 0.2114 & 0.2145 \\
+2024--25 & 3 & 1075 & 0.6043 & 0.6137 & 0.2088 & 0.2129 \\
+2025--26 & 4 & 1075 & 0.5920 & 0.6013 & 0.2033 & 0.2071 \\
+\bottomrule
+\end{tabular}\end{center}
+All added optimizations converged. The full model has lower log loss and
+Brier score in all four folds. Winner accuracy improves in three folds but
+falls from 62.63\% to 61.32\% in 2022--23. Probability-score improvement
+therefore does not imply improvement in every classification statistic.
+
+Paired exploratory uncertainty estimates use 10,000 bootstrap resamples of
+whole Eastern-calendar daily slates. Each sampled slate retains its eligible
+games, and differences are weighted by the total sampled game count. This
+preserves within-slate dependence but does not model dependence across days
+or fitting uncertainty; intervals have no multiple-comparison adjustment.
+For the original frozen model on 2025--26, the log-loss difference (full minus
+simple) is $-0.00928$, with exploratory 95\% interval
+$[-0.01417,-0.00395]$. The analogous expanding-window interval crosses zero
+in 2022--23 and is below zero in the other three folds. These intervals are
+descriptive evidence rather than a guarantee of future improvement.
+
+Across the four full fits, $K$ ranges from 11.134 to 13.085, $H$ from 33.368
+to 47.570, and $\gamma$ from 0.1647 to 0.1829. Individual travel and performance
+weights are less stable: $\nu$ ranges from $1.32\times10^{-7}$ to
+$1.10\times10^{-4}$, and the defensive-rebound weight $\alpha_5$ ranges from
+0.4795 to 0.9610. Lead and performance coefficients remain at their upper
+bounds in every fit. The checks support a modest repeated probability-score
+advantage for the model family, while leaving uncertainty about unique feature
+effects and overfitting. Attributing improvement to individual features would
+require an ablation study.
+
+The original v0.2 configuration is retained provisionally for live integration.
+The four-season refit is not promoted merely because its now-observed score
+is slightly better. Source hashes, per-fold fit reports, metrics, paired
+predictions, and intervals are saved under the comparison release directory.
+Future issued forecasts will provide prospective monitoring. The historical
+outcomes were already available during development, so these expanding-window
+checks must not be presented as newly untouched evidence.
 
 \section{Reproducibility and application}
 The repository stores clean game records, two-row-per-game box-score tables,

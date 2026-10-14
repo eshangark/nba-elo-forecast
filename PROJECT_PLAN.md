@@ -6,6 +6,7 @@
 - Free-source ingestion and validation of five full regular seasons (2021–22 through 2025–26), with source hashes and explicit repairs.
 - Clean raw-count and derived-feature tables committed by season; 6,150 reconstructed forecasts and final rankings.
 - NBA parameter estimation on three training seasons, frozen validation/test evaluation, optimizer report, and fitted model configuration.
+- Fitted simple Elo comparison and four expanding-window retrospective checks; probability scores favor the multifactor family, with parameter-instability limitations documented. Original v0.2 retained provisionally for live integration.
 - Streamlit Teams/Games/Methodology views, fixed season dropdown defaulting to current season, downloadable datasets, and light/dark themes.
 
 ## Next milestones

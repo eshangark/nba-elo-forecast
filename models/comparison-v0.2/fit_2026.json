@@ -1,0 +1,200 @@
+{
+  "training_seasons": [
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25"
+  ],
+  "evaluation_season": "2025-26",
+  "frozen_before_fold_evaluation_at": "2026-10-14T00:45:04.417892+00:00",
+  "full_origin": "training-prefix-only refit; retrospective check",
+  "full_model": {
+    "method": "bounded differential evolution with L-BFGS-B polish",
+    "seed": 42,
+    "warmup_games_per_team": 10,
+    "bounds": {
+      "k": [
+        1,
+        80
+      ],
+      "home_advantage": [
+        0,
+        180
+      ],
+      "fatigue_weight": [
+        0,
+        0.5
+      ],
+      "log10_travel_weight": [
+        -8,
+        -1
+      ],
+      "lead_weight": [
+        0,
+        2
+      ],
+      "performance_weight": [
+        0,
+        0.25
+      ],
+      "schedule_weight": [
+        0,
+        1
+      ],
+      "alpha_logit_1": [
+        -5,
+        5
+      ],
+      "alpha_logit_2": [
+        -5,
+        5
+      ],
+      "alpha_logit_3": [
+        -5,
+        5
+      ],
+      "alpha_logit_4": [
+        -5,
+        5
+      ],
+      "alpha_logit_5": [
+        -5,
+        5
+      ],
+      "alpha_logit_6": [
+        -5,
+        5
+      ],
+      "alpha_logit_7": [
+        -5,
+        5
+      ]
+    },
+    "initial_training_log_loss": 0.6318036513942357,
+    "fitted_training_log_loss": 0.6220803645516126,
+    "iterations": 43,
+    "function_evaluations": 5198,
+    "optimizer_success": true,
+    "optimizer_message": "Optimization terminated successfully.",
+    "training_trace": [
+      0.6249005496318838,
+      0.6241457937727072,
+      0.6225805724729604,
+      0.6225805724729604,
+      0.6225805724729604,
+      0.6225805724729604,
+      0.6224098078777816,
+      0.6224098078777816,
+      0.6224098078777816,
+      0.6224098078777816,
+      0.6224098078777816,
+      0.6224053615156826,
+      0.622364361211332,
+      0.622364361211332,
+      0.6222366838184434,
+      0.6222366838184434,
+      0.6221944034775493,
+      0.6221704572277138,
+      0.6221467019263092,
+      0.6221369109649437,
+      0.6221369109649437,
+      0.6221296343287683,
+      0.6221162557916722,
+      0.6221088371147697,
+      0.62210533664557,
+      0.62210533664557,
+      0.62210533664557,
+      0.62210533664557,
+      0.62210533664557,
+      0.6221049657129991,
+      0.6220982920344503,
+      0.6220982920344503,
+      0.6220982920344503,
+      0.6220887717407697,
+      0.6220887717407697,
+      0.6220873614591486,
+      0.6220873614591486,
+      0.6220851529680027,
+      0.6220851529680027,
+      0.6220851529680027,
+      0.6220833177832268,
+      0.6220833177832268,
+      0.6220833177832268
+    ],
+    "parameters": {
+      "k": 13.085210109270424,
+      "c": 497.3558141396255,
+      "home_advantage": 40.905513219108485,
+      "fatigue_weight": 0.17684859572135364,
+      "travel_weight": 3.304311641499396e-05,
+      "lead_weight": 2.0,
+      "performance_weight": 0.25,
+      "schedule_weight": 0.7526315162401103,
+      "alpha_weights": [
+        0.0005103777705463557,
+        0.00491551435948665,
+        0.010925631425053471,
+        0.0016620892901107619,
+        0.9610281683572504,
+        0.00622650714919906,
+        0.0013593603842167875,
+        0.013372351264136658
+      ]
+    },
+    "fixed_constants": {
+      "exponent_base": 10,
+      "c": 497.3558141396255,
+      "initial_rating": 1500,
+      "timezone_scale_hours": 3
+    },
+    "training_season_end_years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "simple_elo": {
+    "model": "simple Elo with fitted K and home advantage",
+    "method": "bounded differential evolution with L-BFGS-B polish",
+    "seed": 42,
+    "maxiter": 150,
+    "popsize": 8,
+    "tolerance": 1e-05,
+    "warmup_games_per_team": 10,
+    "bounds": {
+      "k": [
+        1,
+        80
+      ],
+      "home_advantage": [
+        0,
+        180
+      ]
+    },
+    "parameters": {
+      "k": 31.071162128139925,
+      "c": 497.3558141396255,
+      "home_advantage": 49.27253259617213,
+      "fatigue_weight": 0.0,
+      "travel_weight": 1e-06,
+      "lead_weight": 0.0,
+      "performance_weight": 0.0,
+      "schedule_weight": 0.0,
+      "alpha_weights": [
+        0.25,
+        0.2,
+        0.15,
+        0.1,
+        0.1,
+        0.1,
+        0.05,
+        0.05
+      ]
+    },
+    "training_log_loss": 0.6293476755476719,
+    "optimizer_success": true,
+    "iterations": 9,
+    "function_evaluations": 163
+  }
+}

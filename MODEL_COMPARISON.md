@@ -1,0 +1,64 @@
+# Simple Elo comparison and chronological checks
+
+These diagnostics compare the unchanged v0.2 multifactor equations with simple Elo. The comparator fits only K and home advantage; fatigue, schedule strength, lead retention, and performance adjustments are disabled. Both models use the same rating scale, independent 1500 season initialization, daily forecast cutoff, ten-game warmup, and scored games. Both optimize training log loss within the same K/home-advantage bounds.
+
+## Original frozen release
+
+Both models are fitted on 2021–22 through 2023–24. The original multifactor parameters and archives remain unchanged. The simple comparator was added after inspecting the original results, so this comparison is a retrospective diagnostic, not a new untouched test.
+
+| Evaluation season | Model | Games | Log loss | Brier | Winner accuracy |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 2024-25 | Multifactor v0.2 | 1,075 | 0.6043 | 0.2088 | 66.42% |
+| 2024-25 | Fitted simple Elo | 1,075 | 0.6137 | 0.2129 | 65.95% |
+| 2025-26 | Multifactor v0.2 | 1,075 | 0.5925 | 0.2035 | 68.56% |
+| 2025-26 | Fitted simple Elo | 1,075 | 0.6018 | 0.2073 | 66.79% |
+
+## Expanding-window checks
+
+Train on the first available season, evaluate the next, then expand the training history by one season at each step. Each fold fits both models using only its training prefix. The three-season full-model fit is reused from the frozen release; other full-model configurations are diagnostic refits and do not replace it. Model structures and bounds were unchanged throughout.
+
+| Evaluation season | Training seasons | Full log loss | Simple log loss | Full Brier | Simple Brier | Full accuracy | Simple accuracy |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2022-23 | 1 | 0.6469 | 0.6522 | 0.2280 | 0.2300 | 61.32% | 62.63% |
+| 2023-24 | 2 | 0.6105 | 0.6168 | 0.2114 | 0.2145 | 65.64% | 64.25% |
+| 2024-25 | 3 | 0.6043 | 0.6137 | 0.2088 | 0.2129 | 66.42% | 65.95% |
+| 2025-26 | 4 | 0.5920 | 0.6013 | 0.2033 | 0.2071 | 68.56% | 66.98% |
+
+The multifactor model has lower log loss and Brier score in all four folds. Winner accuracy improves in three folds and declines in 2022–23, demonstrating why probability quality and winner accuracy are separate objectives. All added fits converged. These historical outcomes were already available during development; chronological objective separation does not turn the diagnostics into prospective evidence.
+
+## Paired uncertainty estimates
+
+10,000 paired bootstrap samples resample whole Eastern-calendar daily slates, retaining all eligible games within each sampled slate. Intervals preserve within-day dependence but do not model dependence across days or uncertainty in fitting parameters. They are exploratory 95% intervals, without multiple-comparison adjustment. Differences are multifactor minus simple Elo; negative loss differences favor the multifactor model.
+
+| Protocol / season | Log-loss difference | Exploratory 95% interval |
+| --- | ---: | --- |
+| Frozen / 2024-25 | -0.00935 | [-0.01435, -0.00438] |
+| Frozen / 2025-26 | -0.00928 | [-0.01417, -0.00395] |
+| Expanding / 2022-23 | -0.00529 | [-0.01177, 0.00121] |
+| Expanding / 2023-24 | -0.00628 | [-0.01217, -0.00019] |
+| Expanding / 2024-25 | -0.00935 | [-0.01435, -0.00438] |
+| Expanding / 2025-26 | -0.00933 | [-0.01439, -0.00390] |
+
+## Parameter stability
+
+| Training seasons | K | Home advantage | Fatigue weight | Travel weight | Schedule weight | Defensive-rebound feature weight |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 12.143 | 33.368 | 0.1829 | 9.26e-07 | 1.0000 | 0.5890 |
+| 2 | 11.134 | 47.570 | 0.1693 | 1.32e-07 | 1.0000 | 0.4795 |
+| 3 | 12.217 | 41.553 | 0.1647 | 0.00011 | 0.9785 | 0.6870 |
+| 4 | 13.085 | 40.906 | 0.1768 | 3.3e-05 | 0.7526 | 0.9610 |
+
+Lead and performance weights reach their upper bounds in all four fits. K and fatigue weights are comparatively stable, while individual feature and travel weights vary substantially. For example, defensive-rebound weight ranges from 0.4795 to 0.9610. The additional equations provide a modest, repeated predictive improvement, but these checks do not establish uniquely stable feature effects or eliminate overfitting. An ablation study would be required to attribute improvement to particular features.
+
+## Model decision
+
+Retain the original frozen v0.2 configuration as the provisional model for live integration. The comparator earns its role as a benchmark; the multifactor family improves probability scores across the evaluated folds. Do not replace the release with the four-season refit merely because its now-observed test score is slightly better. Monitor future genuinely issued forecasts and revisit bounds/regularization in a separately versioned study.
+
+## Reproduction
+
+```sh
+pip install -r requirements-fit.txt
+python scripts/compare_models.py
+```
+
+Results, per-fold fitting reports, and paired predictions are under `models/comparison-v0.2/`. `predictions.csv` distinguishes `expanding_window` from `original_frozen_release`. All 1,230 forecasts per evaluation season are retained, with an eligibility flag; only eligible forecasts enter scores.

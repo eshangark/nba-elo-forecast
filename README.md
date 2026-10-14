@@ -18,6 +18,12 @@ Training uses 2021–22 through 2023–24. Parameters were frozen before evaluat
 
 Log loss and Brier score evaluate probabilities; winner accuracy is a separate secondary measure. Calibration-bin counts are stored with each replay. One held-out season does not establish performance across all future seasons.
 
+## Baseline comparison
+
+The original frozen model improves on a simple Elo model fitted on the same three training seasons: on 2025–26, simple Elo has log loss **0.6018**, Brier **0.2073**, and winner accuracy **66.79%**, versus **0.5925**, **0.2035**, and **68.56%** for v0.2.
+
+Four expanding-window checks also favor the multifactor model on log loss and Brier, although winner accuracy is worse in one fold and individual weights are unstable. These are retrospective diagnostics, not new untouched tests. The original production configuration is retained provisionally; diagnostic refits do not replace it. See [MODEL_COMPARISON.md](MODEL_COMPARISON.md) for protocols, uncertainty estimates, stability, and reproduction.
+
 ## Datasets and sources
 
 Clean data is committed under [`data/seasons/`](data/seasons). Each historical season includes:

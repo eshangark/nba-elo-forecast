@@ -1,0 +1,1275 @@
+{
+  "comparison": "simple Elo versus multifactor Elo v0.2 family",
+  "status": "retrospective diagnostic; later outcomes already inspected during project development",
+  "seed": 42,
+  "formula_or_bounds_changed": false,
+  "warmup_games_per_team": 10,
+  "season_initialization": 1500,
+  "cutoff": "Earlier of 10:00 Eastern and one hour before first tip; prior slates only",
+  "source_file_sha256": {
+    "2021-22": "875d581de4ccc1551e44d846c958c8894a275ef58e19222a9dcfe7db8cd83e92",
+    "2022-23": "8e609aee113057314976da85cecf0a4c004d8eb2275db040a73ae28e46f8e0da",
+    "2023-24": "2a1b5188881fae3565ae2352181c858c3914c2c428802c3f2f0793e53fc6636f",
+    "2024-25": "2cc48fd0e4ab3c1b2a3dbd3cab20c8406e915e49030b7de369306efb402c2331",
+    "2025-26": "f467419276a51284791fbffea7bba29ef68111ac382dea474e400f84f2d916d0"
+  },
+  "folds": [
+    {
+      "training_seasons": [
+        "2021-22"
+      ],
+      "evaluation_season": "2022-23",
+      "full_origin": "training-prefix-only refit; retrospective check",
+      "full_parameters": {
+        "k": 12.143214885422625,
+        "c": 497.3558141396255,
+        "home_advantage": 33.36823517346905,
+        "fatigue_weight": 0.18286852876218002,
+        "travel_weight": 9.261950925494929e-07,
+        "lead_weight": 2.0,
+        "performance_weight": 0.25,
+        "schedule_weight": 1.0,
+        "alpha_weights": [
+          0.3789627566577022,
+          0.014031080244431423,
+          0.00011301952859891938,
+          0.0005313148387612219,
+          0.5890239309332767,
+          0.00029932498268809876,
+          0.0089608920988011,
+          0.008077680715740344
+        ]
+      },
+      "simple_parameters": {
+        "k": 29.77265407499474,
+        "home_advantage": 40.4351245314817,
+        "c": 497.3558141396255
+      },
+      "full_metrics": {
+        "games": 1073,
+        "log_loss": 0.646891992419903,
+        "brier_score": 0.22798707829828152,
+        "winner_accuracy": 0.6132339235787512,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 17,
+            "mean_probability": 0.16637410545043074,
+            "observed_home_win_rate": 0.17647058823529413
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 50,
+            "mean_probability": 0.263276211533479,
+            "observed_home_win_rate": 0.3
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 112,
+            "mean_probability": 0.35821444976149347,
+            "observed_home_win_rate": 0.39285714285714285
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 217,
+            "mean_probability": 0.45781164894030674,
+            "observed_home_win_rate": 0.5345622119815668
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 287,
+            "mean_probability": 0.5546816164856427,
+            "observed_home_win_rate": 0.5818815331010453
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 237,
+            "mean_probability": 0.6443785762701754,
+            "observed_home_win_rate": 0.6708860759493671
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 115,
+            "mean_probability": 0.7380924274717484,
+            "observed_home_win_rate": 0.7130434782608696
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 34,
+            "mean_probability": 0.8360181827730031,
+            "observed_home_win_rate": 0.8235294117647058
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 4,
+            "mean_probability": 0.9147866836309977,
+            "observed_home_win_rate": 1
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1073,
+        "log_loss": 0.6521841417774823,
+        "brier_score": 0.2300488406958909,
+        "winner_accuracy": 0.6262814538676608,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 7,
+            "mean_probability": 0.15987583428009985,
+            "observed_home_win_rate": 0.42857142857142855
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 41,
+            "mean_probability": 0.26097296126959474,
+            "observed_home_win_rate": 0.1951219512195122
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 109,
+            "mean_probability": 0.35302421357613173,
+            "observed_home_win_rate": 0.44036697247706424
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 247,
+            "mean_probability": 0.45336213851034435,
+            "observed_home_win_rate": 0.46963562753036436
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 318,
+            "mean_probability": 0.551867553377592,
+            "observed_home_win_rate": 0.60062893081761
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 221,
+            "mean_probability": 0.6456431132893937,
+            "observed_home_win_rate": 0.7058823529411765
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 105,
+            "mean_probability": 0.7426135946244571,
+            "observed_home_win_rate": 0.7333333333333333
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 24,
+            "mean_probability": 0.8331068227585944,
+            "observed_home_win_rate": 0.75
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 1,
+            "mean_probability": 0.9032912000432775,
+            "observed_home_win_rate": 1
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1073,
+        "slates": 144,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.005292149357579362,
+            "interval_95": [
+              -0.011773761452105305,
+              0.0012133352679599765
+            ]
+          },
+          "brier_score": {
+            "mean": -0.0020617623976093816,
+            "interval_95": [
+              -0.005126846672110162,
+              0.001037717207609715
+            ]
+          },
+          "winner_accuracy": {
+            "mean": -0.0130475302889096,
+            "interval_95": [
+              -0.03429658812071321,
+              0.007641427614750401
+            ]
+          }
+        }
+      }
+    },
+    {
+      "training_seasons": [
+        "2021-22",
+        "2022-23"
+      ],
+      "evaluation_season": "2023-24",
+      "full_origin": "training-prefix-only refit; retrospective check",
+      "full_parameters": {
+        "k": 11.134129876548558,
+        "c": 497.3558141396255,
+        "home_advantage": 47.56955865185189,
+        "fatigue_weight": 0.16926880828889743,
+        "travel_weight": 1.3178311112063895e-07,
+        "lead_weight": 2.0,
+        "performance_weight": 0.25,
+        "schedule_weight": 1.0,
+        "alpha_weights": [
+          0.28470770495926134,
+          0.0008988363685472616,
+          0.01650835121138632,
+          0.0009917753531900595,
+          0.4794692753090126,
+          0.00013108016023955562,
+          0.2106168329811067,
+          0.0066761436572561885
+        ]
+      },
+      "simple_parameters": {
+        "k": 26.367646671225756,
+        "home_advantage": 56.48642592263985,
+        "c": 497.3558141396255
+      },
+      "full_metrics": {
+        "games": 1074,
+        "log_loss": 0.610525898497318,
+        "brier_score": 0.21144722635895477,
+        "winner_accuracy": 0.6564245810055865,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 3,
+            "mean_probability": 0.08124071020636195,
+            "observed_home_win_rate": 0.3333333333333333
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 41,
+            "mean_probability": 0.16637630809712947,
+            "observed_home_win_rate": 0.17073170731707318
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 65,
+            "mean_probability": 0.24752841960442004,
+            "observed_home_win_rate": 0.13846153846153847
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 101,
+            "mean_probability": 0.3515557363350851,
+            "observed_home_win_rate": 0.31683168316831684
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 186,
+            "mean_probability": 0.4559321797849001,
+            "observed_home_win_rate": 0.45698924731182794
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 236,
+            "mean_probability": 0.5483993088583087,
+            "observed_home_win_rate": 0.5677966101694916
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 217,
+            "mean_probability": 0.6472564932620248,
+            "observed_home_win_rate": 0.5483870967741935
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 125,
+            "mean_probability": 0.7482187016708824,
+            "observed_home_win_rate": 0.824
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 86,
+            "mean_probability": 0.8439955592767312,
+            "observed_home_win_rate": 0.8604651162790697
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 14,
+            "mean_probability": 0.9225375760493403,
+            "observed_home_win_rate": 0.9285714285714286
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1074,
+        "log_loss": 0.6168038301941599,
+        "brier_score": 0.21450353440521405,
+        "winner_accuracy": 0.6424581005586593,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 18,
+            "mean_probability": 0.169494631335573,
+            "observed_home_win_rate": 0.16666666666666666
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 73,
+            "mean_probability": 0.2548045446354084,
+            "observed_home_win_rate": 0.1506849315068493
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 96,
+            "mean_probability": 0.35409457826542706,
+            "observed_home_win_rate": 0.3020833333333333
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 190,
+            "mean_probability": 0.45676460951319753,
+            "observed_home_win_rate": 0.46842105263157896
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 252,
+            "mean_probability": 0.5482558466693827,
+            "observed_home_win_rate": 0.5277777777777778
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 234,
+            "mean_probability": 0.6481402326504553,
+            "observed_home_win_rate": 0.5897435897435898
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 128,
+            "mean_probability": 0.745793891527454,
+            "observed_home_win_rate": 0.8046875
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 78,
+            "mean_probability": 0.8351597075178787,
+            "observed_home_win_rate": 0.8589743589743589
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 5,
+            "mean_probability": 0.9159938192558496,
+            "observed_home_win_rate": 0.8
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1074,
+        "slates": 140,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.0062779316968419215,
+            "interval_95": [
+              -0.012173270442006955,
+              -0.00019046740005070596
+            ]
+          },
+          "brier_score": {
+            "mean": -0.0030563080462592874,
+            "interval_95": [
+              -0.005666651677898105,
+              -0.00034197744180521327
+            ]
+          },
+          "winner_accuracy": {
+            "mean": 0.013966480446927373,
+            "interval_95": [
+              -0.00558659217877095,
+              0.03339425594917802
+            ]
+          }
+        }
+      }
+    },
+    {
+      "training_seasons": [
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "evaluation_season": "2024-25",
+      "full_origin": "original frozen release; no refit",
+      "full_parameters": {
+        "k": 12.217347085660073,
+        "c": 497.3558141396255,
+        "home_advantage": 41.552847091518196,
+        "fatigue_weight": 0.16472420364182566,
+        "travel_weight": 0.00010973485411356601,
+        "lead_weight": 2.0,
+        "performance_weight": 0.25,
+        "schedule_weight": 0.9785483342430814,
+        "alpha_weights": [
+          0.16195417940759257,
+          0.004364883064066992,
+          0.006380439344523933,
+          0.0027736413593701247,
+          0.6869916182833049,
+          0.07304149277225862,
+          0.007925905426466085,
+          0.05656784034241685
+        ]
+      },
+      "simple_parameters": {
+        "k": 29.49780772616937,
+        "home_advantage": 51.163216405329514,
+        "c": 497.3558141396255
+      },
+      "full_metrics": {
+        "games": 1075,
+        "log_loss": 0.604307488058355,
+        "brier_score": 0.20881558481751533,
+        "winner_accuracy": 0.6641860465116279,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 4,
+            "mean_probability": 0.0838077303676583,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 25,
+            "mean_probability": 0.17429908032345395,
+            "observed_home_win_rate": 0.08
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 84,
+            "mean_probability": 0.2533134272492481,
+            "observed_home_win_rate": 0.21428571428571427
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 122,
+            "mean_probability": 0.3591513100691057,
+            "observed_home_win_rate": 0.32786885245901637
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 176,
+            "mean_probability": 0.4537204038500565,
+            "observed_home_win_rate": 0.45454545454545453
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 221,
+            "mean_probability": 0.5513091866030543,
+            "observed_home_win_rate": 0.5520361990950227
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 221,
+            "mean_probability": 0.6491788742452748,
+            "observed_home_win_rate": 0.6289592760180995
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 128,
+            "mean_probability": 0.7502697279863292,
+            "observed_home_win_rate": 0.7890625
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 78,
+            "mean_probability": 0.8392439096834118,
+            "observed_home_win_rate": 0.8589743589743589
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 16,
+            "mean_probability": 0.9235481174287068,
+            "observed_home_win_rate": 0.875
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1075,
+        "log_loss": 0.6136568406862087,
+        "brier_score": 0.2129387150163742,
+        "winner_accuracy": 0.6595348837209303,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 2,
+            "mean_probability": 0.08552039327419647,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 11,
+            "mean_probability": 0.15600336111365368,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 70,
+            "mean_probability": 0.25606837625898904,
+            "observed_home_win_rate": 0.22857142857142856
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 134,
+            "mean_probability": 0.3552737725985606,
+            "observed_home_win_rate": 0.29850746268656714
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 179,
+            "mean_probability": 0.4541371485399228,
+            "observed_home_win_rate": 0.441340782122905
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 245,
+            "mean_probability": 0.5514765889597862,
+            "observed_home_win_rate": 0.5755102040816327
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 217,
+            "mean_probability": 0.6446980044858164,
+            "observed_home_win_rate": 0.6082949308755761
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 143,
+            "mean_probability": 0.7479846090968426,
+            "observed_home_win_rate": 0.7762237762237763
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 64,
+            "mean_probability": 0.8373596236152648,
+            "observed_home_win_rate": 0.84375
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 10,
+            "mean_probability": 0.9132891802056036,
+            "observed_home_win_rate": 1
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1075,
+        "slates": 145,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.00934935262785367,
+            "interval_95": [
+              -0.014353926585291162,
+              -0.004378117449286776
+            ]
+          },
+          "brier_score": {
+            "mean": -0.004123130198858893,
+            "interval_95": [
+              -0.0064128620241676254,
+              -0.001880174136832166
+            ]
+          },
+          "winner_accuracy": {
+            "mean": 0.004651162790697674,
+            "interval_95": [
+              -0.010339076661965941,
+              0.020000910746812373
+            ]
+          }
+        }
+      }
+    },
+    {
+      "training_seasons": [
+        "2021-22",
+        "2022-23",
+        "2023-24",
+        "2024-25"
+      ],
+      "evaluation_season": "2025-26",
+      "full_origin": "training-prefix-only refit; retrospective check",
+      "full_parameters": {
+        "k": 13.085210109270424,
+        "c": 497.3558141396255,
+        "home_advantage": 40.905513219108485,
+        "fatigue_weight": 0.17684859572135364,
+        "travel_weight": 3.304311641499396e-05,
+        "lead_weight": 2.0,
+        "performance_weight": 0.25,
+        "schedule_weight": 0.7526315162401103,
+        "alpha_weights": [
+          0.0005103777705463557,
+          0.00491551435948665,
+          0.010925631425053471,
+          0.0016620892901107619,
+          0.9610281683572504,
+          0.00622650714919906,
+          0.0013593603842167875,
+          0.013372351264136658
+        ]
+      },
+      "simple_parameters": {
+        "k": 31.071162128139925,
+        "home_advantage": 49.27253259617213,
+        "c": 497.3558141396255
+      },
+      "full_metrics": {
+        "games": 1075,
+        "log_loss": 0.5919524420471449,
+        "brier_score": 0.20327668901190526,
+        "winner_accuracy": 0.6855813953488372,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 2,
+            "mean_probability": 0.08676402526477109,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 34,
+            "mean_probability": 0.15782394553816137,
+            "observed_home_win_rate": 0.058823529411764705
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 81,
+            "mean_probability": 0.2585777584727227,
+            "observed_home_win_rate": 0.20987654320987653
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 116,
+            "mean_probability": 0.3563412387707058,
+            "observed_home_win_rate": 0.35344827586206895
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 194,
+            "mean_probability": 0.4523746905299832,
+            "observed_home_win_rate": 0.41237113402061853
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 203,
+            "mean_probability": 0.5534393861265807,
+            "observed_home_win_rate": 0.5714285714285714
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 198,
+            "mean_probability": 0.6455085850187106,
+            "observed_home_win_rate": 0.6363636363636364
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 145,
+            "mean_probability": 0.7477909907619548,
+            "observed_home_win_rate": 0.8275862068965517
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 86,
+            "mean_probability": 0.8382316437407715,
+            "observed_home_win_rate": 0.8604651162790697
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 16,
+            "mean_probability": 0.9239062628608451,
+            "observed_home_win_rate": 0.875
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1075,
+        "log_loss": 0.6012836630479317,
+        "brier_score": 0.207069631759129,
+        "winner_accuracy": 0.6697674418604651,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 21,
+            "mean_probability": 0.16586941684910014,
+            "observed_home_win_rate": 0.047619047619047616
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 59,
+            "mean_probability": 0.26231837143891534,
+            "observed_home_win_rate": 0.15254237288135594
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 134,
+            "mean_probability": 0.350004349034955,
+            "observed_home_win_rate": 0.3208955223880597
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 194,
+            "mean_probability": 0.4528118682347365,
+            "observed_home_win_rate": 0.44329896907216493
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 220,
+            "mean_probability": 0.5509131781486488,
+            "observed_home_win_rate": 0.55
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 214,
+            "mean_probability": 0.6480633871116526,
+            "observed_home_win_rate": 0.6448598130841121
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 160,
+            "mean_probability": 0.7470454304748911,
+            "observed_home_win_rate": 0.81875
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 66,
+            "mean_probability": 0.8394263856045869,
+            "observed_home_win_rate": 0.8333333333333334
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 7,
+            "mean_probability": 0.9194714791520334,
+            "observed_home_win_rate": 0.8571428571428571
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1075,
+        "slates": 145,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.009331221000786791,
+            "interval_95": [
+              -0.014393073022274997,
+              -0.003898764408439818
+            ]
+          },
+          "brier_score": {
+            "mean": -0.0037929427472237686,
+            "interval_95": [
+              -0.006033002146570646,
+              -0.0013972107389607481
+            ]
+          },
+          "winner_accuracy": {
+            "mean": 0.01581395348837209,
+            "interval_95": [
+              -0.0018318823374225033,
+              0.03283618141178166
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "frozen_release_comparison": [
+    {
+      "training_seasons": [
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "evaluation_season": "2024-25",
+      "full_metrics": {
+        "games": 1075,
+        "log_loss": 0.604307488058355,
+        "brier_score": 0.20881558481751533,
+        "winner_accuracy": 0.6641860465116279,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 4,
+            "mean_probability": 0.0838077303676583,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 25,
+            "mean_probability": 0.17429908032345395,
+            "observed_home_win_rate": 0.08
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 84,
+            "mean_probability": 0.2533134272492481,
+            "observed_home_win_rate": 0.21428571428571427
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 122,
+            "mean_probability": 0.3591513100691057,
+            "observed_home_win_rate": 0.32786885245901637
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 176,
+            "mean_probability": 0.4537204038500565,
+            "observed_home_win_rate": 0.45454545454545453
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 221,
+            "mean_probability": 0.5513091866030543,
+            "observed_home_win_rate": 0.5520361990950227
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 221,
+            "mean_probability": 0.6491788742452748,
+            "observed_home_win_rate": 0.6289592760180995
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 128,
+            "mean_probability": 0.7502697279863292,
+            "observed_home_win_rate": 0.7890625
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 78,
+            "mean_probability": 0.8392439096834118,
+            "observed_home_win_rate": 0.8589743589743589
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 16,
+            "mean_probability": 0.9235481174287068,
+            "observed_home_win_rate": 0.875
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1075,
+        "log_loss": 0.6136568406862087,
+        "brier_score": 0.2129387150163742,
+        "winner_accuracy": 0.6595348837209303,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 2,
+            "mean_probability": 0.08552039327419647,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 11,
+            "mean_probability": 0.15600336111365368,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 70,
+            "mean_probability": 0.25606837625898904,
+            "observed_home_win_rate": 0.22857142857142856
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 134,
+            "mean_probability": 0.3552737725985606,
+            "observed_home_win_rate": 0.29850746268656714
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 179,
+            "mean_probability": 0.4541371485399228,
+            "observed_home_win_rate": 0.441340782122905
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 245,
+            "mean_probability": 0.5514765889597862,
+            "observed_home_win_rate": 0.5755102040816327
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 217,
+            "mean_probability": 0.6446980044858164,
+            "observed_home_win_rate": 0.6082949308755761
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 143,
+            "mean_probability": 0.7479846090968426,
+            "observed_home_win_rate": 0.7762237762237763
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 64,
+            "mean_probability": 0.8373596236152648,
+            "observed_home_win_rate": 0.84375
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 10,
+            "mean_probability": 0.9132891802056036,
+            "observed_home_win_rate": 1
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1075,
+        "slates": 145,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.00934935262785367,
+            "interval_95": [
+              -0.014353926585291162,
+              -0.004378117449286776
+            ]
+          },
+          "brier_score": {
+            "mean": -0.004123130198858893,
+            "interval_95": [
+              -0.0064128620241676254,
+              -0.001880174136832166
+            ]
+          },
+          "winner_accuracy": {
+            "mean": 0.004651162790697674,
+            "interval_95": [
+              -0.010339076661965941,
+              0.020000910746812373
+            ]
+          }
+        }
+      }
+    },
+    {
+      "training_seasons": [
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "evaluation_season": "2025-26",
+      "full_metrics": {
+        "games": 1075,
+        "log_loss": 0.5925382498477405,
+        "brier_score": 0.20349778647783853,
+        "winner_accuracy": 0.6855813953488372,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.0,
+            "upper": 0.1,
+            "games": 1,
+            "mean_probability": 0.08341848195901072,
+            "observed_home_win_rate": 0
+          },
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 32,
+            "mean_probability": 0.15856278262369328,
+            "observed_home_win_rate": 0.0625
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 71,
+            "mean_probability": 0.25882968242065835,
+            "observed_home_win_rate": 0.2112676056338028
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 117,
+            "mean_probability": 0.3547653197144709,
+            "observed_home_win_rate": 0.3504273504273504
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 204,
+            "mean_probability": 0.4551260395150848,
+            "observed_home_win_rate": 0.39705882352941174
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 204,
+            "mean_probability": 0.5543658661333208,
+            "observed_home_win_rate": 0.5784313725490197
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 205,
+            "mean_probability": 0.6445769013037403,
+            "observed_home_win_rate": 0.6341463414634146
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 147,
+            "mean_probability": 0.7481426800197932,
+            "observed_home_win_rate": 0.8231292517006803
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 82,
+            "mean_probability": 0.8407645781148111,
+            "observed_home_win_rate": 0.8658536585365854
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 12,
+            "mean_probability": 0.9282488735114649,
+            "observed_home_win_rate": 0.9166666666666666
+          }
+        ]
+      },
+      "simple_metrics": {
+        "games": 1075,
+        "log_loss": 0.6018175186855593,
+        "brier_score": 0.2072629963896025,
+        "winner_accuracy": 0.6679069767441861,
+        "tie_policy": "pick home when probability equals 0.5",
+        "calibration": [
+          {
+            "lower": 0.1,
+            "upper": 0.2,
+            "games": 19,
+            "mean_probability": 0.16985275140809253,
+            "observed_home_win_rate": 0.05263157894736842
+          },
+          {
+            "lower": 0.2,
+            "upper": 0.3,
+            "games": 51,
+            "mean_probability": 0.2612383727898063,
+            "observed_home_win_rate": 0.1568627450980392
+          },
+          {
+            "lower": 0.3,
+            "upper": 0.4,
+            "games": 138,
+            "mean_probability": 0.35121397264508364,
+            "observed_home_win_rate": 0.3115942028985507
+          },
+          {
+            "lower": 0.4,
+            "upper": 0.5,
+            "games": 192,
+            "mean_probability": 0.45413406783600363,
+            "observed_home_win_rate": 0.4375
+          },
+          {
+            "lower": 0.5,
+            "upper": 0.6,
+            "games": 227,
+            "mean_probability": 0.5512001396633238,
+            "observed_home_win_rate": 0.5418502202643172
+          },
+          {
+            "lower": 0.6,
+            "upper": 0.7,
+            "games": 219,
+            "mean_probability": 0.6485298268875634,
+            "observed_home_win_rate": 0.6529680365296804
+          },
+          {
+            "lower": 0.7,
+            "upper": 0.8,
+            "games": 160,
+            "mean_probability": 0.7469511367593789,
+            "observed_home_win_rate": 0.81875
+          },
+          {
+            "lower": 0.8,
+            "upper": 0.9,
+            "games": 63,
+            "mean_probability": 0.8396150478680261,
+            "observed_home_win_rate": 0.8095238095238095
+          },
+          {
+            "lower": 0.9,
+            "upper": 1.0,
+            "games": 6,
+            "mean_probability": 0.9188744631750468,
+            "observed_home_win_rate": 1
+          }
+        ]
+      },
+      "paired_comparison": {
+        "direction": "full model minus simple Elo; negative loss differences favor the full model",
+        "games": 1075,
+        "slates": 145,
+        "resamples": 10000,
+        "seed": 42,
+        "method": "paired bootstrap resampling whole Eastern-calendar daily slates",
+        "limitation": "Within-slate dependence preserved; dependence across days is not modeled. Intervals are exploratory.",
+        "differences": {
+          "log_loss": {
+            "mean": -0.009279268837818808,
+            "interval_95": [
+              -0.01416817362789856,
+              -0.003953819865515684
+            ]
+          },
+          "brier_score": {
+            "mean": -0.0037652099117639654,
+            "interval_95": [
+              -0.005952749838126898,
+              -0.0014457749341702385
+            ]
+          },
+          "winner_accuracy": {
+            "mean": 0.017674418604651163,
+            "interval_95": [
+              0.0008643617021276797,
+              0.03505539097897552
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -119,6 +119,23 @@ with method_tab:
     st.caption("Sources: ESPN records archived by SportsDataverse, validated against primary ESPN summaries where needed; GeoNames supplies venue-city coordinates and time zones. Travel is an estimate between cities.")
     with st.expander("Fitted NBA constants"):
         st.json(json.loads((ROOT / "models" / "nba-v0.2" / "parameters.json").read_text()))
+    comparison_path = ROOT / "models" / "comparison-v0.2" / "results.json"
+    if comparison_path.exists():
+        with st.expander("Comparison with simple Elo"):
+            comparison = json.loads(comparison_path.read_text())
+            rows = []
+            for fold in comparison["frozen_release_comparison"]:
+                for label, field in [("Multifactor v0.2", "full_metrics"), ("Fitted simple Elo", "simple_metrics")]:
+                    scores = fold[field]
+                    rows.append({"Season": fold["evaluation_season"], "Model": label,
+                                 "Games": scores["games"], "Log loss": scores["log_loss"],
+                                 "Brier": scores["brier_score"], "Winner accuracy": scores["winner_accuracy"]})
+            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch",
+                         column_config={"Log loss": st.column_config.NumberColumn(format="%.4f"),
+                                        "Brier": st.column_config.NumberColumn(format="%.4f"),
+                                        "Winner accuracy": st.column_config.NumberColumn(format="percent")})
+            st.caption("Both models fitted on 2021–22 through 2023–24. Retrospective comparison; four expanding-window checks also favor the multifactor model on probability scores. Individual weights remain unstable.")
+            st.markdown("[Comparison protocols and results](https://github.com/eshangark/nba-elo-forecast/blob/main/MODEL_COMPARISON.md)")
     st.markdown("[Technical manuscript on GitHub](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.tex)")
     with st.expander("Technical manuscript source"):
         st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),
