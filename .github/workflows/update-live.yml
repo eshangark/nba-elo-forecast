@@ -1,0 +1,71 @@
+name: Update NBA forecasts
+
+"on":
+  schedule:
+    # UTC; off the hour to avoid the busiest scheduler period.
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+    inputs:
+      full_refresh:
+        description: Recheck older completed games for source corrections
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-live-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && inputs.full_refresh && 10 || 3 }}
+    env:
+      NBA_FULL_REFRESH: ${{ inputs.full_refresh && 'true' || 'false' }}
+    steps:
+      - name: Check out current main
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Run core checks
+        run: python -m unittest discover -s tests -v
+      - name: Download geography
+        run: python scripts/download_geography.py
+      - name: Collect and validate latest games
+        id: collect
+        continue-on-error: true
+        shell: bash
+        run: |
+          nba_refresh_args=()
+          if [[ "$NBA_FULL_REFRESH" == "true" ]]; then
+            nba_refresh_args+=(--full-refresh)
+          fi
+          python scripts/update_live.py --cities data/raw/geography/cities15000.zip "${nba_refresh_args[@]}"
+      - name: Publish snapshot or failure status
+        if: ${{ !cancelled() && steps.collect.outcome != 'skipped' }}
+        shell: bash
+        run: |
+          git fetch origin main
+          if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
+            echo 'Main changed during collection; refusing to overwrite newer history.'
+            exit 1
+          fi
+          git add data/seasons/index.json data/seasons/*/live.json data/seasons/*/update_status.json
+          if git diff --cached --quiet; then
+            echo 'No published data changes.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update observed NBA forecasts and collection status'
+          git push origin HEAD:main
+      - name: Report failed ingestion
+        if: ${{ steps.collect.outcome == 'failure' }}
+        run: exit 1
