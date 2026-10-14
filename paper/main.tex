@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.5 --- October 13, 2026}
+\date{Working draft 0.6 --- October 13, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -37,7 +37,7 @@ units, stable transformations, one complementary probability function, and
 NBA-specific calibration. Changes to inherited expressions are described below.
 The website, historical replay, and manually invoked live collector are
 implemented. Automatic collection is scheduled through GitHub Actions; private frontend
-hosting remains pending explicit deployment approval.
+hosting is deployed with private access.
 
 \section{Forecast timing}
 Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
@@ -434,7 +434,7 @@ remain pending. Tests cover repeated polling, corrected outcomes, preservation
 of revisions, missed-game backfill, invalid future timestamps, failed
 collection, writer locking, and empty/issued/backfilled interface states.
 Source connectivity has been verified and automatic collection is scheduled.
-Private frontend hosting remains pending deployment approval.
+Private frontend hosting is deployed and verified.
 
 \section{Scheduled operation and hosting status}
 The GitHub Actions workflow invokes core checks and collection at minute 17
@@ -458,11 +458,23 @@ requires identical record structures and identities, with floating-point
 agreement within relative/absolute tolerance $10^{-12}$; this permits platform
 rounding without changing the model or its stored forecasts.
 
-The Streamlit deployment form is prepared for the private repository's main
-branch, root application, and tested Python 3.12 runtime. Deployment has not
-completed: specific private-hosting authorization remains pending.
-Hosting must retain private access and the GitHub repository remains private.
-No hosted URL is claimed in this release.
+The Streamlit application is deployed from the private repository's main
+branch, root application, and tested Python 3.12 runtime at
+\url{https://eshan-nba-elo-forecast.streamlit.app/}.
+Private sharing was verified on the deployed application and the GitHub
+repository remains private. Hosted checks verified current-season defaults,
+archived season switching, held-out metrics, downloadable CSV data, and
+light/dark appearance modes. The downloaded 2025--26 box-score table contains
+2,460 rows matching every committed field; line-ending normalization does not
+alter the records.
+
+An active application refreshes its saved snapshot every minute using a
+Streamlit fragment. This does not scrape or fit during page interactions;
+backend collection remains on its separate two-hour schedule. Snapshot
+freshness is visible, and actual future issued forecasts will establish
+prospective performance. Deployment verification does not imply that current
+season games have already produced a live accuracy estimate.
+
 
 \appendix
 \section{Box-score feature derivations}\label{app:features}

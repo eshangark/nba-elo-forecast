@@ -42,7 +42,9 @@ The frozen configuration, optimizer report, and quality summary are under [`mode
 
 ## Application
 
-Streamlit has Teams, Games, and Methodology views, with a shared season selector defaulting to the current season. Historical seasons show ratings, reconstructed probabilities, outcomes, evaluation, and downloadable CSVs. The current 2026–27 view reads an observed live snapshot with three upcoming regular-season forecasts. Teams remain at 1500 until regular-season results arrive; preseason games are excluded. GitHub Actions runs the collector every two hours; private Streamlit hosting is prepared but not yet deployed. Native fixed dropdowns and light/dark themes are available.
+**Hosted app:** [NBA Elo Forecast](https://eshan-nba-elo-forecast.streamlit.app/) — private access.
+
+Streamlit has Teams, Games, and Methodology views, with a shared season selector defaulting to the current season. Historical seasons show ratings, reconstructed probabilities, outcomes, evaluation, and downloadable CSVs. The current 2026–27 view reads an observed live snapshot with three upcoming regular-season forecasts. Teams remain at 1500 until regular-season results arrive; preseason games are excluded. GitHub Actions runs the collector every two hours. The private Streamlit app refreshes its saved snapshot every minute while open. Native fixed dropdowns and light/dark themes are available.
 
 ```sh
 python -m venv .venv
@@ -57,7 +59,7 @@ The app reads saved outputs. It does not scrape or fit during page interactions.
 
 [Update NBA forecasts](https://github.com/eshangark/nba-elo-forecast/actions/workflows/update-live.yml) runs at minute 17 every two UTC hours. Scheduled jobs have a three-minute timeout; manual full-refresh runs may take up to ten minutes. Core checks run before collection. Source failures can publish a failure status without replacing valid ratings; concurrent branch changes cause the job to stop rather than overwrite newer history. No raw-response cache or workflow artifacts are uploaded. The [first successful cloud run](https://github.com/eshangark/nba-elo-forecast/actions/runs/38501208946) completed in 40 seconds on Ubuntu 24.04 and committed a fresh snapshot. The account’s included allowance is shared across repositories, and paid Actions usage remains capped at zero.
 
-The Streamlit deployment form is prepared for `main`, `app.py`, and Python 3.12. Hosting is not live yet and must preserve private access.
+The app is deployed from `main`, `app.py`, on Python 3.12. Hosted season switching, archived metrics, CSV downloads, private access, and light/dark mode have been verified. See [DEPLOYMENT.md](DEPLOYMENT.md) for operation and maintenance.
 
 ## Update current-season forecasts
 
@@ -90,6 +92,6 @@ Source archives can change; the committed manifests identify the release's exact
 - [Data specification](DATA_AND_FORMULAS.md): canonical field and timing contract.
 - [Project plan](PROJECT_PLAN.md): live pipeline and deployment milestones.
 
-The after-game collector and immutable upcoming-forecast revisions are implemented and have been run against the actual feed. The scheduled GitHub Actions updater is enabled. Private Streamlit hosting awaits deployment approval. No paid service is configured. Preserve genuinely issued forecasts when refitting or correcting data. The repository remains private during development.
+The after-game collector and immutable upcoming-forecast revisions are implemented and have been run against the actual feed. The scheduled GitHub Actions updater is enabled. Private Streamlit hosting is deployed and verified. No paid service is configured. Preserve genuinely issued forecasts when refitting or correcting data. The repository remains private during development.
 
 The [competition repository](https://github.com/aaravbora22/wharton_game_prediction_model) and team report provide research provenance; the NBA implementation documents its own conventions and revisions.

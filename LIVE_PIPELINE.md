@@ -1,6 +1,6 @@
 # Observed forecasts and after-game updates
 
-The collector uses the frozen NBA v0.2 configuration. It has been run against the actual free ESPN feed, publishing the first three regular-season forecasts for 2026–27. There are no completed regular-season games in that initial snapshot; preseason results are excluded and all teams still start at 1500. The pipeline supports manual runs and a two-hour GitHub Actions schedule. Private Streamlit hosting is prepared but not deployed.
+The collector uses the frozen NBA v0.2 configuration. It has been run against the actual free ESPN feed, publishing the first three regular-season forecasts for 2026–27. There are no completed regular-season games in that initial snapshot; preseason results are excluded and all teams still start at 1500. The pipeline supports manual runs and a two-hour GitHub Actions schedule. Private Streamlit hosting is deployed at [NBA Elo Forecast](https://eshan-nba-elo-forecast.streamlit.app/).
 
 ## Run an update
 
@@ -48,6 +48,6 @@ Tests exercise duplicate polling, correction replay, preservation of issued prob
 
 Core checks precede ingestion. Failed collection leaves the valid bundle intact and publishes the failure status when possible; the workflow still fails so GitHub records the error. A branch-head check and ordinary fast-forward push protect newer commits. No GitHub secrets, paid API keys, Actions caches, or artifacts are required. Only processed season data is committed.
 
-The schedule is designed to fit the shared free Actions allowance; paid usage is blocked by the account’s existing zero-dollar Actions budget. Other repositories and manual runs share that allowance. If it is exhausted, updates can stop until the allowance resets. Hosting remains a separate pending private deployment.
+The schedule is designed to fit the shared free Actions allowance; paid usage is blocked by the account’s existing zero-dollar Actions budget. Other repositories and manual runs share that allowance. If it is exhausted, updates can stop until the allowance resets. The hosted app rereads its saved snapshot every minute while open, without scraping or fitting on page interactions.
 
 The first successful cloud run passed 36 core checks, skipped nine optional frontend/fitting checks, refreshed the ESPN feed, and committed the new snapshot in 40 seconds. The full local suite passes all 45 tests. Ubuntu 24.04 is pinned to the verified runner platform.
