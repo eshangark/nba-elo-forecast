@@ -30,7 +30,12 @@ def render_dashboard():
     archive = load_season(ARCHIVES, lookup[selected])
     teams_tab, games_tab, method_tab = st.tabs(["Teams", "Games", "Methodology"])
 
+    with teams_tab:
+        st.caption("Compare team strength for the selected season. Teams are ordered by Elo, with higher ratings indicating stronger teams; ratings change as completed games are processed.")
+    with games_tab:
+        st.caption("Explore win probabilities for upcoming games and compare past predictions with final outcomes. Historical seasons show reconstructed forecasts; current-season games retain predictions actually issued before tip-off.")
     with method_tab:
+        st.caption("See how matchup probabilities and Elo updates are calculated, explore the fitted constants, and review how accurately the model's probabilities match game outcomes.")
         st.html("""<style>
             [data-testid="stLatex"] .katex-display {
                 overflow-x: auto;
