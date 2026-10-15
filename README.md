@@ -95,3 +95,7 @@ python scripts/update_live.py --cities data/raw/geography/cities15000.zip
 ```
 
 Collection uses free endpoints with no availability guarantee. Hosting and scheduled jobs use included allowances. No paid API or automatic paid overage is configured.
+
+## Licensing
+
+An open-source license for original project code has not yet been selected. Third-party notices and data attribution are retained separately; see [SOURCES.md](SOURCES.md) and [data/README.md](data/README.md). Selecting the code license is a remaining publication decision.
