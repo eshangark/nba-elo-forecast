@@ -39,7 +39,7 @@ def render_dashboard():
             }
         </style>""")
         st.subheader("Pregame win probability")
-        st.latex(r"p_i=\left[1+10^{\frac{r_j-r_i-Hh}{c}+\gamma\ln(F_i/G_i)}\right]^{-1},\qquad p_j=1-p_i")
+        st.latex(r"p_i=\frac{1}{1+10^{z_i}},\qquad z_i=\frac{r_j-r_i-Hh}{c}+\gamma\ln(F_i/G_i),\qquad p_j=1-p_i")
         st.markdown(r"""
 - **Teams:** $i$ is the home team and $j$ is the away team.
 - **Win probability ($p_i$, $p_j$):** each team's predicted chance of winning before tip-off.
