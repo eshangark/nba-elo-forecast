@@ -1,4 +1,4 @@
-"""Download the free GeoNames city-centre dataset used by the pilot."""
+"""Download the free GeoNames city-centre dataset used by the NBA model."""
 
 import argparse
 import hashlib

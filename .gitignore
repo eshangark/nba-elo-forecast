@@ -16,3 +16,10 @@ work/
 .DS_Store
 
 data/seasons/.live-update.lock
+
+.pytest_cache/
+.coverage
+htmlcov/
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk

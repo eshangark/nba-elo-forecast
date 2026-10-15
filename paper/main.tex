@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.6 --- October 13, 2026}
+\date{Working draft 0.7 --- October 14, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -29,7 +29,7 @@ estimation, data repairs, and the limitations of this first NBA calibration.
 
 \section{Scope and provenance}
 The system produces teams ordered by rating, matchup probabilities, and a
-record of forecasts and outcomes. Live ratings are intended to update after
+record of forecasts and outcomes. Live ratings update after
 completed games; in-game probability is outside scope. The original competition
 report supplies the framework \cite{billybeanes}; associated code is reference
 material \cite{referencecode}. This implementation adopts explicit feature
@@ -55,8 +55,8 @@ publication times. One game with source play dates shifted by a day uses an
 explicitly flagged conservative tip-off-plus-eight-hours availability bound;
 this is not an observed completion time. Replays check these proxies against
 the next cutoff but cannot establish when historical corrections first reached
-a live feed. Genuinely issued forecasts will require their actual issue time,
-data cutoff, and model version, and must be preserved separately.
+a live feed. Genuinely issued forecasts record their actual issue time,
+data cutoff, and model version in a separately preserved ledger.
 
 \section{Pregame probability}
 For home team $i$ and away team $j$, define pregame ratings $r_i,r_j$, rest
@@ -285,9 +285,8 @@ or repeated-season confidence claim is made.
 
 The original competition function reproduced ten rounded example probabilities
 from the team report using supplied matchup ratings. That reference check does
-not reproduce the original rating history or establish NBA accuracy. The earlier
-151-game pipeline pilot is superseded by the complete fitted archives; its
-short-sample diagnostic was not used to choose NBA coefficients.
+not reproduce the original rating history or establish NBA accuracy. NBA
+coefficient estimation uses the complete training-season archives.
 
 \section{Simple Elo comparison and chronological diagnostics}
 A comparator estimates only $K$ and $H$, with the same fixed $c$, season

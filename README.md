@@ -1,97 +1,97 @@
 # NBA Elo Forecast
 
-Dynamic NBA ratings and pregame win probabilities, adapted from the team's 2025 Wharton competition framework.
+NBA team ratings and pregame win probabilities, with reproducible historical evaluation and an after-game update pipeline. The model adapts the Billy Beanes' 2025 Wharton competition framework to NBA regular-season basketball.
 
-## Current release
+[Application](https://eshan-nba-elo-forecast.streamlit.app/) · [Technical manuscript](paper/main.tex) · [Data sources](SOURCES.md) · [Model comparison](MODEL_COMPARISON.md)
 
-Model **0.2.0** is fitted to NBA regular-season history. The repository contains five complete seasons, **2021–22 through 2025–26**: 6,150 games and 12,300 team-game records. Every required numerical formula input passes validation. Historical forecasts are reconstructed replays, not predictions issued live.
+The hosted application currently requires private access. Preparing this repository for publication does not change its visibility or the application's sharing settings.
 
-Training uses 2021–22 through 2023–24. Parameters were frozen before evaluating 2024–25 (validation) and 2025–26 (held-out test). Both teams must have played ten games before a game contributes to the primary evaluation; all opening games still update ratings and retain forecasts.
+## Features
 
-| Season | Role | Scored games | Log loss | Brier score | Winner accuracy |
-| --- | --- | ---: | ---: | ---: | ---: |
-| 2021–22 | Training | 1,073 | 0.6298 | 0.2191 | 66.64% |
-| 2022–23 | Training | 1,073 | 0.6457 | 0.2273 | 62.26% |
-| 2023–24 | Training | 1,074 | 0.6092 | 0.2109 | 66.01% |
-| 2024–25 | Validation | 1,075 | 0.6043 | 0.2088 | 66.42% |
-| 2025–26 | Held-out test | 1,075 | 0.5925 | 0.2035 | 68.56% |
+- **Teams:** ratings ordered by Elo.
+- **Games:** upcoming win probabilities and completed-game outcomes.
+- **Seasons:** current-season view plus five historical archives, with downloadable datasets.
+- **Methodology:** equations, fitted constants, and probability evaluation.
+- **Updates:** GitHub Actions collects completed games every two hours; open pages reread saved outputs every minute.
 
-Log loss and Brier score evaluate probabilities; winner accuracy is a separate secondary measure. Calibration-bin counts are stored with each replay. One held-out season does not establish performance across all future seasons.
+The frontend reads committed snapshots; page interactions do not scrape data or fit models. The live pipeline preserves issued forecasts when source data is corrected. Backfilled games without an issued prediction are excluded from live forecast scores.
 
-## Baseline comparison
+## Historical results
 
-The original frozen model improves on a simple Elo model fitted on the same three training seasons: on 2025–26, simple Elo has log loss **0.6018**, Brier **0.2073**, and winner accuracy **66.79%**, versus **0.5925**, **0.2035**, and **68.56%** for v0.2.
+Model **0.2.0** was fitted on 2021–22 through 2023–24. Its constants were frozen before evaluating 2024–25 and 2025–26. Primary scoring requires both teams to have played ten games; earlier games still update ratings.
 
-Four expanding-window checks also favor the multifactor model on log loss and Brier, although winner accuracy is worse in one fold and individual weights are unstable. These are retrospective diagnostics, not new untouched tests. The original production configuration is retained provisionally; diagnostic refits do not replace it. See [MODEL_COMPARISON.md](MODEL_COMPARISON.md) for protocols, uncertainty estimates, stability, and reproduction.
+| Evaluation | Games | Log loss ↓ | Brier score ↓ | Winner accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| 2024–25 validation | 1,075 | 0.6043 | 0.2088 | 66.42% |
+| 2025–26 held-out test | 1,075 | 0.5925 | 0.2035 | 68.56% |
+| Simple Elo, same 2025–26 test | 1,075 | 0.6018 | 0.2073 | 66.79% |
 
-## Datasets and sources
+These are **reconstructed historical forecasts**, not predictions issued live. Log loss and Brier score measure probability quality; accuracy is secondary. Later expanding-window comparisons are retrospective diagnostics. Individual weights vary across fits, two coefficients reach their bounds, and future performance remains unestablished. See [MODEL_COMPARISON.md](MODEL_COMPARISON.md) for the complete protocol and limitations.
 
-Clean data is committed under [`data/seasons/`](data/seasons). Each historical season includes:
+## Run locally
 
-- `games.json`: validated games, venues, raw counts, completion-time proxies, and quality flags.
-- `team_games.csv`: two clean box-score rows per game.
-- `model_features.csv`: pregame inputs and probabilities, plus explicitly named postgame features for rating updates.
-- `snapshot.json`: every reconstructed forecast, outcomes, final rankings, and evaluation.
-- `collection_manifest.json`: coverage checks, source URLs/hashes, and primary-source replacements.
-
-ESPN is the underlying sports-data source. [SportsDataverse](https://github.com/sportsdataverse/sportsdataverse-data) supplies free ESPN-derived schedule, team-box-score, and play-by-play archives. Incomplete or inconsistent archival records are replaced with validated primary ESPN game summaries. [GeoNames](https://download.geonames.org/export/dump/) supplies city coordinates and time zones. See [SOURCES.md](SOURCES.md) for attribution and limitations.
-
-Raw parquet files and cached ESPN responses remain outside Git. The committed clean tables are the dataset used by this release. Travel estimates represent venue-city distances, not actual itineraries; one game uses an explicitly flagged conservative availability-time bound.
-
-The frozen configuration, optimizer report, and quality summary are under [`models/nba-v0.2/`](models/nba-v0.2). Library `Parameters()` defaults are reference starting values; fitted replays explicitly load this configuration.
-
-## Application
-
-**Hosted app:** [NBA Elo Forecast](https://eshan-nba-elo-forecast.streamlit.app/) — private access.
-
-Streamlit has Teams, Games, and Methodology views, with a shared season selector defaulting to the current season. Historical seasons show ratings, reconstructed probabilities, outcomes, evaluation, and downloadable CSVs. The current 2026–27 view reads an observed live snapshot with three upcoming regular-season forecasts. Teams remain at 1500 until regular-season results arrive; preseason games are excluded. GitHub Actions runs the collector every two hours. The private Streamlit app refreshes its saved snapshot every minute while open. Native fixed dropdowns and light/dark themes are available.
+Use **Python 3.12**, the tested development and deployment runtime. Run commands from the repository root.
 
 ```sh
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-streamlit run app.py
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
 ```
 
-The app reads saved outputs. It does not scrape or fit during page interactions.
+The committed snapshots are sufficient to run the application without collecting source data. At the start of each regular season, ratings reset to 1500; preseason games are excluded.
 
-## Automatic and manual updates
+## Data and repository layout
 
-[Update NBA forecasts](https://github.com/eshangark/nba-elo-forecast/actions/workflows/update-live.yml) runs at minute 17 every two UTC hours. Scheduled jobs have a three-minute timeout; manual full-refresh runs may take up to ten minutes. Core checks run before collection. Source failures can publish a failure status without replacing valid ratings; concurrent branch changes cause the job to stop rather than overwrite newer history. No raw-response cache or workflow artifacts are uploaded. The [first successful cloud run](https://github.com/eshangark/nba-elo-forecast/actions/runs/38501208946) completed in 40 seconds on Ubuntu 24.04 and committed a fresh snapshot. The account’s included allowance is shared across repositories, and paid Actions usage remains capped at zero.
+Five complete regular seasons, **2021–22 through 2025–26**, contain **6,150 games and 12,300 team-game records**. Required numerical model inputs pass the release's validation checks. ESPN supplies the underlying basketball records through SportsDataverse archives and primary ESPN summaries; GeoNames supplies city coordinates and time zones.
 
-The app is deployed from `main`, `app.py`, on Python 3.12. Hosted season switching, archived metrics, CSV downloads, private access, and light/dark mode have been verified. See [DEPLOYMENT.md](DEPLOYMENT.md) for operation and maintenance.
+| Path | Contents |
+| --- | --- |
+| `app.py` | Streamlit dashboard |
+| `nba_forecast/` | Rating engine, ingestion, replay, fitting, and live state |
+| `data/seasons/` | Clean game records, feature tables, replay snapshots, live ledger |
+| `models/nba-v0.2/` | Frozen constants, optimizer report, data-quality summary |
+| `models/comparison-v0.2/` | Comparator fits and paired predictions |
+| `scripts/` | Data collection, fitting, publishing, and comparison entry points |
+| `tests/` | Formula, chronology, data, live-state, and interface checks |
+| `paper/main.tex` | Self-contained technical manuscript |
 
-## Update current-season forecasts
+See [data/README.md](data/README.md) for file meanings, timing, and reuse notices. Raw downloads, local caches, credentials, and generated build files are excluded from Git. Travel is a venue-city distance proxy; source repairs and completion-time assumptions are disclosed in the manifests and manuscript.
+
+## Reproduce the research
+
+```sh
+python -m pip install -r requirements-fit.txt
+python -m unittest discover -s tests -v
+```
+
+To rebuild the historical data and refit the original training protocol:
+
+```sh
+python scripts/download_geography.py
+python scripts/download_history.py --output data/raw/history
+python scripts/build_history.py --archive-dir data/raw/history --cities data/raw/geography/cities15000.zip --cache data/raw/espn --output data/processed/history
+python scripts/fit_model.py --history data/processed/history --output data/processed/fitted --seed 42 --maxiter 150
+```
+
+These commands write local research outputs without replacing the frozen release. Source archives can change; committed manifests record release URLs and hashes. Floating-point and optimizer differences can affect refitted constants. To reproduce the recorded evaluation, use the committed game records and frozen parameters; the test suite checks their canonical replays.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) before publishing replacement archives or changing model versions. The historical 2025–26 test has already been observed and cannot serve as an untouched test for a new model.
+
+## Operation and documentation
+
+- [Deployment](DEPLOYMENT.md): hosting, update schedule, costs, and maintenance.
+- [Live pipeline](LIVE_PIPELINE.md): collection, corrections, issued forecasts, and scoring.
+- [Data and formulas](DATA_AND_FORMULAS.md): field definitions and timing contract.
+- [Roadmap](ROADMAP.md): prospective evaluation and future research.
+- [Changelog](CHANGELOG.md): released implementation and repository changes.
+- [Sources and attribution](SOURCES.md): provider records, geography, and competition provenance.
+
+The live collector can also be run manually on macOS or Linux:
 
 ```sh
 python scripts/download_geography.py
 python scripts/update_live.py --cities data/raw/geography/cities15000.zip
 ```
 
-The macOS/Linux collector loads the frozen constants, validates final games, rebuilds current ratings, and atomically saves upcoming probabilities with actual issue times. Unchanged inputs do not add revisions; previous issued forecasts survive corrections and missed collections. `--full-refresh` rechecks older season records. The app shows snapshot freshness and failed-update status. See [LIVE_PIPELINE.md](LIVE_PIPELINE.md) for data storage, projected schedule context, scoring, and the distinction between live and historical cutoff policies.
-
-## Reproduce the fitted release
-
-Use Python 3.11+ for the pinned fitting dependencies. Free downloads require network access; ingestion caches responses and stops on unresolved failures.
-
-```sh
-pip install -r requirements-fit.txt
-python scripts/download_geography.py
-python scripts/download_history.py --output data/raw/history
-python scripts/build_history.py --archive-dir data/raw/history --cities data/raw/geography/cities15000.zip --cache data/raw/espn --output data/processed/history
-python scripts/fit_model.py --history data/processed/history --output data/processed/fitted --seed 42 --maxiter 150
-python scripts/publish_history.py --history data/processed/history --fitted data/processed/fitted --source-manifest data/raw/history/downloads.json
-python -m unittest discover -s tests -v
-```
-
-Source archives can change; the committed manifests identify the release's exact downloads. Fitting uses differential evolution with L-BFGS-B polishing on chronological training replays. The accelerated objective is checked against the canonical engine. Bounds, seed, convergence, and full-precision constants are recorded in `fit_report.json`. Lead and performance weights reached their upper bounds; they are bounded estimates, not uniquely established physical constants.
-
-## Documentation and next work
-
-- [Technical manuscript](paper/main.tex): complete equations, feature derivations, fitting, results, and limitations.
-- [Data specification](DATA_AND_FORMULAS.md): canonical field and timing contract.
-- [Project plan](PROJECT_PLAN.md): live pipeline and deployment milestones.
-
-The after-game collector and immutable upcoming-forecast revisions are implemented and have been run against the actual feed. The scheduled GitHub Actions updater is enabled. Private Streamlit hosting is deployed and verified. No paid service is configured. Preserve genuinely issued forecasts when refitting or correcting data. The repository remains private during development.
-
-The [competition repository](https://github.com/aaravbora22/wharton_game_prediction_model) and team report provide research provenance; the NBA implementation documents its own conventions and revisions.
+Collection uses free endpoints with no availability guarantee. Hosting and scheduled jobs use included allowances. No paid API or automatic paid overage is configured.

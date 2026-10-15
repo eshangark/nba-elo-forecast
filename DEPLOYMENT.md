@@ -4,7 +4,7 @@ The initial NBA Elo Forecast release is deployed at:
 
 **https://eshan-nba-elo-forecast.streamlit.app/**
 
-The app and GitHub repository are private. Sign in with an authorized Streamlit/GitHub account to view it. No additional viewers were invited during deployment.
+The app and GitHub repository are private. Sign in with an authorized Streamlit/GitHub account to view it. Sharing settings are managed separately from repository visibility.
 
 ## Components
 
@@ -26,11 +26,11 @@ Page refresh does not fetch ESPN data or refit constants. It displays outputs fr
 - The 2025–26 box-score download has 2,460 rows, with all fields matching the stored dataset.
 - Light and dark themes work; the simplified menu contains theme selection and About.
 - The sharing panel's “Make this app public” option is unchecked.
-- The first successful cloud updater refreshed the feed and committed its snapshot; all 45 local tests pass and the technical manuscript compiles.
+- The cloud updater has refreshed the feed and committed its snapshot. Model and interface checks are covered by the test suite.
 
 ## Cost and limits
 
-No paid service, API key, or extra credential is configured. GitHub Actions uses the account's shared included allowance, with the existing zero-dollar paid-usage budget unchanged. Standard jobs have a three-minute timeout, and a manual full-refresh job can run for ten minutes. No raw-response cache or workflow artifacts are uploaded.
+No paid service, API key, or extra credential is configured. GitHub Actions uses the account's shared included allowance, with paid usage disabled in the current account configuration. Standard jobs have a three-minute timeout, and a manual full-refresh job can run for ten minutes. No raw-response cache or workflow artifacts are uploaded.
 
 If included Actions usage runs out, updates can stop until the allowance resets. Streamlit Community Cloud may sleep an inactive app; opening it can require a wake-up/build delay. Freshness always refers to the saved successful collection time.
 
