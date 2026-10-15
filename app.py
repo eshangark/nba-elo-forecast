@@ -165,7 +165,7 @@ def render_dashboard():
                                             "Brier": st.column_config.NumberColumn(format="%.4f"),
                                             "Winner accuracy": st.column_config.NumberColumn(format="percent")})
                 st.caption("Both models fitted on 2021–22 through 2023–24. Retrospective comparison; four expanding-window checks also favor the multifactor model on probability scores. Individual weights remain unstable.")
-                st.markdown("[Comparison protocols and results](https://github.com/eshangark/nba-elo-forecast/blob/main/MODEL_COMPARISON.md)")
+                st.markdown("[Comparison protocols and results](https://github.com/eshangark/nba-elo-forecast/blob/main/docs/EVALUATION.md)")
         st.markdown("[Technical paper on GitHub](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.pdf)")
         with st.expander("Technical manuscript source"):
             st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),
