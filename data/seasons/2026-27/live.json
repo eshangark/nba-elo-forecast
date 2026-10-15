@@ -2,7 +2,7 @@
   "schema_version": 1,
   "season": "2026-27",
   "status": "live",
-  "published_at": "2026-10-14T23:16:23.697521+00:00",
+  "published_at": "2026-10-15T04:42:31.723742+00:00",
   "coverage": {
     "start": null,
     "end": null,
@@ -776,6 +776,80 @@
       "scheduled_context_projected": false,
       "eligible_for_evaluation": false,
       "forecast_id": "bae00411be6db796644df573d7070576afc451bec7ec18fe4dd9c78998436dcd"
+    },
+    {
+      "game_id": "401909093",
+      "start": "2026-10-22T23:00Z",
+      "home": "Philadelphia 76ers",
+      "away": "Cleveland Cavaliers",
+      "home_rating": 1500.0,
+      "away_rating": 1500.0,
+      "home_probability": 0.48203871777517915,
+      "away_probability": 0.5179612822248209,
+      "home_context": {
+        "rest": 1,
+        "travel": 129.63523988229818,
+        "timezone_change": 0.0,
+        "opening_prior": false
+      },
+      "away_context": {
+        "rest": 3,
+        "travel": 0.0,
+        "timezone_change": 0.0,
+        "opening_prior": true
+      },
+      "home_sos": 0.5,
+      "away_sos": 0.5,
+      "model_version": "0.2.0",
+      "issued_at": "2026-10-15T04:42:31.723742+00:00",
+      "forecast_cutoff": "2026-10-15T04:42:31.723742+00:00",
+      "kind": "issued_live",
+      "forecast_policy_version": "after-game-v1",
+      "input_signature": "94bfabbbd84339d19b8af1a9ea3a235e72d93e6575f9c4089d96fa3042019e63",
+      "parameter_hash": "1a134fe1d52dc9619f024a145d3d9d9f1ceefca858ee8a1ecf75a28a12ac1175",
+      "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
+      "home_id": "20",
+      "away_id": "5",
+      "scheduled_context_projected": true,
+      "eligible_for_evaluation": false,
+      "forecast_id": "e3ac4b524d54aee52846f6817009c4b7a4490cc33a23ce5fc804ba7c2cce8f3e"
+    },
+    {
+      "game_id": "401909094",
+      "start": "2026-10-23T01:30Z",
+      "home": "Oklahoma City Thunder",
+      "away": "Denver Nuggets",
+      "home_rating": 1500.0,
+      "away_rating": 1500.0,
+      "home_probability": 0.48062925644021576,
+      "away_probability": 0.5193707435597843,
+      "home_context": {
+        "rest": 1,
+        "travel": 678.2145604487658,
+        "timezone_change": 0.0,
+        "opening_prior": false
+      },
+      "away_context": {
+        "rest": 3,
+        "travel": 0.0,
+        "timezone_change": 0.0,
+        "opening_prior": true
+      },
+      "home_sos": 0.5,
+      "away_sos": 0.5,
+      "model_version": "0.2.0",
+      "issued_at": "2026-10-15T04:42:31.723742+00:00",
+      "forecast_cutoff": "2026-10-15T04:42:31.723742+00:00",
+      "kind": "issued_live",
+      "forecast_policy_version": "after-game-v1",
+      "input_signature": "cabe1f147c5dafbb5d48a019a3de7a7dd4b19359214c49a6bef1ed70951e4a72",
+      "parameter_hash": "1a134fe1d52dc9619f024a145d3d9d9f1ceefca858ee8a1ecf75a28a12ac1175",
+      "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
+      "home_id": "25",
+      "away_id": "7",
+      "scheduled_context_projected": true,
+      "eligible_for_evaluation": false,
+      "forecast_id": "a9736494f19cf2125148d4a497cb327c19a1d54ea85cd03cf9a96166baac0227"
     }
   ],
   "awaiting_final": [],
@@ -943,6 +1017,58 @@
         },
         "event_state": "pre",
         "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261021"
+      },
+      {
+        "game_id": "401909093",
+        "start": "2026-10-22T23:00Z",
+        "season": 2027,
+        "season_type": 2,
+        "neutral": false,
+        "venue_id": "1845",
+        "venue_name": "Xfinity Mobile Arena",
+        "location": {
+          "id": "4560349",
+          "name": "Philadelphia",
+          "latitude": 39.95238,
+          "longitude": -75.16362,
+          "timezone": "America/New_York"
+        },
+        "home": {
+          "id": "20",
+          "name": "Philadelphia 76ers"
+        },
+        "away": {
+          "id": "5",
+          "name": "Cleveland Cavaliers"
+        },
+        "event_state": "pre",
+        "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261022"
+      },
+      {
+        "game_id": "401909094",
+        "start": "2026-10-23T01:30Z",
+        "season": 2027,
+        "season_type": 2,
+        "neutral": false,
+        "venue_id": "2559",
+        "venue_name": "Paycom Center",
+        "location": {
+          "id": "4544349",
+          "name": "Oklahoma City",
+          "latitude": 35.46756,
+          "longitude": -97.51643,
+          "timezone": "America/Chicago"
+        },
+        "home": {
+          "id": "25",
+          "name": "Oklahoma City Thunder"
+        },
+        "away": {
+          "id": "7",
+          "name": "Denver Nuggets"
+        },
+        "event_state": "pre",
+        "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261022"
       },
       {
         "game_id": "401909834",
@@ -1694,6 +1820,80 @@
         "scheduled_context_projected": false,
         "eligible_for_evaluation": false,
         "forecast_id": "bae00411be6db796644df573d7070576afc451bec7ec18fe4dd9c78998436dcd"
+      },
+      {
+        "game_id": "401909093",
+        "start": "2026-10-22T23:00Z",
+        "home": "Philadelphia 76ers",
+        "away": "Cleveland Cavaliers",
+        "home_rating": 1500.0,
+        "away_rating": 1500.0,
+        "home_probability": 0.48203871777517915,
+        "away_probability": 0.5179612822248209,
+        "home_context": {
+          "rest": 1,
+          "travel": 129.63523988229818,
+          "timezone_change": 0.0,
+          "opening_prior": false
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.2.0",
+        "issued_at": "2026-10-15T04:42:31.723742+00:00",
+        "forecast_cutoff": "2026-10-15T04:42:31.723742+00:00",
+        "kind": "issued_live",
+        "forecast_policy_version": "after-game-v1",
+        "input_signature": "94bfabbbd84339d19b8af1a9ea3a235e72d93e6575f9c4089d96fa3042019e63",
+        "parameter_hash": "1a134fe1d52dc9619f024a145d3d9d9f1ceefca858ee8a1ecf75a28a12ac1175",
+        "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
+        "home_id": "20",
+        "away_id": "5",
+        "scheduled_context_projected": true,
+        "eligible_for_evaluation": false,
+        "forecast_id": "e3ac4b524d54aee52846f6817009c4b7a4490cc33a23ce5fc804ba7c2cce8f3e"
+      },
+      {
+        "game_id": "401909094",
+        "start": "2026-10-23T01:30Z",
+        "home": "Oklahoma City Thunder",
+        "away": "Denver Nuggets",
+        "home_rating": 1500.0,
+        "away_rating": 1500.0,
+        "home_probability": 0.48062925644021576,
+        "away_probability": 0.5193707435597843,
+        "home_context": {
+          "rest": 1,
+          "travel": 678.2145604487658,
+          "timezone_change": 0.0,
+          "opening_prior": false
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.2.0",
+        "issued_at": "2026-10-15T04:42:31.723742+00:00",
+        "forecast_cutoff": "2026-10-15T04:42:31.723742+00:00",
+        "kind": "issued_live",
+        "forecast_policy_version": "after-game-v1",
+        "input_signature": "cabe1f147c5dafbb5d48a019a3de7a7dd4b19359214c49a6bef1ed70951e4a72",
+        "parameter_hash": "1a134fe1d52dc9619f024a145d3d9d9f1ceefca858ee8a1ecf75a28a12ac1175",
+        "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
+        "home_id": "25",
+        "away_id": "7",
+        "scheduled_context_projected": true,
+        "eligible_for_evaluation": false,
+        "forecast_id": "a9736494f19cf2125148d4a497cb327c19a1d54ea85cd03cf9a96166baac0227"
       }
     ],
     "parameter_registry": {
@@ -1725,71 +1925,70 @@
     "corrections": [],
     "latest_sources": [
       {
-        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261014&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:18.771839+00:00",
-        "sha256": "ce3171088e7ff1daf14a28378228e5030e2215218e1c24f1a57b9840e329025e"
-      },
-      {
-        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261007&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:19.260753+00:00",
-        "sha256": "88af86c2020949402815a8eccaba35e9d245e9dc67bc1269bdf5b3ba41610ba1"
+        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261015&limit=1000",
+        "retrieved_at": "2026-10-15T04:42:26.204461+00:00",
+        "sha256": "302aa71b4cc97bc5d7a3fbcb788c2483e3f97f1ddebc9e5e56d7462753d225b1"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261008&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:19.751213+00:00",
+        "retrieved_at": "2026-10-15T04:42:26.801636+00:00",
         "sha256": "595547980931f8613d125094087f0f7055af3aff425afeb0c479a5898be2d972"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261009&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:20.175641+00:00",
+        "retrieved_at": "2026-10-15T04:42:27.249454+00:00",
         "sha256": "a8b305062d98b7879364e4931964d39a5ef99dd0b913a43cc771ec5776617ba5"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261010&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:20.642266+00:00",
-        "sha256": "0f2340f7a42bbd9498c13d389bd9ef634720febfca44ef845609d547e558ef0b"
+        "retrieved_at": "2026-10-15T04:42:27.867419+00:00",
+        "sha256": "81076afab1068b92c8402b171506c663809ba456d1cd04ce73890df807d09b50"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261011&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:21.104360+00:00",
+        "retrieved_at": "2026-10-15T04:42:28.346782+00:00",
         "sha256": "6126add5d7efd8d42a4f889fda6cbf96a40287256f12ca0bbc8cd166ad08d67d"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261012&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:21.517630+00:00",
+        "retrieved_at": "2026-10-15T04:42:28.810989+00:00",
         "sha256": "412bed25da6f7c57a83981e658267c090043c943b1bcecdca8a828d6043e9173"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:21.909737+00:00",
+        "retrieved_at": "2026-10-15T04:42:29.291648+00:00",
         "sha256": "6e02a6079ba3e59b445a794dc3b73607cf0d6fea9f34082386939c42de75de14"
       },
       {
-        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261015&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:22.328611+00:00",
-        "sha256": "ff8b59242cd1db1704782b14bd2860ed1d976977e7cd6523c5528a3a6c85b4bb"
+        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261014&limit=1000",
+        "retrieved_at": "2026-10-15T04:42:29.836447+00:00",
+        "sha256": "03cbc771513967244af70579aebe0e0da816bfa2a95c7674e3e0652723d89d71"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261016&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:22.734858+00:00",
-        "sha256": "a8382ecd08d7b06a22d32a2e988f335d601d97a26e48150f6c2e4b4e6c3efca3"
+        "retrieved_at": "2026-10-15T04:42:30.287058+00:00",
+        "sha256": "87ffb3a55d1221bf3d54e2258a22b0b21837e2b03af428176557b6bcf4e34132"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261020&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:23.200902+00:00",
-        "sha256": "19073f270542a45c62afff318c80ae1acc84b8a7316723c4aafd7e4b7eb2fc7a"
+        "retrieved_at": "2026-10-15T04:42:30.695556+00:00",
+        "sha256": "d038258a4e511bf52690d68b0733f2b2f7946faa586bbce8baa64dfdec1b6e1e"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261021&limit=1000",
-        "retrieved_at": "2026-10-14T23:16:23.653510+00:00",
-        "sha256": "51eeda38f5a626f4b082c70430a943136506aba031a451510912f50bb8d8d710"
+        "retrieved_at": "2026-10-15T04:42:31.205772+00:00",
+        "sha256": "cc2956dad6ba10db20de68e74c5450a20ecc01fdec196a49b3bd8c85af16f7ec"
+      },
+      {
+        "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261022&limit=1000",
+        "retrieved_at": "2026-10-15T04:42:31.673205+00:00",
+        "sha256": "ab263ef4e462c6381b464bac563bbdbf197d6e6edbcbfee7dedec53e0b764004"
       }
     ],
     "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
     "policy": "Source-completion event replay for rating state; observed runs issue upcoming revisions. No historical forecast fabrication.",
     "collection": {
       "dates_checked": [
-        "2026-10-07",
         "2026-10-08",
         "2026-10-09",
         "2026-10-10",
@@ -1800,14 +1999,11 @@
         "2026-10-15",
         "2026-10-16",
         "2026-10-20",
-        "2026-10-21"
+        "2026-10-21",
+        "2026-10-22"
       ],
-      "event_count": 69,
+      "event_count": 66,
       "exclusions": [
-        {
-          "game_id": "401898391",
-          "reason": "excluded"
-        },
         {
           "game_id": "401898392",
           "reason": "excluded"
@@ -1949,19 +2145,11 @@
           "reason": "excluded"
         },
         {
-          "game_id": "401908620",
-          "reason": "excluded"
-        },
-        {
           "game_id": "401908621",
           "reason": "excluded"
         },
         {
           "game_id": "401908622",
-          "reason": "excluded"
-        },
-        {
-          "game_id": "401908939",
           "reason": "excluded"
         },
         {
@@ -1997,10 +2185,6 @@
           "reason": "excluded"
         },
         {
-          "game_id": "401914123",
-          "reason": "excluded"
-        },
-        {
           "game_id": "401914124",
           "reason": "excluded"
         },
@@ -2013,10 +2197,6 @@
           "reason": "excluded"
         },
         {
-          "game_id": "401914129",
-          "reason": "excluded"
-        },
-        {
           "game_id": "401914130",
           "reason": "excluded"
         },
@@ -2026,6 +2206,6 @@
         }
       ]
     },
-    "geonames_sha256": "2fb16be8fede1f2c4b5d506517106fedf16e9e3d16b2e1c6b8f52c96ea7aa673"
+    "geonames_sha256": "d5cc2af747cdb2defd31f7baa815240fb9cc0145902469de01d059eaceb23011"
   }
 }
