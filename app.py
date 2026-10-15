@@ -31,32 +31,46 @@ def render_dashboard():
     teams_tab, games_tab, method_tab = st.tabs(["Teams", "Games", "Methodology"])
 
     with method_tab:
+        st.html("""<style>
+            [data-testid="stLatex"] .katex-display {
+                overflow-x: auto;
+                overflow-y: hidden;
+                padding-block: 0.35rem;
+            }
+        </style>""")
         st.subheader("Pregame win probability")
-        st.latex(r"""
-            \begin{aligned}
-            p_i &= \frac{1}{1+10^{z_i}}, \qquad p_j=1-p_i \\
-            z_i &= \frac{r_j-r_i-Hh}{c}+\gamma\ln\!\left(\frac{F_i}{G_i}\right)
-            \end{aligned}
+        st.latex(r"p_i=\left[1+10^{\frac{r_j-r_i-Hh}{c}+\gamma\ln(F_i/G_i)}\right]^{-1},\qquad p_j=1-p_i")
+        st.markdown(r"""
+- **Teams:** $i$ is the home team and $j$ is the away team.
+- **Win probability ($p_i$, $p_j$):** each team's predicted chance of winning before tip-off.
+- **Elo ratings ($r_i$, $r_j$):** the teams' pregame strength ratings.
+- **Home advantage ($Hh$):** fitted advantage $H$, with $h=1$ at home and $h=0$ at a neutral venue.
+- **Rating scale ($c$):** converts Elo differences into probability differences.
+- **Rest and travel context ($F_i/G_i$):** combines rest, estimated travel, and time-zone changes.
+- **Fatigue weight ($\gamma$):** controls the influence of that context on the probability.
         """)
-        st.markdown(r"$i$ is the home team and $j$ the away team. Their pregame Elo ratings are $r_i$ and $r_j$; $H$ is home advantage, $h=1$ at home and $h=0$ at a neutral venue, and $c$ sets the rating scale. $F_i/G_i$ combines rest, estimated travel, and time-zone changes; $\gamma$ controls its influence.")
         st.subheader("Elo update after a completed game")
-        st.latex(r"""
-            \begin{aligned}
-            r_i^{+} &= r_i+K(y_i-p_i) \\
-            &\quad\cdot(1+s_i\beta S_i)(1+\phi\log_2(1+L_i)) \\
-            &\quad\cdot(1+s_i\lambda(Q_i-1)), \qquad s_i=2y_i-1
-            \end{aligned}
+        st.latex(r"r_i^{+}=r_i+K(y_i-p_i)(1+s_i\beta S_i)(1+\phi\log_2(1+L_i))(1+s_i\lambda(Q_i-1))")
+        st.markdown(r"""
+- **Updated Elo ($r_i^{+}$):** the team's rating after the completed game, before league recentering.
+- **Outcome ($y_i$):** $1$ for a win and $0$ for a loss.
+- **Prediction error ($y_i-p_i$):** the difference between the outcome and that team's pregame win probability.
+- **Update size ($K$):** the base sensitivity of Elo to the result.
+- **Result direction ($s_i$):** $s_i=2y_i-1$, giving $+1$ for a win and $-1$ for a loss.
+- **Schedule strength ($S_i$):** the opponent's prior record and its previous opponents' records, weighted by $\beta$.
+- **Lead retention ($L_i$):** final margin divided by the largest lead of either team, weighted by $\phi$.
+- **Relative performance ($Q_i$):** box-score performance compared with the team's prior average, weighted by $\lambda$.
         """)
-        st.markdown(r"For each team, $y_i=1$ for a win and $0$ for a loss, and $p_i$ is that team's pregame probability. $K$ sets the update size. $S_i$ measures prior schedule strength, $L_i$ measures final margin relative to the largest lead, and $Q_i$ compares box-score performance with the team's prior average. Their fitted weights are $\beta$, $\phi$, and $\lambda$.")
         st.caption("Only prior information enters the probability. Outcomes and current-game box scores enter the rating update after completion; league ratings are then recentered at 1500.")
         with st.expander("Rest, travel, and time-zone inputs"):
-            st.latex(r"""
-                \begin{aligned}
-                F_i &= RD_j+e^{|TZ_i|/3}+\nu TD_i \\
-                G_i &= RD_i+e^{|TZ_j|/3}+\nu TD_j
-                \end{aligned}
+            st.latex(r"F_i=RD_j+e^{|TZ_i|/3}+\nu TD_i,\qquad G_i=RD_i+e^{|TZ_j|/3}+\nu TD_j")
+            st.markdown(r"""
+- **Rest ($RD$):** intervening calendar days between games.
+- **Travel ($TD$):** estimated distance between venue cities in kilometres.
+- **Time-zone change ($TZ$):** the change in venue time-zone offsets in hours.
+- **Travel weight ($\nu$):** the fitted coefficient on estimated travel.
             """)
-            st.markdown(r"$RD$ is rest in intervening calendar days, $TD$ is venue-city travel in kilometres, and $TZ$ is the time-zone change in hours. $\nu$ is the fitted travel weight. The paper includes the complete feature derivations and fitting method.")
+            st.caption("The paper includes the complete feature derivations and fitting method.")
 
     if archive is None:
         with teams_tab:
