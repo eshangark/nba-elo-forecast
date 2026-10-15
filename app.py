@@ -30,6 +30,34 @@ def render_dashboard():
     archive = load_season(ARCHIVES, lookup[selected])
     teams_tab, games_tab, method_tab = st.tabs(["Teams", "Games", "Methodology"])
 
+    with method_tab:
+        st.subheader("Pregame win probability")
+        st.latex(r"""
+            \begin{aligned}
+            p_i &= \frac{1}{1+10^{z_i}}, \qquad p_j=1-p_i \\
+            z_i &= \frac{r_j-r_i-Hh}{c}+\gamma\ln\!\left(\frac{F_i}{G_i}\right)
+            \end{aligned}
+        """)
+        st.markdown(r"$i$ is the home team and $j$ the away team. Their pregame Elo ratings are $r_i$ and $r_j$; $H$ is home advantage, $h=1$ at home and $h=0$ at a neutral venue, and $c$ sets the rating scale. $F_i/G_i$ combines rest, estimated travel, and time-zone changes; $\gamma$ controls its influence.")
+        st.subheader("Elo update after a completed game")
+        st.latex(r"""
+            \begin{aligned}
+            r_i^{+} &= r_i+K(y_i-p_i) \\
+            &\quad\cdot(1+s_i\beta S_i)(1+\phi\log_2(1+L_i)) \\
+            &\quad\cdot(1+s_i\lambda(Q_i-1)), \qquad s_i=2y_i-1
+            \end{aligned}
+        """)
+        st.markdown(r"For each team, $y_i=1$ for a win and $0$ for a loss, and $p_i$ is that team's pregame probability. $K$ sets the update size. $S_i$ measures prior schedule strength, $L_i$ measures final margin relative to the largest lead, and $Q_i$ compares box-score performance with the team's prior average. Their fitted weights are $\beta$, $\phi$, and $\lambda$.")
+        st.caption("Only prior information enters the probability. Outcomes and current-game box scores enter the rating update after completion; league ratings are then recentered at 1500.")
+        with st.expander("Rest, travel, and time-zone inputs"):
+            st.latex(r"""
+                \begin{aligned}
+                F_i &= RD_j+e^{|TZ_i|/3}+\nu TD_i \\
+                G_i &= RD_i+e^{|TZ_j|/3}+\nu TD_j
+                \end{aligned}
+            """)
+            st.markdown(r"$RD$ is rest in intervening calendar days, $TD$ is venue-city travel in kilometres, and $TZ$ is the time-zone change in hours. $\nu$ is the fitted travel weight. The paper includes the complete feature derivations and fitting method.")
+
     if archive is None:
         with teams_tab:
             st.info("This season's ratings are being prepared. Select an archived season to explore available history.")
@@ -143,8 +171,6 @@ def render_dashboard():
                     st.download_button(label, path.read_bytes(), file_name=f"{selected}-{filename}", mime="text/csv")
 
     with method_tab:
-        st.subheader("How the model works")
-        st.write("Pregame probabilities combine the teams' Elo difference with home court, rest, estimated travel, and time-zone changes. After completed games, ratings update using the result, schedule strength, lead retention, and box-score performance.")
         st.write("Each season has its own stored history. Model versions and data coverage are preserved so archived results remain interpretable.")
         st.caption("Sources: ESPN records archived by SportsDataverse, validated against primary ESPN summaries where needed; GeoNames supplies venue-city coordinates and time zones. Travel is an estimate between cities.")
         with st.expander("Fitted NBA constants"):
