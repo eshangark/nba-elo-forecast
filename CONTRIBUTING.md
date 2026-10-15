@@ -19,7 +19,7 @@ Keep changes focused and describe the behavior, rationale, and relevant checks. 
 
 Tests cover the probability and rating equations, chronological replay, frozen-release results, derived features, source normalization, immutable forecast revisions, correction handling, and season switching. Cross-platform numerical comparisons allow a small floating-point tolerance while preserving exact IDs, flags, and structure.
 
-For changes to equations, feature definitions, data sources, fitting, or evaluation, update `paper/main.tex` and the relevant documentation. Compile the manuscript and resolve errors before submitting it. The file is a standalone LaTeX article; it does not require external figures or bibliography files.
+For changes to equations, feature definitions, data sources, fitting, or evaluation, update `paper/main.tex` and the relevant documentation. Compile the manuscript and resolve errors before submitting it. Keep the committed `paper/main.pdf` synchronized with the source; for example, with Tectonic installed, run `tectonic --outdir paper paper/main.tex` and inspect the resulting PDF. The file is a standalone LaTeX article; it does not require external figures or bibliography files.
 
 ## Model and data releases
 

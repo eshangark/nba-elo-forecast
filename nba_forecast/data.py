@@ -193,7 +193,7 @@ def parse_summary(payload, cities):
             if recovered["points"] != team["points"] or recovered["points"] != 2 * recovered["fgm"] + recovered["threem"] + recovered["ftm"]:
                 raise ValueError(f"Both team and player totals contradict final score: {team_id}")
             # TOV consistently means summed player turnovers, matching the
-            # competition's separate TOV and team-turnover columns.
+            # separate player-turnover and team-turnover columns.
             team.update(recovered)
             game["quality_actions"].append({"team_id": team_id, "action": "recovered_player_totals"})
         if "largestLead" in stats:

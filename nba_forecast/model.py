@@ -14,7 +14,7 @@ EASTERN = ZoneInfo("America/New_York")
 @dataclass(frozen=True)
 class Parameters:
     k: float = 32.0
-    # Fix b=10 while preserving the original report's rating/fatigue log-odds scales.
+    # Fix b=10 and the rating scale to identify the probability model.
     c: float = 993.39 * math.log(10) / math.log(99.39)
     home_advantage: float = 72.52
     fatigue_weight: float = 0.02 * math.log(99.39) / math.log(10)

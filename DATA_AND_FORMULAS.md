@@ -1,6 +1,6 @@
 # Data and formula specification
 
-The canonical model is `nba_forecast/model.py`, version 0.2.0; `paper/main.tex` gives the mathematical specification and appendix derivations. The original Billy Beanes report and competition code supply provenance, with deliberate NBA revisions recorded in the manuscript.
+The canonical model is `nba_forecast/model.py`, version 0.2.0; `paper/main.tex` gives the mathematical specification and appendix derivations. Feature definitions, units, fitting, and evaluation are documented in the manuscript.
 
 ## Coverage and validation
 

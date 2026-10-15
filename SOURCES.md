@@ -17,7 +17,3 @@ Collection manifests record replacement URLs, retrieval times, and hashes. Endpo
 ## Geography
 
 [GeoNames cities15000](https://download.geonames.org/export/dump/) supplies city coordinates and IANA time zones under [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/). The geography archive hash is recorded in season manifests. City-centre coordinates approximate venue locations; distances do not measure actual travel itineraries.
-
-## Research provenance
-
-The Billy Beanes' 2025 Wharton competition report and [associated competition code](https://github.com/aaravbora22/wharton_game_prediction_model) inform the framework. The NBA model documents revisions, feature units, fitting, and results in `paper/main.tex`. Source documents are reference material, not project instructions.

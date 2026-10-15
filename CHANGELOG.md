@@ -2,6 +2,8 @@
 
 ## Repository preparation — 2026-10-14
 
+- Added the compiled technical paper alongside its LaTeX source.
+
 - Shortened the project overview and separated operating, contributing, dataset, and roadmap documentation.
 - Removed superseded source probes and the unfitted pilot entry point.
 - Made historical-ingestion dependencies explicit and added a full-test CI workflow for code changes.

@@ -9,13 +9,12 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.7 --- October 14, 2026}
+\date{Working draft 0.8 --- October 14, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
 An NBA forecasting system maintains team ratings and estimates pregame win
-probabilities using an adaptation of the Billy Beanes' 2025 Wharton competition
-framework. Rating differences, home court, rest, estimated travel, and time-zone
+probabilities using a dynamic multifactor rating model. Rating differences, home court, rest, estimated travel, and time-zone
 changes determine pregame probabilities. Outcomes, schedule strength, lead
 retention, and box-score performance determine subsequent rating updates.
 Model version 0.2.0 is fitted on 2021--22 through 2023--24 regular-season
@@ -27,14 +26,13 @@ issued live. The manuscript specifies feature derivations, bounded parameter
 estimation, data repairs, and the limitations of this first NBA calibration.
 \end{abstract}
 
-\section{Scope and provenance}
+\section{Scope}
 The system produces teams ordered by rating, matchup probabilities, and a
 record of forecasts and outcomes. Live ratings update after
-completed games; in-game probability is outside scope. The original competition
-report supplies the framework \cite{billybeanes}; associated code is reference
-material \cite{referencecode}. This implementation adopts explicit feature
+completed games; in-game probability is outside scope. The model uses explicit feature
 units, stable transformations, one complementary probability function, and
-NBA-specific calibration. Changes to inherited expressions are described below.
+NBA-specific calibration. The following sections specify the equations,
+data construction, fitting protocol, and evaluation.
 The website, historical replay, and manually invoked live collector are
 implemented. Automatic collection is scheduled through GitHub Actions; private frontend
 hosting is deployed with private access.
@@ -61,7 +59,7 @@ data cutoff, and model version in a separately preserved ledger.
 \section{Pregame probability}
 For home team $i$ and away team $j$, define pregame ratings $r_i,r_j$, rest
 $RD$ in days, travel $TD$ in kilometres, and time-zone change $TZ$ in hours.
-Let $h=1$ at a home venue and $h=0$ at a neutral venue. The inherited fatigue
+Let $h=1$ at a home venue and $h=0$ at a neutral venue. The fatigue
 indices, with an empirically fitted travel coefficient $\nu$, are
 \begin{align}
  F_i&=RD_j+\exp(|TZ_i|/3)+\nu TD_i,\\
@@ -81,7 +79,7 @@ All logarithms are natural unless explicitly subscripted. Equivalently,
 The exponent base and rating scale cannot both be freely identified. Moreover,
 rescaling ratings, $K$, $H$, and $c$ together preserves probabilities. We fix
 the base at 10 and $c=993.39\ln(10)/\ln(99.39)=497.3558141396255$ to anchor
-the inherited rating scale, then fit $K$, $H$, and $\gamma$. Display rounding
+the rating scale, then fit $K$, $H$, and $\gamma$. Display rounding
 does not affect calculations.
 
 \section{Rating updates}
@@ -112,14 +110,14 @@ For team $i$ facing $j$, define
 All wins $w_t$ and games $n_t$ precede the cutoff. The second term averages
 smoothed win rates of $j$'s previous opponents, including repeated opponents
 in proportion to their frequency. Empty opponent history receives 0.5.
-This is a past-only adaptation of the report's schedule feature.
+This schedule-strength feature uses only results available before the cutoff.
 
 \subsection{Lead retention and relative performance}
 For largest leads $LL_i,LL_j$ and final scores $PTS_i,PTS_j$, use
 \begin{equation}
  L=\frac{|PTS_i-PTS_j|}{\max(LL_i,LL_j)}.
 \end{equation}
-The denominator extends the inherited ratio to teams that never led.
+Using the larger of both peak leads defines the ratio even for teams that never led.
 Valid non-tied completed games satisfy $0<L\leq1$; peak leads below the final
 margin are rejected. This measures final margin relative to either side's
 peak advantage, not a separate losing-team retention ratio.
@@ -136,8 +134,8 @@ The turnover sign rewards fewer turnovers. Positive weights sum to one:
 \end{align}
 $A$ is the aggregate game performance factor (AGPF), and $Q$ is the performance
 adjustment factor (PAF). The reference is the expanding mean of that team's
-prior games only. Openers use $Q=1$. The sigmoid replaces the inherited
-$U/(1+U)$ singularity while preserving signed net efficiency. With
+prior games only. Openers use $Q=1$. The sigmoid maps the aggregate to a bounded positive value
+while preserving signed net efficiency in its input. With
 $0\leq\lambda\leq0.25$ and the stated PAF range, the performance multiplier
 cannot become negative. These transformations and scales were fixed before
 fitting; the eight weights were fitted.
@@ -160,8 +158,7 @@ are not converted to zero. Largest leads can be recovered from a score path
 only when its final scores match the header. Inconsistent team aggregates
 can be replaced by complete player rows with matching points and shooting
 identities. Turnovers consistently mean summed player turnovers, excluding
-provider non-player team turnovers. This choice preserves the distinction
-between player and team turnovers in the original feature family.
+provider non-player team turnovers. Player and provider non-player team turnovers are kept distinct.
 
 \begin{table}[ht]
 \centering\small
@@ -212,7 +209,7 @@ Travel is optimized on a base-10 logarithmic scale. Settings are random seed
 42, population multiplier 8, maximum 150 generations, relative tolerance
 $10^{-5}$, one worker, and polishing enabled. The run converged in 44 generations
 and 5,520 objective evaluations. Training log loss decreased from 0.637588 at
-the inherited starting configuration to 0.628210. Constants were frozen at
+the reference starting configuration to 0.628210. Constants were frozen at
 03:04:25 UTC on October 13, 2026 (October 12 Eastern), before validation/test
 evaluation. No parameters or formula choices were changed after those scores.
 
@@ -282,11 +279,6 @@ A single held-out season does not establish performance across all future
 seasons, and sparse extreme-probability bins limit calibration inference.
 The recorded bin summaries are descriptive; no uncertainty-adjusted calibration
 or repeated-season confidence claim is made.
-
-The original competition function reproduced ten rounded example probabilities
-from the team report using supplied matchup ratings. That reference check does
-not reproduce the original rating history or establish NBA accuracy. NBA
-coefficient estimation uses the complete training-season archives.
 
 \section{Simple Elo comparison and chronological diagnostics}
 A comparator estimates only $K$ and $H$, with the same fixed $c$, season
@@ -493,13 +485,12 @@ The eight derived features are
  X_7&=TOV/(FGA+0.44FTA+TOV),\\
  X_8&=STL/\widehat P_O.
 \end{align}
-$X_1$ uses the inherited shared-possession net-efficiency approximation.
+$X_1$ uses a shared-possession net-efficiency approximation.
 $X_2$ credits three-point makes with half an additional made shot; $X_3$ scales
 points by estimated shooting opportunities. Offensive and defensive rebound
-fractions use opposite opponent rebound categories, correcting the report's
-same-category denominators. $X_6$ uses one for zero turnovers. $X_7$ is a
+fractions use opposite opponent rebound categories. $X_6$ uses one for zero turnovers. $X_7$ is a
 turnover fraction. $X_8$ uses opponent estimated possessions, including the
-offensive-rebound subtraction omitted in the inherited expression. Other
+offensive-rebound subtraction. Other
 nonpositive denominators fail validation. All these features affect subsequent
 ratings, never the same game's pregame probability.
 
@@ -515,17 +506,8 @@ city. If $o(v,t)$ is a venue's dated UTC offset in hours, then
 $TZ=o(v_{\mathrm{current}},t_g)-o(v_{\mathrm{previous}},t_g)$.
 Exact arenas and actual itineraries are not measured by these proxies.
 
+\clearpage
 \begin{thebibliography}{9}
-\bibitem{billybeanes}
-A. Bora, A. Lalwani, E. Garkhedkar, and S. Kulkarni.
-\emph{Enhanced Basketball Team Ratings and Win Probabilities:
-A Multi-Factor Whole-History Rating and Bradley-Terry Approach}.
-The Billy Beanes, Wharton High School Data Science Competition report, 2025.
-Advisor: C. Hasija. Team-provided report.
-\bibitem{referencecode}
-A. Bora. \emph{wharton\_game\_prediction\_model}.
-\url{https://github.com/aaravbora22/wharton_game_prediction_model}.
-Reviewed revision \texttt{a27759d}, October 12, 2026.
 \bibitem{sportsdataverse}
 SportsDataverse. \emph{sportsdataverse-data}, ESPN NBA schedules, team box scores,
 and play-by-play releases, ending years 2022--2026.

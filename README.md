@@ -1,8 +1,8 @@
 # NBA Elo Forecast
 
-NBA team ratings and pregame win probabilities, with reproducible historical evaluation and an after-game update pipeline. The model adapts the Billy Beanes' 2025 Wharton competition framework to NBA regular-season basketball.
+NBA team ratings and pregame win probabilities, with reproducible historical evaluation and an after-game update pipeline. This project is adapted from work developed for the Wharton Data Science Competition.
 
-[Application](https://eshan-nba-elo-forecast.streamlit.app/) · [Technical manuscript](paper/main.tex) · [Data sources](SOURCES.md) · [Model comparison](MODEL_COMPARISON.md)
+[Application](https://eshan-nba-elo-forecast.streamlit.app/) · [Technical paper (PDF)](paper/main.pdf) · [LaTeX source](paper/main.tex) · [Data sources](SOURCES.md) · [Model comparison](MODEL_COMPARISON.md)
 
 The hosted application currently requires private access. Preparing this repository for publication does not change its visibility or the application's sharing settings.
 
@@ -85,7 +85,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) before publishing replacement archives or
 - [Data and formulas](DATA_AND_FORMULAS.md): field definitions and timing contract.
 - [Roadmap](ROADMAP.md): prospective evaluation and future research.
 - [Changelog](CHANGELOG.md): released implementation and repository changes.
-- [Sources and attribution](SOURCES.md): provider records, geography, and competition provenance.
+- [Sources and attribution](SOURCES.md): provider records and geography.
 
 The live collector can also be run manually on macOS or Linux:
 
