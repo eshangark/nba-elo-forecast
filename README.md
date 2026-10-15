@@ -2,7 +2,7 @@
 
 NBA team ratings and pregame win probabilities, with historical backtesting and automatic after-game updates. This project is adapted from work developed for the Wharton Data Science Competition.
 
-[Application](https://eshan-nba-elo-forecast.streamlit.app/) (private access) · [Technical paper](paper/main.pdf) · [LaTeX source](paper/main.tex)
+[Application](https://eshan-nba-elo-forecast.streamlit.app/) · [Technical paper](paper/main.pdf) · [LaTeX source](paper/main.tex)
 
 ## What it does
 

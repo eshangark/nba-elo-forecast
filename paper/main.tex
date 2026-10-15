@@ -34,8 +34,8 @@ units, stable transformations, one complementary probability function, and
 NBA-specific calibration. The following sections specify the equations,
 data construction, fitting protocol, and evaluation.
 The website, historical replay, and manually invoked live collector are
-implemented. Automatic collection is scheduled through GitHub Actions; private frontend
-hosting is deployed with private access.
+implemented. Automatic collection is scheduled through GitHub Actions; frontend
+hosting is deployed with public access.
 
 \section{Forecast timing}
 Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
@@ -378,7 +378,7 @@ and saves upcoming forecasts without fitting during page interactions.
 GitHub Actions schedules collection every two hours.
 Failed ingestion must preserve the last valid output and expose freshness.
 Corrected records may trigger rating replay but cannot overwrite genuinely
-issued forecasts. The repository remains private during development.
+issued forecasts. The repository and hosted application are publicly accessible.
 
 \section{Observed after-game pipeline}
 The current-season collector refreshes individual ESPN scoreboard dates and
@@ -425,7 +425,7 @@ remain pending. Tests cover repeated polling, corrected outcomes, preservation
 of revisions, missed-game backfill, invalid future timestamps, failed
 collection, writer locking, and empty/issued/backfilled interface states.
 Source connectivity has been verified and automatic collection is scheduled.
-Private frontend hosting is deployed and verified.
+Public frontend hosting is deployed and verified.
 
 \section{Scheduled operation and hosting status}
 The GitHub Actions workflow invokes core checks and collection at minute 17
@@ -441,7 +441,7 @@ frontend/fitting checks skipped), refreshed sources, and committed a valid
 snapshot in 40 seconds. The complete local suite passes all 45 tests.
 The runner platform is pinned to the verified Ubuntu release.
 
-The workflow uses included private-repository allowances; the account's existing
+The workflow runs on a public repository; the account's existing
 zero-dollar Actions budget blocks paid usage. Allowances are shared with other
 repositories, so exhaustion may interrupt updates. No paid service, billing
 limit increase, or new credentials are configured. Cross-platform verification
@@ -449,11 +449,11 @@ requires identical record structures and identities, with floating-point
 agreement within relative/absolute tolerance $10^{-12}$; this permits platform
 rounding without changing the model or its stored forecasts.
 
-The Streamlit application is deployed from the private repository's main
+The Streamlit application is deployed from the public repository's main
 branch, root application, and tested Python 3.12 runtime at
 \url{https://eshan-nba-elo-forecast.streamlit.app/}.
-Private sharing was verified on the deployed application and the GitHub
-repository remains private. Hosted checks verified current-season defaults,
+Public sharing is enabled on the deployed application and the GitHub
+repository is public. Hosted checks verified current-season defaults,
 archived season switching, held-out metrics, downloadable CSV data, and
 light/dark appearance modes. The downloaded 2025--26 box-score table contains
 2,460 rows matching every committed field; line-ending normalization does not

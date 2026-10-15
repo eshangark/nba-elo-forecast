@@ -62,7 +62,7 @@ Validated completed games deterministically rebuild current rating state. A time
 | Backend | GitHub Actions at minute 17 every two UTC hours |
 | Browser refresh | Rereads saved snapshots every minute while open |
 
-The [hosted application](https://eshan-nba-elo-forecast.streamlit.app/) currently requires private access. App sharing and repository visibility are separate settings. Page refresh does not fetch provider data or fit parameters.
+The [hosted application](https://eshan-nba-elo-forecast.streamlit.app/) is publicly accessible. App sharing and repository visibility are separate settings. Page refresh does not fetch provider data or fit parameters.
 
 The [update workflow](../.github/workflows/update-live.yml) supports scheduled and manual runs. Standard jobs time out after three minutes; manual full-refresh jobs have ten minutes. Core checks precede ingestion. Failed collection can publish a failure status while keeping the valid snapshot, and the job reports failure. A branch-head check and ordinary push prevent overwriting concurrent changes. Only processed season data is committed; no raw caches or workflow artifacts are uploaded.
 
