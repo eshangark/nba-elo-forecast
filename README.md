@@ -98,4 +98,4 @@ Collection uses free endpoints with no availability guarantee. Hosting and sched
 
 ## Licensing
 
-An open-source license for original project code has not yet been selected. Third-party notices and data attribution are retained separately; see [SOURCES.md](SOURCES.md) and [data/README.md](data/README.md). Selecting the code license is a remaining publication decision.
+Original project code and documentation are available under the [MIT License](LICENSE). This license excludes provider records, raw-source test fixtures, datasets, and third-party materials, which retain their separate rights and attribution notices. See [SOURCES.md](SOURCES.md) and [data/README.md](data/README.md).

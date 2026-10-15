@@ -6,6 +6,7 @@
 - Removed superseded source probes and the unfitted pilot entry point.
 - Made historical-ingestion dependencies explicit and added a full-test CI workflow for code changes.
 - Retained frozen model parameters, historical results, source attribution, and issued forecasts.
+- Licensed original project code and documentation under MIT, with provider data and third-party materials excluded.
 
 ## Model 0.2.0 — 2026-10-13
 
