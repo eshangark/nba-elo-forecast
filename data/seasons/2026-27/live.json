@@ -2,7 +2,7 @@
   "schema_version": 1,
   "season": "2026-27",
   "status": "live",
-  "published_at": "2026-10-17T15:38:41.091071+00:00",
+  "published_at": "2026-10-17T18:32:01.941912+00:00",
   "coverage": {
     "start": null,
     "end": null,
@@ -3963,68 +3963,68 @@
     "latest_sources": [
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261017&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:36.077539+00:00",
+        "retrieved_at": "2026-10-17T18:31:56.134357+00:00",
         "sha256": "5137a506f9cdbf378c4109be87710fa427a7b56c3d39caf4bff9730ed89d5c4f"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261010&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:36.458711+00:00",
+        "retrieved_at": "2026-10-17T18:31:56.623001+00:00",
         "sha256": "598dabd1a0ecf170762299161dd9bd3e7ffc43490f359efb369fe004e0113198"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261011&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:36.834714+00:00",
+        "retrieved_at": "2026-10-17T18:31:57.120893+00:00",
         "sha256": "baf11633cc22049c61d5762f1f99f1795f06c2e527ca966fb54d334d18b34e37"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261012&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:37.229580+00:00",
+        "retrieved_at": "2026-10-17T18:31:57.540668+00:00",
         "sha256": "5e59acd88a77b4fe91eb97d8db5d28a511ba15aaed77f4b85b96ce3ad663aa1a"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:37.657840+00:00",
+        "retrieved_at": "2026-10-17T18:31:58.046516+00:00",
         "sha256": "62db0e62512306a70f35ce66fd22835c937a4291b71ab693dc7b58636d30422c"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261014&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:38.037175+00:00",
+        "retrieved_at": "2026-10-17T18:31:58.555576+00:00",
         "sha256": "3fac401a43e1139953ff579c57ea5194ba3be51a445901a6857dc2f48f194187"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261015&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:38.498225+00:00",
+        "retrieved_at": "2026-10-17T18:31:58.990899+00:00",
         "sha256": "cdcc4129f46298fc4de368ef456754f417966bfcfe31765fb38b18c134c9b1b3"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261016&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:38.893567+00:00",
+        "retrieved_at": "2026-10-17T18:31:59.522169+00:00",
         "sha256": "15c0bbc888626453ab88fe6b39d955fcfc3954c8d6616ba69c52e693cab047a7"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261020&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:39.341141+00:00",
-        "sha256": "6cfd02b8f6858891d2b8d26d314f43b6fadc5edf7a2c119961f358f14cb74394"
+        "retrieved_at": "2026-10-17T18:31:59.905966+00:00",
+        "sha256": "3a9ad46cbee95ceb693e8d01b9bc55cb458e6385abec2cdf8768af189ba294b9"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261021&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:39.736455+00:00",
-        "sha256": "66f435fc9fea348c073f9df2bb703d27c58272ed4b3c467219d2b147cf64cd8d"
+        "retrieved_at": "2026-10-17T18:32:00.358617+00:00",
+        "sha256": "235a458d72819619aff8151ede1e4bdd6a7f039e439ba68943cf9c479f7db718"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261022&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:40.126773+00:00",
-        "sha256": "ea1da8626106e43ded23d38802c2543ab9ba493365e83b71ffd70dedbc98b7b0"
+        "retrieved_at": "2026-10-17T18:32:00.836682+00:00",
+        "sha256": "06d488eed42043446cc90193269bc8e2b039d88b39198e21a1034472a3c8b430"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261023&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:40.516502+00:00",
-        "sha256": "9c8163125c0d8227bc4b4cb303a73374e39169e8003eb08f072b5ebb202945c0"
+        "retrieved_at": "2026-10-17T18:32:01.295229+00:00",
+        "sha256": "2c07534da4e79a775b9129a6cc693bf5e2dab16829859dfcdd24d9379e5a7bb9"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261024&limit=1000",
-        "retrieved_at": "2026-10-17T15:38:41.008024+00:00",
-        "sha256": "d0bee5ce6c5e48cd83e5acad7bba8f1afc7192c0fc026c0470c653b5e828df2a"
+        "retrieved_at": "2026-10-17T18:32:01.860836+00:00",
+        "sha256": "e7e670f17493c68e9ce3d814567b8db027fe4dcb481de83d851182ac41df89ae"
       }
     ],
     "state_sha256": "e46b7ca5d463611969a8a72a9964e60a49f4328b32ce0441160c38e208baa60a",
