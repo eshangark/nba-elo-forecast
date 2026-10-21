@@ -2,7 +2,7 @@
   "schema_version": 1,
   "season": "2026-27",
   "status": "live",
-  "published_at": "2026-10-20T21:38:57.448385+00:00",
+  "published_at": "2026-10-21T00:38:25.424220+00:00",
   "coverage": {
     "start": "2026-10-20",
     "end": "2026-10-20",
@@ -313,43 +313,6 @@
     "warmup_games": 10
   },
   "upcoming": [
-    {
-      "game_id": "401909089",
-      "start": "2026-10-20T23:00Z",
-      "home": "New York Knicks",
-      "away": "Philadelphia 76ers",
-      "home_rating": 1499.6586352896577,
-      "away_rating": 1499.6586352896577,
-      "home_probability": 0.547946045666149,
-      "away_probability": 0.452053954333851,
-      "home_context": {
-        "rest": 3,
-        "travel": 0.0,
-        "timezone_change": 0.0,
-        "opening_prior": true
-      },
-      "away_context": {
-        "rest": 3,
-        "travel": 0.0,
-        "timezone_change": 0.0,
-        "opening_prior": true
-      },
-      "home_sos": 0.5,
-      "away_sos": 0.5,
-      "model_version": "0.2.0",
-      "issued_at": "2026-10-20T21:38:57.448385+00:00",
-      "forecast_cutoff": "2026-10-20T21:38:57.448385+00:00",
-      "kind": "issued_live",
-      "forecast_policy_version": "after-game-v1",
-      "input_signature": "b6b914184de8d7fef814fbf4dd4ae0ed4b5deee9061f72bf25a826d914e3c6ef",
-      "parameter_hash": "1a134fe1d52dc9619f024a145d3d9d9f1ceefca858ee8a1ecf75a28a12ac1175",
-      "state_sha256": "0ee96f5dde49b9c26aefe2eca036731384b6ae462cf6a78aa22b133f521e1ea0",
-      "home_id": "18",
-      "away_id": "20",
-      "scheduled_context_projected": false,
-      "eligible_for_evaluation": false,
-      "forecast_id": "eab73dcb67555688603213a3a64a222eeddc6718e6c66105a64076107b14fe5c"
-    },
     {
       "game_id": "401909090",
       "start": "2026-10-21T01:30Z",
@@ -2349,7 +2312,14 @@
       "forecast_id": "19f566266699c61d8f69f5b525e72b16d87000c4889b12136377463a88637764"
     }
   ],
-  "awaiting_final": [],
+  "awaiting_final": [
+    {
+      "game_id": "401909089",
+      "start": "2026-10-20T23:00Z",
+      "home": "New York Knicks",
+      "away": "Philadelphia 76ers"
+    }
+  ],
   "_internal": {
     "roster": {
       "1": "Atlanta Hawks",
@@ -2463,7 +2433,7 @@
           "id": "20",
           "name": "Philadelphia 76ers"
         },
-        "event_state": "pre",
+        "event_state": "in",
         "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261020"
       },
       {
@@ -8046,68 +8016,68 @@
     "latest_sources": [
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261020&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:52.709429+00:00",
-        "sha256": "ec9fd9328bc0c430cdc95d39ab3d07ba07692d5618b7566e027e3f3b47433629"
+        "retrieved_at": "2026-10-21T00:38:19.415879+00:00",
+        "sha256": "8a44474cbfdb82d873a7298e0997b735f72a1dc62465e9b5b840b79490db1f4e"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261013&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:53.091059+00:00",
-        "sha256": "54e3aeb7b0e229ce35c03a4f8d8f4b41389aaf4531be470a351d7b54cbe9fcda"
+        "retrieved_at": "2026-10-21T00:38:19.821116+00:00",
+        "sha256": "fa0c7cf60b9639891a492b5043a031d4634797439d348c6a15e076616fbf9b2d"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261014&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:53.475932+00:00",
-        "sha256": "3b12d93ac7782a77b761a59b267d7696051c0edd0e330b436afa72d1034bdd82"
+        "retrieved_at": "2026-10-21T00:38:20.294469+00:00",
+        "sha256": "6106c41823522e683dc25a162f364d0a3844522f040ff70ea02e243a5ee90d63"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261015&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:53.889555+00:00",
-        "sha256": "2d30a6f67bf33cc46879578da16c55f1706572215c1d96fe2433663677c73411"
+        "retrieved_at": "2026-10-21T00:38:20.771550+00:00",
+        "sha256": "eac191f11e9f894eaa4f331deff9f62eb83de1a13c60dd985ed42f162da1d0c5"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261016&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:54.261737+00:00",
-        "sha256": "674068457b2bf5d34774a1d50ab9c9d5f0d2dc04d14fba61603f4d2b1edc5c2f"
+        "retrieved_at": "2026-10-21T00:38:21.315879+00:00",
+        "sha256": "7d8917d2075becdb188cea27d4140d6213c08e95efacd314366fbe1541811f12"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261021&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:54.615209+00:00",
-        "sha256": "adbba503d9f6ac9802c42ba1f5ff41c671867b8c78f047aeff8cea9b6bef3b2f"
+        "retrieved_at": "2026-10-21T00:38:21.682638+00:00",
+        "sha256": "0ae3ea7a94eafd269502840f8cb7930ff950cf2973b57e125e6b0b92ab04644e"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261022&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:54.968418+00:00",
-        "sha256": "aec01cdb2a818e35c3b30beb5bbc92b5111db205b635d0937410c1600ed50e2e"
+        "retrieved_at": "2026-10-21T00:38:22.204732+00:00",
+        "sha256": "996d36fe7d21d39ec9d5d0bae0964d0564ede1a6fbfe5a3279808a09de4c1c40"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261023&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:55.328649+00:00",
-        "sha256": "c76aaf9672dc8f4ba081a000864203e4360585a99297617119c38317ab6c4f7e"
+        "retrieved_at": "2026-10-21T00:38:23.019281+00:00",
+        "sha256": "a3d7c259d60f7854e6fac579c7a89d8b3e8124af80d30c47a89ea63da27d93ff"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261024&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:55.694154+00:00",
-        "sha256": "7f7ccc0aca2d4a10457c66fbc9a48d988929039cd89408c00e17fc0fedb52c0b"
+        "retrieved_at": "2026-10-21T00:38:23.443483+00:00",
+        "sha256": "aaabaeaf8eff3e26194b47fe316b7321780ab8056ebf748f5e4b00473e5cc87d"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261025&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:56.085171+00:00",
-        "sha256": "9cb820105e9e5e129972032863d0d597844b43c9b4e9d0875458967138f6f8bc"
+        "retrieved_at": "2026-10-21T00:38:23.959046+00:00",
+        "sha256": "08b830c6d5b67015b7ee05b3d86accb3dce1d025f8d859863f576d0a9b7d4222"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261026&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:56.454648+00:00",
-        "sha256": "ceba9fa0e4cc6d355450b45225fee3b0d243c735c869257c6fa1f8681868669e"
+        "retrieved_at": "2026-10-21T00:38:24.321879+00:00",
+        "sha256": "cebc774a1e72f821dde7acc7291d7e7082ad2dd453053e53565afd55f3bb2fb6"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20261027&limit=1000",
-        "retrieved_at": "2026-10-20T21:38:56.905579+00:00",
-        "sha256": "12c7788f44bf900b595bedfa5d15185a265ddb18bf9d22a3e0c7f60b3f269fa4"
+        "retrieved_at": "2026-10-21T00:38:24.841823+00:00",
+        "sha256": "327188ee259bd1810e695ec082247083055d76d80261e8cff6522a8260558dab"
       },
       {
         "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909088",
-        "retrieved_at": "2026-10-20T21:38:57.266894+00:00",
-        "sha256": "daf3e129ed13c59767158eba62029ec503ab11c2b943eee4efbb3bd366a4faf6"
+        "retrieved_at": "2026-10-21T00:38:25.225114+00:00",
+        "sha256": "c073e502e0d258ae44754a2a2f62fbec495991963687d3ddc6bea021a5d95cbc"
       }
     ],
     "state_sha256": "0ee96f5dde49b9c26aefe2eca036731384b6ae462cf6a78aa22b133f521e1ea0",
