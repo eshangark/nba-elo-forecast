@@ -27,7 +27,7 @@ These are reconstructed historical forecasts, not measured live performance. Pro
 
 ## Symbol dictionary
 
-The dictionary uses the notation from the paper and dashboard. Constants are rounded for display; the frozen [parameter file](models/nba-v0.2/parameters.json) retains full precision. Game-dependent quantities have no single numerical value. Subscripts identify the team or game, and the rating-update equation applies to each team using its own probability. Season carryover is not implemented in model 0.2.0.
+The paper builds the model in order: pregame forecast → box-score features → performance factor → final Elo update. Constants below are rounded; the frozen [parameter file](models/nba-v0.2/parameters.json) retains full precision. Game-dependent quantities have no single value. Model 0.2.0 still resets every season to 1500.
 
 <details>
 <summary>Notation, English meanings, and numerical values</summary>
@@ -68,7 +68,7 @@ The dictionary uses the notation from the paper and dashboard. Constants are rou
 | $i,j,O$ | In the probability equation, i is the home team and j the away team; O denotes an opponent in feature derivations. | Team identifiers |
 | $g,t$ | The index g labels a game; t labels a team in win-rate notation and a time instant in the offset function. | Context dependent |
 | $r_i,r_j$ | These are the team ratings available before the game. | Varies; season opener 1500 |
-| $r_i^{+}\;(r^{+})$ | This is a team rating after its game update, before league recentering. | Varies by game |
+| $r_{\mathrm{new}}$ | This is a team rating after its game update, before league recentering. | Varies by game |
 | $p_i,p_j$ | These are the complementary pregame probabilities of a home and away win. | Between 0 and 1; sum 1 |
 | $z_i$ | The probability exponent combines the rating difference, home advantage, and fatigue adjustment. | Varies by matchup |
 | $h$ | The venue indicator enables home advantage at a home venue and removes it at a neutral venue. | 1 home; 0 neutral |
@@ -81,13 +81,18 @@ The dictionary uses the notation from the paper and dashboard. Constants are rou
 | $S_i\;(S)$ | Schedule strength combines the opponent's prior win rate and its prior opponents' win rates. | Varies; empty history 0.5 |
 | $W_t$ | The smoothed prior win rate equals (prior wins + 1) divided by (prior games + 2). | Varies; no games 0.5 |
 | $w_t,n_t$ | These are the wins and games observed for a team before the forecast cutoff. | Nonnegative integer counts |
-| $\mathcal O(j),\overline W_{\mathcal O(j)}$ | The opponent-history collection includes repeats; its mean uses those opponents' smoothed prior win rates. | Varies; empty mean 0.5 |
+| $\overline W_{\mathrm{opp\ history}}$ | This is the mean prior win rate of the opponent's previous opponents, counting repeats. | Varies; empty mean 0.5 |
 | $LL_i,LL_j$ | Largest lead is the maximum points advantage achieved by each team during the completed game. | Nonnegative point counts |
 | $L_i\;(L)$ | Lead retention divides absolute final margin by the larger of both teams' largest leads. | Greater than 0; at most 1 |
-| $U$ | The aggregate is the weighted sum of the scaled box-score features. | Varies by team-game |
-| $A$ | The aggregate game performance factor (AGPF) applies a clipped sigmoid to U. | From 0.000001 to 0.999999 |
-| $\overline A_{<g}$ | The baseline is the expanding mean of the team's prior AGPF values. | Varies; opener uses current A |
-| $Q_i\;(Q)$ | The performance adjustment factor (PAF) compares current AGPF with its prior baseline and clips the ratio. | From 0.25 to 4; opener 1 |
+| $\mathrm{Score}$ | The box-score total is the weighted sum of the scaled box-score features. | Varies by team-game |
+| $\mathrm{Perf}$ | The aggregate game performance factor (AGPF) applies a clipped sigmoid to the weighted Score. | From 0.000001 to 0.999999 |
+| $\mathrm{PriorPerf}$ | The baseline is the expanding mean of the team's prior game-performance values. | Varies; opener uses current Perf |
+| $P$ | The performance adjustment factor (PAF) compares current game performance with its prior baseline and clips the ratio. | From 0.25 to 4; opener 1 |
+| $n$ | The prior-performance average divides the sum of a team's earlier game-performance scores by this count. | Number of prior team games |
+| $M_S$ | The schedule multiplier equals one plus the result sign times beta times schedule strength. | Varies by game |
+| $M_L$ | The lead multiplier equals one plus phi times the base-two logarithm of one plus lead retention. | Varies by game |
+| $M_P$ | The performance multiplier equals one plus the result sign times lambda times (P minus one). | Varies by game |
+| $\Delta r$ | The rating change equals the base outcome error multiplied by the three adjustment factors. | Varies by game |
 
 ### Box-score features and counts
 
@@ -101,8 +106,8 @@ The dictionary uses the notation from the paper and dashboard. Constants are rou
 | $X_6$ | The feature divides assists by player turnovers, using a denominator of one for zero turnovers. | Varies by team-game |
 | $X_7$ | The feature divides player turnovers by field-goal attempts plus 0.44 free-throw attempts plus player turnovers. | Varies by team-game |
 | $X_8$ | The feature divides steals by estimated opponent possessions. | Varies by team-game |
-| $\widetilde X_k$ | The scaled vector is (X1/10, X2, X3, X4, X5, X6/3, -X7, X8). | Fixed transformation |
-| $\widehat P,\widehat P_O$ | Estimated possessions equal field-goal attempts plus 0.44 free-throw attempts minus offensive rebounds plus player turnovers. | Varies; coefficient 0.44 |
+| $x_k$ | The scaled features follow (X1/10, X2, X3, X4, X5, X6/3, -X7, X8). | Fixed transformation |
+| $\mathrm{Poss},\mathrm{Poss}_O$ | Estimated possessions equal field-goal attempts plus 0.44 free-throw attempts minus offensive rebounds plus player turnovers. | Varies; coefficient 0.44 |
 | $PTS,PTS_O$ | These counts record points scored by the team and its opponent. | Points in the completed game |
 | $FGM,FGA$ | These counts record field goals made and attempted. | Nonnegative integer counts |
 | $3PM$ | This count records made three-point field goals. | Nonnegative integer count |
@@ -114,7 +119,6 @@ The dictionary uses the notation from the paper and dashboard. Constants are rou
 
 | Symbol | Meaning | Numerical value or range |
 | --- | --- | --- |
-| $\tau_g,\mathcal F_{\tau_g}$ | The cutoff time and its information set specify what is available when a forecast is made. | Varies by game |
 | $\theta$ | The fitted parameter vector contains seven scalar coefficients and seven independent feature-weight logits. | 14 free coordinates |
 | $\mathcal L(\theta)$ | Training loss is the mean binary log loss across eligible training games. | 0.6282097079 at fitted solution |
 | $N$ | The number of eligible games normalizes a stated fitting or evaluation score. | 3220 training; 1075 test |

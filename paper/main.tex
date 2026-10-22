@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.8}
+\date{Working draft 0.9}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -26,122 +26,257 @@ issued live. The manuscript specifies feature derivations, bounded parameter
 estimation, data repairs, and the limitations of this first NBA calibration.
 \end{abstract}
 
-\section{Scope}
-The system produces teams ordered by rating, matchup probabilities, and a
-record of forecasts and outcomes. Live ratings update after
-completed games; in-game probability is outside scope. The model uses explicit feature
-units, stable transformations, one complementary probability function, and
-NBA-specific calibration. The following sections specify the equations,
-data construction, fitting protocol, and evaluation.
-The website, historical replay, and manually invoked live collector are
-implemented. Automatic collection is scheduled through GitHub Actions; frontend
-hosting is deployed with public access.
+\section{The prediction--update cycle}
+The model answers two questions in order: how likely is a team to win before
+its game, and how should that result change its rating afterward? Ratings
+summarize past games. Rest, travel, and home court adjust the next forecast.
+Once a game ends, the outcome and eight box-score features determine its
+rating update. The new rating is then available for later forecasts.
 
-\section{Forecast timing}
-Let $\tau_g$ be a forecast cutoff and $\mathcal F_{\tau_g}$ the information
-available by then. A home-team forecast estimates
-$p_g=\Pr(y_g=1\mid\mathcal F_{\tau_g})$, where $y_g$ is the home-win indicator.
-The historical replay freezes all forecasts for an Eastern-calendar daily
-slate at the earlier of 10:00 America/New\_York and one hour before its first
-tip-off. It requires all prior slates to have completed before that cutoff;
-current-slate results cannot enter its forecasts. Ratings update after the
-slate. A team cannot appear twice on one slate, and duplicate games are rejected.
+The sections below follow that order. Each quantity is defined before it is
+used in the final update. The eight features $X_1,\ldots,X_8$ are derived in
+Section~\ref{sec:features}; they feed a performance factor $P$, which appears
+explicitly in the final Elo equation in Section~\ref{sec:final}.
+The dictionary in Appendix~\ref{app:symbols} records every symbol and its value
+where one is fixed or fitted.
 
-Completion availability is proxied by terminal EndGame wallclock timestamps,
-rather than later edited play timestamps. Seventeen games use dated final-recap
-publication times. One game with source play dates shifted by a day uses an
-explicitly flagged conservative tip-off-plus-eight-hours availability bound;
-this is not an observed completion time. Replays check these proxies against
-the next cutoff but cannot establish when historical corrections first reached
-a live feed. Genuinely issued forecasts record their actual issue time,
-data cutoff, and model version in a separately preserved ledger.
+Team $i$ is the home team and $j$ the away team when defining a matchup.
+In a team-specific update, the same equations apply to either side using its
+own win probability and outcome. Every season starts at rating 1500. Ratings
+currently reset rather than carry over across seasons. The following is a
+step-by-step construction of an empirical model; its adjustments are modeling
+choices whose coefficients are fitted, not consequences of a physical law.
 
-The symbol dictionary in Appendix~\ref{app:symbols} lists the notation,
-English meanings, and fitted or fixed numerical values.
-
-\section{Pregame probability}
-For home team $i$ and away team $j$, define pregame ratings $r_i,r_j$, rest
-$RD$ in days, travel $TD$ in kilometres, and time-zone change $TZ$ in hours.
-Let $h=1$ at a home venue and $h=0$ at a neutral venue. The fatigue
-indices, with an empirically fitted travel coefficient $\nu$, are
-\begin{align}
- F_i&=RD_j+\exp(|TZ_i|/3)+\nu TD_i,\\
- G_i&=RD_i+\exp(|TZ_j|/3)+\nu TD_j.
-\end{align}
-They are empirical indices, not physiological measurements. The probability is
+\section{Step 1: turn pregame ratings into a win probability}
+\subsection{Start with the rating difference and home court}
+Let $r_i$ and $r_j$ be the ratings available before tip-off. A basic Elo
+forecast compares them on a fixed scale $c$. Home advantage adds $Hh$ to
+the home-side rating difference, where $h=1$ at home and $h=0$ at a neutral
+venue. With no rest/travel adjustment, the probability would be
 \begin{equation}
- p_i=\left[1+10^{z_i}\right]^{-1},\qquad
+ p_i=\frac{1}{1+10^{(r_j-r_i-Hh)/c}}.
+\end{equation}
+A higher home rating or a larger home advantage raises the home win probability.
+The away win probability is always $p_j=1-p_i$.
+
+\subsection{Add rest and travel context}
+Write $RD$ for rest in intervening calendar days, $TD$ for venue-city travel
+in kilometres, and $TZ$ for the time-zone change in hours. Define two positive
+context indices:
+\begin{align}
+ F_i&=RD_j+e^{|TZ_i|/3}+\nu TD_i,\\
+ G_i&=RD_i+e^{|TZ_j|/3}+\nu TD_j.
+\end{align}
+Their ratio compares the two sides' context; it is an empirical adjustment,
+not a physiological measurement. The fitted coefficient $\nu$ determines how
+much distance contributes. A second coefficient, $\gamma$, determines how
+strongly the log ratio affects the forecast. The complete pregame equation is
+\begin{equation}\label{eq:probability}
+ \boxed{p_i=\frac{1}{1+10^{z_i}}},\qquad
  z_i=\frac{r_j-r_i-Hh}{c}+\gamma\ln(F_i/G_i),\qquad p_j=1-p_i.
- \label{eq:probability}
 \end{equation}
-All logarithms are natural unless explicitly subscripted. Equivalently,
-\begin{equation}
- \operatorname{logit}(p_i)=\ln(10)
- \left[\frac{r_i-r_j+Hh}{c}-\gamma\ln(F_i/G_i)\right].
-\end{equation}
-The exponent base and rating scale cannot both be freely identified. Moreover,
-rescaling ratings, $K$, $H$, and $c$ together preserves probabilities. We fix
-the base at 10 and $c=993.39\ln(10)/\ln(99.39)=497.3558141396255$ to anchor
-the rating scale, then fit $K$, $H$, and $\gamma$. Display rounding
-does not affect calculations.
+Equal context indices give $\ln(F_i/G_i)=0$, returning the basic Elo forecast.
+All inputs to this equation are known before the game. Its outcome and
+box score cannot enter their own prediction.
 
-\section{Rating updates}
-For either team, let $y$ denote its own win indicator, $p$ its complementary
-pregame probability, and $s=2y-1$. The implemented update is
-\begin{equation}
-\begin{split}
- r^+=r+K(y-p)(1+s\beta S)
- (1+\phi\log_2(1+L))
- (1+s\lambda(Q-1)).
-\end{split}
-\label{eq:update}
-\end{equation}
-Here $\beta$ is a fitted schedule-strength multiplier, $\phi$ weights lead
-retention, and $\lambda$ weights relative performance. Both teams use their
-pregame ratings and their own performance history. The result and all
-current-game box-score features enter only after completion. Each season
-starts independently at 1500. Asymmetric updates can shift the league mean;
-recentering it at 1500 after each slate preserves all pairwise differences.
-Inter-season carryover is not part of this release.
+The base is fixed at 10 and $c=497.3558141396255$. Fixing the base and rating scale anchors the model's rating units rather
+than fitting redundant scales. Display rounding does not affect calculations.
 
-\subsection{Schedule strength}
-For team $i$ facing $j$, define
-\begin{equation}
- S_i=\frac{2W_j+\overline W_{\mathcal O(j)}}{3},\qquad
- W_t=\frac{w_t+1}{n_t+2}.
+\section{Step 2: derive eight features from the completed box score}\label{sec:features}
+Only after the game finishes do its box-score counts become inputs to the
+rating update. Let $O$ denote the opponent. First estimate possessions:
+\begin{equation}\label{eq:possessions}
+ \mathrm{Poss}=FGA+0.44FTA-OREB+TOV.
 \end{equation}
-All wins $w_t$ and games $n_t$ precede the cutoff. The second term averages
-smoothed win rates of $j$'s previous opponents, including repeated opponents
-in proportion to their frequency. Empty opponent history receives 0.5.
-This schedule-strength feature uses only results available before the cutoff.
+$FGA$ and $FTA$ are field-goal and free-throw attempts, $OREB$ is offensive
+rebounds, and $TOV$ is summed player turnovers. The coefficient 0.44
+approximates the possession cost of free throws; offensive rebounds are
+subtracted because they extend a possession. Opponent possessions use the
+same expression with opponent counts.
 
-\subsection{Lead retention and relative performance}
-For largest leads $LL_i,LL_j$ and final scores $PTS_i,PTS_j$, use
-\begin{equation}
- L=\frac{|PTS_i-PTS_j|}{\max(LL_i,LL_j)}.
-\end{equation}
-Using the larger of both peak leads defines the ratio even for teams that never led.
-Valid non-tied completed games satisfy $0<L\leq1$; peak leads below the final
-margin are rejected. This measures final margin relative to either side's
-peak advantage, not a separate losing-team retention ratio.
-
-For the eight Appendix~\ref{app:features} features, fixed scales are
-\begin{equation}
- \widetilde{\boldsymbol X}=(X_1/10,X_2,X_3,X_4,X_5,X_6/3,-X_7,X_8).
-\end{equation}
-The turnover sign rewards fewer turnovers. Positive weights sum to one:
+The eight features describe scoring efficiency, shooting, rebounding,
+ball movement, ball security, and steals:
 \begin{align}
- U&=\sum_{k=1}^8\alpha_k\widetilde X_k,\\
- A&=\operatorname{clip}\left((1+e^{-U})^{-1},10^{-6},1-10^{-6}\right),\\
- Q&=\operatorname{clip}\left(A/\overline A_{<g},0.25,4\right).
+ X_1&=\frac{100(PTS-PTS_O)}{\mathrm{Poss}}
+ &&\text{net efficiency},\\
+ X_2&=\frac{FGM+0.5(3PM)}{FGA}
+ &&\text{effective field-goal percentage},\\
+ X_3&=\frac{PTS}{2(FGA+0.44FTA)}
+ &&\text{true shooting percentage},\\
+ X_4&=\frac{OREB}{OREB+DREB_O}
+ &&\text{offensive-rebound rate},\\
+ X_5&=\frac{DREB}{DREB+OREB_O}
+ &&\text{defensive-rebound rate},\\
+ X_6&=\frac{AST}{\max(TOV,1)}
+ &&\text{assist-to-turnover ratio},\\
+ X_7&=\frac{TOV}{FGA+0.44FTA+TOV}
+ &&\text{turnover fraction},\\
+ X_8&=\frac{STL}{\mathrm{Poss}_O}
+ &&\text{steal rate}.
 \end{align}
-$A$ is the aggregate game performance factor (AGPF), and $Q$ is the performance
-adjustment factor (PAF). The reference is the expanding mean of that team's
-prior games only. Openers use $Q=1$. The sigmoid maps the aggregate to a bounded positive value
-while preserving signed net efficiency in its input. With
-$0\leq\lambda\leq0.25$ and the stated PAF range, the performance multiplier
-cannot become negative. These transformations and scales were fixed before
-fitting; the eight weights were fitted.
+Here $PTS$ means points, $FGM$ means field goals made, $3PM$ means three-point
+makes, $DREB$ means defensive rebounds, $AST$ means assists, and $STL$ means
+steals. Rates are fractions rather than percentages on a 0--100 scale.
+$X_1$ uses a shared-possession net-efficiency approximation. The two rebound
+rates pair each team category with the opposite opponent category. A
+zero-turnover game uses one in the assist-ratio denominator; other
+nonpositive denominators fail validation.
+
+\section{Step 3: combine the features into a performance factor}\label{sec:performance}
+\subsection{Scale and weight the eight features}
+The raw features have different units and ranges. Denote their fixed scaled
+versions by lowercase $x$:
+\begin{equation}\label{eq:scaled-features}
+ (x_1,\ldots,x_8)=(X_1/10,X_2,X_3,X_4,X_5,X_6/3,-X_7,X_8).
+\end{equation}
+Dividing net efficiency by 10 and assist ratio by 3 sets their relative scale.
+The negative sign on turnover fraction makes fewer turnovers contribute a
+larger score. These scales were fixed before fitting.
+
+The fitted weights $\alpha_1,\ldots,\alpha_8$ are positive and sum to one.
+The weighted box-score total is
+\begin{equation}\label{eq:game-score}
+ \mathrm{Score}=\sum_{k=1}^{8}\alpha_k x_k.
+\end{equation}
+Thus every $X_k$ affects the total through its scaled value $x_k$ and its
+weight $\alpha_k$. A large weight is not itself a causal claim or a scale-free
+measure of feature importance.
+
+\subsection{Compare this game with the team's previous games}
+Convert the weighted total into a bounded game-performance score:
+\begin{equation}\label{eq:game-perf}
+ \mathrm{Perf}=\operatorname{clip}
+ \left(\frac{1}{1+e^{-\mathrm{Score}}},10^{-6},1-10^{-6}\right).
+\end{equation}
+The sigmoid avoids singularities and accepts negative efficiency values.
+Clipping limits its result to the stated lower and upper bounds.
+For a team with $n$ earlier games, its reference performance is
+\begin{equation}\label{eq:prior-perf}
+ \mathrm{PriorPerf}=\frac{1}{n}\sum_{g=1}^{n}\mathrm{Perf}_g.
+\end{equation}
+This average excludes the current game. The relative-performance factor is
+\begin{equation}\label{eq:performance-factor}
+ \boxed{P=\operatorname{clip}
+ \left(\frac{\mathrm{Perf}}{\mathrm{PriorPerf}},0.25,4\right)}.
+\end{equation}
+$P>1$ means better box-score performance than the team's prior average;
+$P<1$ means worse. Season openers use $P=1$, because no previous team games
+are available. Stored data calls $\mathrm{Perf}$ the aggregate game performance
+factor (AGPF) and $P$ the performance adjustment factor (PAF).
+
+The complete feature path is therefore
+\begin{equation}\label{eq:feature-path}
+ X_1,\ldots,X_8\ \longrightarrow\ x_1,\ldots,x_8
+ \ \longrightarrow\ \mathrm{Score}
+ \ \longrightarrow\ \mathrm{Perf}\ \longrightarrow\ P.
+\end{equation}
+This factor is now ready to enter the Elo update; it is not an additional
+input to the already-issued probability for the same game.
+
+\section{Step 4: assemble the final Elo update}\label{sec:final}
+\subsection{Start with the outcome relative to the prediction}
+For the team being updated, let $y=1$ for a win and $y=0$ for a loss, and let
+$p$ be its pregame probability from Equation~\eqref{eq:probability}. The
+basic Elo update is
+\begin{equation}
+ r_{\mathrm{new}}=r+K(y-p).
+\end{equation}
+$K$ controls update size. An unexpected win produces a larger positive error
+than an expected win; a loss gives a negative error. The model multiplies this
+base update by three adjustments. Define the result sign $s=2y-1$, equal to
+$+1$ for a win and $-1$ for a loss.
+
+\subsection{Adjustment 1: strength of schedule}
+A team's prior smoothed win rate is
+\begin{equation}
+ W_t=\frac{w_t+1}{n_t+2},
+\end{equation}
+where $w_t$ and $n_t$ count only wins and games before the forecast cutoff.
+Let $\overline W_{\mathrm{opp\ history}}$ be the mean smoothed win rate of
+its opponent's previous opponents, with repeated opponents counted in
+proportion to their frequency. Then
+\begin{equation}
+ S=\frac{2W_{\mathrm{opp}}+\overline W_{\mathrm{opp\ history}}}{3},
+ \qquad M_S=1+s\beta S.
+\end{equation}
+Empty histories use 0.5. The fitted coefficient $\beta$ controls this
+schedule multiplier. Its value is calculated from prior results, not the
+current game's box score.
+
+\subsection{Adjustment 2: lead retention}
+Let $LL$ and $LL_O$ be the two teams' largest leads, and $PTS$ and $PTS_O$
+their final scores. Define
+\begin{equation}
+ L=\frac{|PTS-PTS_O|}{\max(LL,LL_O)},
+ \qquad M_L=1+\phi\log_2(1+L).
+\end{equation}
+For valid non-tied games, $0<L\leq1$. This compares the final margin with the
+largest advantage held by either side. It remains defined even when one team
+never led. Peak leads below the final margin fail validation. The fitted
+coefficient $\phi$ sets the influence of this adjustment.
+
+\subsection{Adjustment 3: box-score performance}
+Use the factor $P$ already derived from the eight features:
+\begin{equation}
+ M_P=1+s\lambda(P-1).
+\end{equation}
+For a winner, $P>1$ increases the positive update and $P<1$ reduces it. For
+a loser, $P>1$ reduces the magnitude of its negative update and $P<1$
+increases it. With $P$ clipped to $[0.25,4]$ and
+$0\leq\lambda\leq0.25$, the multiplier cannot become negative.
+This is exactly where the $X$ features enter Elo.
+
+\subsection{The complete equation}
+Multiplying the three adjustments gives the final model:
+\begin{equation}\label{eq:update}
+ \boxed{r_{\mathrm{new}}=r+K(y-p)\,M_S\,M_L\,M_P}.
+\end{equation}
+Substituting their definitions makes every contribution explicit:
+\begin{equation}\label{eq:update-expanded}
+ \boxed{r_{\mathrm{new}}=r+K(y-p)
+ (1+s\beta S)(1+\phi\log_2(1+L))(1+s\lambda(P-1))}.
+\end{equation}
+The probability $p$ uses prior information; $L$ and $P$ use the just-completed
+game. The dependence of the final multiplier on the box score is
+\begin{equation}
+ (X_1,\ldots,X_8)\longrightarrow P\longrightarrow M_P
+ \longrightarrow r_{\mathrm{new}}\longrightarrow
+ \text{later-game probabilities}.
+\end{equation}
+Both teams' updates use their pregame ratings and are computed before either
+is committed. Asymmetric updates can change the league mean. After the
+historical slate, subtracting that mean minus 1500 from every rating recenters
+the league without changing pairwise rating differences. Live state recenters
+after individual completed games. Inter-season carryover is not implemented.
+
+\begin{minipage}{\textwidth}
+\subsection{Worked example from a stored historical replay}
+Consider Detroit Pistons against Washington Wizards, game
+\texttt{401810054} in the 2025--26 archive. This is an existing
+reconstructed forecast, not a new test or an issued live prediction. For the
+home team, the stored eight box-score features and frozen weights give
+\begin{align*}
+ \mathrm{Score}&=0.611115,\\
+ \mathrm{Perf}&=0.648195,\\
+ \mathrm{PriorPerf}&=0.656950,\\
+ P&=0.648195/0.656950\approx 0.986673.
+\end{align*}
+The team won ($y=1$), despite performing slightly below its prior box-score
+average ($P<1$). Its forecast was $p=0.682259$, schedule strength
+$S=0.285256$, and lead retention $L=0.153846$. The resulting multipliers are
+\begin{equation*}
+ M_S=1.279137,\qquad M_L=1.412902,\qquad M_P=0.996668.
+\end{equation*}
+Using the full-precision inputs,
+\begin{equation*}
+ \Delta r=K(1-p)M_SM_LM_P=6.992450,\qquad
+ r_{\mathrm{new}}=1571.901646+6.992450=1578.894096.
+\end{equation*}
+This last rating is before league recentering; the stored post-slate rating
+also includes the common recentering shift. The example shows how a win can
+still receive a slightly smaller performance multiplier when its box-score
+performance is below the team's own baseline.
+\end{minipage}
 
 \section{Data construction}
 Free ESPN-derived schedule, team-box-score, and play-by-play parquet files from
@@ -161,7 +296,7 @@ are not converted to zero. Largest leads can be recovered from a score path
 only when its final scores match the header. Inconsistent team aggregates
 can be replaced by complete player rows with matching points and shooting
 identities. Turnovers consistently mean summed player turnovers, excluding
-provider non-player team turnovers. Player and provider non-player team turnovers are kept distinct.
+provider non-player team turnovers. 
 
 \begin{table}[ht]
 \centering\small
@@ -191,6 +326,25 @@ Both venue offsets are evaluated at the current tip-off instant, preventing
 a daylight-saving change alone from creating geographic travel. Ambiguous
 or unknown cities cause validation failure.
 
+\subsection{Chronology and forecast availability}
+A prediction uses only information available at its recorded forecast cutoff.
+The home-win outcome is observed afterward.
+The historical replay freezes all forecasts for an Eastern-calendar daily
+slate at the earlier of 10:00 America/New\_York and one hour before its first
+tip-off. It requires all prior slates to have completed before that cutoff;
+current-slate results cannot enter its forecasts. Ratings update after the
+slate. A team cannot appear twice on one slate, and duplicate games are rejected.
+
+Completion availability is proxied by terminal EndGame wallclock timestamps,
+rather than later edited play timestamps. Seventeen games use dated final-recap
+publication times. One game with source play dates shifted by a day uses an
+explicitly flagged conservative tip-off-plus-eight-hours availability bound;
+this is not an observed completion time. Replays check these proxies against
+the next cutoff but cannot establish when historical corrections first reached
+a live feed. Genuinely issued forecasts record their actual issue time,
+data cutoff, and model version in a separately preserved ledger.
+
+
 \section{Parameter estimation}
 Training uses 2021--22 through 2023--24; 2024--25 is validation and 2025--26 is
 a held-out test. The objective is mean binary log loss,
@@ -201,7 +355,7 @@ a held-out test. The objective is mean binary log loss,
 A game is scored after both teams have played ten prior games, giving 3,220
 training observations. Earlier games still initialize histories, update
 ratings, and retain forecasts. Every candidate recomputes parameter-dependent
-ratings and AGPF history. An accelerated Numba replay is checked against the
+ratings and game-performance history. An accelerated Numba replay is checked against the
 canonical Python engine before fitting and at the fitted solution, to
 probability tolerance $10^{-11}$.
 
@@ -288,7 +442,7 @@ A comparator estimates only $K$ and $H$, with the same fixed $c$, season
 initialization, cutoff, and warmup as the full model. Its equations are
 \begin{equation}
  p_i=[1+10^{(r_j-r_i-Hh)/c}]^{-1},\qquad
- r_i^+=r_i+K(y_i-p_i),\quad r_j^+=r_j-K(y_i-p_i).
+ r_{i,\mathrm{new}}=r_i+K(y_i-p_i),\quad r_{j,\mathrm{new}}=r_j-K(y_i-p_i).
 \end{equation}
 Fatigue, schedule, lead, and performance coefficients are zero. Both models
 fit training log loss with identical bounds on $K$ and $H$, seed 42, and the
@@ -361,142 +515,43 @@ Future issued forecasts will provide prospective monitoring. The historical
 outcomes were already available during development, so these expanding-window
 checks must not be presented as newly untouched evidence.
 
-\section{Reproducibility and application}
-The repository stores clean game records, two-row-per-game box-score tables,
-derived-feature tables, and reconstructed forecasts under season directories.
-Pregame and postgame feature columns are explicitly distinguished. Model
-configuration, optimizer bounds, seed, convergence trace, coverage audits,
-and source manifests identify the release. Large raw parquet downloads and
-ESPN response caches stay outside Git. The documented scripts reproduce
-acquisition, validation, fitting, and export; provider archives may change,
-so hashes identify the exact source snapshots used here.
+\section{Reproducibility and live use}
+The repository records source URLs/hashes, validation actions, canonical
+feature tables, frozen constants, optimizer settings, reconstructed forecasts,
+and comparator predictions. Pregame and postgame columns are explicitly
+separated. Raw archives and cached responses remain outside Git. Reproduction
+scripts and operating instructions are documented in the repository.
+Provider archives can change; manifests identify the source snapshots used
+for this study. Accelerated and canonical calculations are checked together;
+cross-platform replay comparisons permit relative/absolute differences of
+$10^{-12}$ while preserving exact game identifiers and record structure.
 
-Streamlit displays Teams, Games, and Methodology for a shared selected season,
-defaulting to the current season. Archived seasons expose scores and downloadable
-CSV files. The first observed 2026--27 snapshot holds initial ratings and three issued
-upcoming regular-season forecasts. No regular-season results have arrived in
-that snapshot; preseason outcomes are excluded. Light/dark appearance modes and fixed dropdowns are supported.
-The manual collector validates completed games, applies the frozen model,
-and saves upcoming forecasts without fitting during page interactions.
-GitHub Actions schedules collection every two hours.
-Failed ingestion must preserve the last valid output and expose freshness.
-Corrected records may trigger rating replay but cannot overwrite genuinely
-issued forecasts. The repository and hosted application are publicly accessible.
+The public Streamlit application displays team ratings, game probabilities,
+outcomes, evaluation, and historical seasons. GitHub Actions collects the
+feed every two hours; open pages reread saved snapshots every minute. No
+fitting or source scraping occurs during page interactions. The collector
+validates final games, uses a single-writer lock, and atomically publishes
+processed snapshots. Failure preserves valid prior data and records an update
+status. Hosting and collection use free services within applicable allowances;
+provider availability and scheduler timing are not guaranteed.
 
-\section{Observed after-game pipeline}
-The current-season collector refreshes individual ESPN scoreboard dates and
-validated final summaries. Provider whitelist calendar metadata restricts
-requests to known season dates; the default checks a seven-day lookback,
-unresolved events, and seven Eastern-calendar dates ahead. A full-refresh
-option revisits the season calendar for older corrections. Unknown regular
-categories, missing known finals, incomplete box scores, or inconsistent
-identities block publication. Preseason, All-Star, and Cup-final events remain
-excluded. A single-writer filesystem lock and atomic bundle replacement
-protect concurrent updates and preserve a valid snapshot on ingestion failure.
-The application shows last-successful freshness and failed-attempt status.
+Live rating state can be reconstructed after source corrections, while its
+issued-forecast ledger remains immutable. A forecast receives its actual
+issue time after collection and can be issued only before tip-off. Changed
+inputs append a revision; identical inputs do not. Only the latest matching
+revision issued before the recorded start is scored. A backfilled completed
+game with no issued forecast can update ratings but never becomes a live
+prediction. Primary scoring requires ten observed prior games for each team
+at issuance. No future outcomes are invented when projecting schedule context.
 
-Rating-state reconstruction and forecast issuance are separate. An internal
-timeline predicts the rating-update expectation at each tip-off from earlier
-source-completion events, then updates and recenters at individual completions.
-These estimates enable backfill and correction replay, but are not treated as
-genuinely issued predictions. Completion proxies do not establish when a live
-provider first made every historical statistic available.
-
-Observed runs issue probabilities only for scheduled games still in the future,
-using an actual timestamp after source retrieval; the CLI cannot backdate.
-A change in rating state, configuration, or announced context creates a new
-revision. Identical inputs reuse the previous revision. Current ratings are
-held fixed while announced intervening schedules project future rest and venue
-travel; unknown future results are never fabricated. Revisions retain their
-probabilities, timestamps, input hashes, pregame context, and configuration
-registry references. Correction replay changes current state and future
-forecasts without rewriting earlier issued probabilities.
-
-For a completed game, evaluation selects the latest stored revision issued
-before its recorded start with matching opponents. A game discovered only
-after completion receives no issued probability and is excluded from live
-forecast metrics, even though it updates ratings. Primary live scoring requires
-both teams to have ten observed prior games at issuance; all-issued descriptive
-scores are stored separately. Evaluation joins forecasts to the latest
-validated outcomes.
-
-This live policy updates after individual completions when the collector runs,
-whereas the historical evaluation froze daily slates. Consequently, the
-historical accuracy is not a measured accuracy of the live service. The first
-three forecasts were saved on October 13, 2026 Eastern; prospective results
-remain pending. Tests cover repeated polling, corrected outcomes, preservation
-of revisions, missed-game backfill, invalid future timestamps, failed
-collection, writer locking, and empty/issued/backfilled interface states.
-Source connectivity has been verified and automatic collection is scheduled.
-Public frontend hosting is deployed and verified.
-
-\section{Scheduled operation and hosting status}
-The GitHub Actions workflow invokes core checks and collection at minute 17
-of every two UTC hours. Scheduled jobs have a three-minute timeout; manually
-requested full-refresh jobs allow ten minutes. Official checkout and Python
-setup actions are pinned to verified commit hashes. No source cache or workflow
-artifact is uploaded. The collector commits processed season data and status
-only, and refuses publication if the branch advanced during collection. An
-ingestion failure can publish failure status while retaining valid ratings.
-Scheduling is best-effort rather than an immediate final-score push service.
-The first hosted Ubuntu 24.04 run passed 36 core checks (nine optional
-frontend/fitting checks skipped), refreshed sources, and committed a valid
-snapshot in 40 seconds. The complete local suite passes all 45 tests.
-The runner platform is pinned to the verified Ubuntu release.
-
-The workflow runs on a public repository; the account's existing
-zero-dollar Actions budget blocks paid usage. Allowances are shared with other
-repositories, so exhaustion may interrupt updates. No paid service, billing
-limit increase, or new credentials are configured. Cross-platform verification
-requires identical record structures and identities, with floating-point
-agreement within relative/absolute tolerance $10^{-12}$; this permits platform
-rounding without changing the model or its stored forecasts.
-
-The Streamlit application is deployed from the public repository's main
-branch, root application, and tested Python 3.12 runtime at
-\url{https://eshan-nba-elo-forecast.streamlit.app/}.
-Public sharing is enabled on the deployed application and the GitHub
-repository is public. Hosted checks verified current-season defaults,
-archived season switching, held-out metrics, downloadable CSV data, and
-light/dark appearance modes. The downloaded 2025--26 box-score table contains
-2,460 rows matching every committed field; line-ending normalization does not
-alter the records.
-
-An active application refreshes its saved snapshot every minute using a
-Streamlit fragment. This does not scrape or fit during page interactions;
-backend collection remains on its separate two-hour schedule. Snapshot
-freshness is visible, and actual future issued forecasts will establish
-prospective performance. Deployment verification does not imply that current
-season games have already produced a live accuracy estimate.
-
+Historical evaluation freezes daily slates; live collection processes
+individual completions. Their cutoff policies differ, so the reported
+historical scores are not a measured accuracy of the live service. Future
+performance must be assessed from genuinely issued forecasts. Application
+and source-collection implementation details are not additional predictive
+evidence.
 
 \appendix
-\section{Box-score feature derivations}\label{app:features}
-All quantities below refer to one completed team-game; $O$ denotes its opponent.
-Counts retain count units; rate features are fractions. Using player turnovers,
-\begin{equation}
- \widehat P=FGA+0.44FTA-OREB+TOV.
-\end{equation}
-The eight derived features are
-\begin{align}
- X_1&=100(PTS-PTS_O)/\widehat P,\\
- X_2&=(FGM+0.5\,3PM)/FGA,\\
- X_3&=PTS/[2(FGA+0.44FTA)],\\
- X_4&=OREB/(OREB+DREB_O),\\
- X_5&=DREB/(DREB+OREB_O),\\
- X_6&=AST/\max(TOV,1),\\
- X_7&=TOV/(FGA+0.44FTA+TOV),\\
- X_8&=STL/\widehat P_O.
-\end{align}
-$X_1$ uses a shared-possession net-efficiency approximation.
-$X_2$ credits three-point makes with half an additional made shot; $X_3$ scales
-points by estimated shooting opportunities. Offensive and defensive rebound
-fractions use opposite opponent rebound categories. $X_6$ uses one for zero turnovers. $X_7$ is a
-turnover fraction. $X_8$ uses opponent estimated possessions, including the
-offensive-rebound subtraction. Other
-nonpositive denominators fail validation. All these features affect subsequent
-ratings, never the same game's pregame probability.
-
 \section{Travel and time-zone derivation}
 For venue latitude $\varphi$ and longitude $\ell$ in radians,
 \begin{align}
@@ -511,11 +566,12 @@ Exact arenas and actual itineraries are not measured by these proxies.
 
 \clearpage
 \section{Symbol dictionary}\label{app:symbols}
-The symbols below follow the paper and dashboard. Displayed constants are
-rounded; the frozen configuration retains full precision. A varying quantity
-has no single model-wide numerical value. Team subscripts are omitted in
-some update equations; each team uses its own outcome, probability, and history.
-Season carryover is not implemented in model 0.2.0.
+The dictionary lists model constants and the quantities used in the construction. Descriptive
+names replace opaque intermediate symbols: Score is the weighted feature
+sum, Perf is a bounded game score, PriorPerf is its prior average, and P is
+their clipped ratio. Constants are rounded for display; the frozen release
+configuration retains full precision. This notation revision does not change
+model version 0.2.0, its fitted values, or its forecasts.
 \begingroup
 \normalsize
 \setlength{\tabcolsep}{4pt}
@@ -580,7 +636,7 @@ Symbol & Meaning & Value or range\\
 $i,j,O$ & In the probability equation, i is the home team and j the away team; O denotes an opponent in feature derivations. & Team identifiers\\
 $g,t$ & The index g labels a game; t labels a team in win-rate notation and a time instant in the offset function. & Context dependent\\
 $r_i,r_j$ & These are the team ratings available before the game. & Varies; season opener 1500\\
-$r_i^{+}\;(r^{+})$ & This is a team rating after its game update, before league recentering. & Varies by game\\
+$r_{\mathrm{new}}$ & This is a team rating after its game update, before league recentering. & Varies by game\\
 $p_i,p_j$ & These are the complementary pregame probabilities of a home and away win. & Between 0 and 1; sum 1\\
 $z_i$ & The probability exponent combines the rating difference, home advantage, and fatigue adjustment. & Varies by matchup\\
 $h$ & The venue indicator enables home advantage at a home venue and removes it at a neutral venue. & 1 home; 0 neutral\\
@@ -593,14 +649,20 @@ $s_i\;(s)$ & The result sign equals twice the win indicator minus one. & +1 win;
 $S_i\;(S)$ & Schedule strength combines the opponent's prior win rate and its prior opponents' win rates. & Varies; empty history 0.5\\
 $W_t$ & The smoothed prior win rate equals (prior wins + 1) divided by (prior games + 2). & Varies; no games 0.5\\
 $w_t,n_t$ & These are the wins and games observed for a team before the forecast cutoff. & Nonnegative integer counts\\
-$\mathcal O(j),\overline W_{\mathcal O(j)}$ & The opponent-history collection includes repeats; its mean uses those opponents' smoothed prior win rates. & Varies; empty mean 0.5\\
+$\overline W_{\mathrm{opp\ history}}$ & This is the mean prior win rate of the opponent's previous opponents, counting repeats. & Varies; empty mean 0.5\\
 $LL_i,LL_j$ & Largest lead is the maximum points advantage achieved by each team during the completed game. & Nonnegative point counts\\
 $L_i\;(L)$ & Lead retention divides absolute final margin by the larger of both teams' largest leads. & Greater than 0; at most 1\\
-$U$ & The aggregate is the weighted sum of the scaled box-score features. & Varies by team-game\\
-$A$ & The aggregate game performance factor (AGPF) applies a clipped sigmoid to U. & From 0.000001 to 0.999999\\
-$\overline A_{<g}$ & The baseline is the expanding mean of the team's prior AGPF values. & Varies; opener uses current A\\
-$Q_i\;(Q)$ & The performance adjustment factor (PAF) compares current AGPF with its prior baseline and clips the ratio. & From 0.25 to 4; opener 1\\
+$\mathrm{Score}$ & The box-score total is the weighted sum of the scaled box-score features. & Varies by team-game\\
+$\mathrm{Perf}$ & The aggregate game performance factor (AGPF) applies a clipped sigmoid to the weighted Score. & From 0.000001 to 0.999999\\
+$\mathrm{PriorPerf}$ & The baseline is the expanding mean of the team's prior game-performance values. & Varies; opener uses current Perf\\
+$P$ & The performance adjustment factor (PAF) compares current game performance with its prior baseline and clips the ratio. & From 0.25 to 4; opener 1\\
+$n$ & The prior-performance average divides the sum of a team's earlier game-performance scores by this count. & Number of prior team games\\
+$M_S$ & The schedule multiplier equals one plus the result sign times beta times schedule strength. & Varies by game\\
+$M_L$ & The lead multiplier equals one plus phi times the base-two logarithm of one plus lead retention. & Varies by game\\
+$M_P$ & The performance multiplier equals one plus the result sign times lambda times (P minus one). & Varies by game\\
+$\Delta r$ & The rating change equals the base outcome error multiplied by the three adjustment factors. & Varies by game\\
 \end{longtable}
+\clearpage
 \subsection*{Box-score features and counts}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
 \toprule
@@ -621,8 +683,8 @@ $X_5$ & The feature divides defensive rebounds by defensive rebounds plus oppone
 $X_6$ & The feature divides assists by player turnovers, using a denominator of one for zero turnovers. & Varies by team-game\\
 $X_7$ & The feature divides player turnovers by field-goal attempts plus 0.44 free-throw attempts plus player turnovers. & Varies by team-game\\
 $X_8$ & The feature divides steals by estimated opponent possessions. & Varies by team-game\\
-$\widetilde X_k$ & The scaled vector is (X1/10, X2, X3, X4, X5, X6/3, -X7, X8). & Fixed transformation\\
-$\widehat P,\widehat P_O$ & Estimated possessions equal field-goal attempts plus 0.44 free-throw attempts minus offensive rebounds plus player turnovers. & Varies; coefficient 0.44\\
+$x_k$ & The scaled features follow (X1/10, X2, X3, X4, X5, X6/3, -X7, X8). & Fixed transformation\\
+$\mathrm{Poss},\mathrm{Poss}_O$ & Estimated possessions equal field-goal attempts plus 0.44 free-throw attempts minus offensive rebounds plus player turnovers. & Varies; coefficient 0.44\\
 $PTS,PTS_O$ & These counts record points scored by the team and its opponent. & Points in the completed game\\
 $FGM,FGA$ & These counts record field goals made and attempted. & Nonnegative integer counts\\
 $3PM$ & This count records made three-point field goals. & Nonnegative integer count\\
@@ -630,6 +692,7 @@ $FTA$ & This count records free throws attempted. & Nonnegative integer count\\
 $OREB,DREB$ & These counts record offensive and defensive rebounds; an O subscript denotes opponent counts. & Nonnegative integer counts\\
 $AST,TOV,STL$ & These counts record assists, summed player turnovers, and steals. & Nonnegative integer counts\\
 \end{longtable}
+\clearpage
 \subsection*{Fitting, evaluation, and travel notation}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
 \toprule
@@ -642,7 +705,6 @@ Symbol & Meaning & Value or range\\
 \endhead
 \bottomrule
 \endfoot
-$\tau_g,\mathcal F_{\tau_g}$ & The cutoff time and its information set specify what is available when a forecast is made. & Varies by game\\
 $\theta$ & The fitted parameter vector contains seven scalar coefficients and seven independent feature-weight logits. & 14 free coordinates\\
 $\mathcal L(\theta)$ & Training loss is the mean binary log loss across eligible training games. & 0.6282097079 at fitted solution\\
 $N$ & The number of eligible games normalizes a stated fitting or evaluation score. & 3220 training; 1075 test\\

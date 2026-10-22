@@ -55,16 +55,16 @@ def render_dashboard():
 - **Fatigue weight ($\gamma$):** controls the influence of that context on the probability.
         """)
         st.subheader("Elo update after a completed game")
-        st.latex(r"r_i^{+}=r_i+K(y_i-p_i)(1+s_i\beta S_i)(1+\phi\log_2(1+L_i))(1+s_i\lambda(Q_i-1))")
+        st.latex(r"r_{i,\mathrm{new}}=r_i+K(y_i-p_i)(1+s_i\beta S_i)(1+\phi\log_2(1+L_i))(1+s_i\lambda(P_i-1))")
         st.markdown(r"""
-- **Updated Elo ($r_i^{+}$):** the team's rating after the completed game, before league recentering.
+- **Updated Elo ($r_{i,\mathrm{new}}$):** the team's rating after the completed game, before league recentering.
 - **Outcome ($y_i$):** $1$ for a win and $0$ for a loss.
 - **Prediction error ($y_i-p_i$):** the difference between the outcome and that team's pregame win probability.
 - **Update size ($K$):** the base sensitivity of Elo to the result.
 - **Result direction ($s_i$):** $s_i=2y_i-1$, giving $+1$ for a win and $-1$ for a loss.
 - **Schedule strength ($S_i$):** the opponent's prior record and its previous opponents' records, weighted by $\beta$.
 - **Lead retention ($L_i$):** final margin divided by the largest lead of either team, weighted by $\phi$.
-- **Relative performance ($Q_i$):** box-score performance compared with the team's prior average, weighted by $\lambda$.
+- **Relative performance ($P_i$):** box-score performance compared with the team's prior average, weighted by $\lambda$.
         """)
         st.caption("Only prior information enters the probability. Outcomes and current-game box scores enter the rating update after completion; league ratings are then recentered at 1500.")
         with st.expander("Rest, travel, and time-zone inputs"):
