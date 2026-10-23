@@ -48,6 +48,32 @@ own base win probability and outcome. The following is a
 step-by-step construction of an empirical model; its adjustments are modeling
 choices whose coefficients are fitted, not consequences of a physical law.
 
+\subsection{Methodological basis and scope}
+The probability link follows Bradley and Terry's paired-comparison model
+\cite{bradleyterry}. With positive strengths $a_i=10^{r_i/c}$ and
+$a_j=10^{r_j/c}$, neutral equal-context play gives
+$p_i=a_i/(a_i+a_j)$. The complete equation below is the covariate-adjusted
+form, with log odds
+\begin{equation}
+ \operatorname{logit}(p_i)=\frac{\ln 10}{c}(r_i-r_j+Hh)
+ -\gamma\ln 10\ln(F_i/G_i).
+\end{equation}
+Thus the Bradley--Terry probability structure remains, while ratings change
+through a sequential Elo-style residual update; the connection between
+Elo updates and Bradley--Terry log odds is discussed by Kir\'aly and Qian
+\cite{onlineelo}. Home court and the context
+term shift log odds before the game.
+
+Whole-History Rating (WHR), described by Coulom \cite{whr}, instead jointly
+estimates time-varying rating trajectories under a Bayesian temporal prior
+using the available game history. This implementation does not implement
+that joint maximum-a-posteriori procedure, backward smoothing, or posterior
+rating distributions. Replaying games to fit shared update constants is not
+WHR. Its ratings are forward sequential estimates; issued forecasts are
+never revised using future outcomes. The schedule, lead and box-score
+multipliers below are empirical project specifications, not derivations
+from the Bradley--Terry or WHR papers.
+
 \section{Step 0: initialize the season}
 The first available historical season starts all teams at 1500. Version 0.3
 retains part of the preceding season's final rating deviation:
@@ -98,7 +124,9 @@ than fitting redundant scales. Display rounding does not affect calculations.
 \subsection{Version 0.3: adjust the published probability for injuries}
 Write $p_i$ for the base Elo probability and $q_i$ for the default published
 probability. Define $\sigma(a)=(1+e^{-a})^{-1}$ and
-$\operatorname{logit}(p)=\ln(p/(1-p))$. The regularized correction is
+$\operatorname{logit}(p)=\ln(p/(1-p))$. The correction is an L2-penalized logistic model with the base log odds
+as an offset; penalized logistic modeling is discussed in
+\cite[Sections 4.4 and 5.5]{esl}. The implemented equation is
 \begin{equation}\label{eq:injury}
  \boxed{q_i=\sigma\!\left(\operatorname{logit}(p_i)+b+
  \mathbf w^{\mathsf T}\mathbf d_i\right)},\qquad q_j=1-q_i.
@@ -109,10 +137,13 @@ indicators. It is separate from the postgame features $X_1,\ldots,X_8$ below.
 Means, standard deviations, intercept and weights use earlier seasons only
 and are frozen with a feature-order schema.
 
-Official Out, Doubtful, Questionable and Probable designations are separate.
+Official Out, Doubtful, Questionable and Probable designations are separate
+\cite{injuries}. They are categorical predictors, not fixed probabilities
+of playing or clinician estimates.
 For each player, estimate expected minutes $\bar m$ with a normalized
 exponential mean over earlier played observations, half-life ten observations.
-The fixed descriptive player score is
+The descriptive player score uses the Game Score formula documented by
+Sports Reference \cite{gamescore}:
 \begin{align}
  \mathrm{PlayerScore}={}&PTS+0.4FGM-0.7FGA-0.4(FTA-FTM)\notag\\
  &+0.7OREB+0.3DREB+STL+0.7AST+0.7BLK-0.4PF-TOV.
@@ -122,8 +153,20 @@ $V$ of PlayerScore and $M$ of minutes, the shrunk value per minute is
 \begin{equation}
  v_p=\frac{V+80(0.3)}{M+80}.
 \end{equation}
-For each status, sum $\bar m/240$ and $\bar m v_p/80$ within each team and
-subtract away contributions from home contributions. The constants 240 and
+For team $t$ and status $s$, define the two contributions
+\begin{equation}
+ A_{t,s}=\sum_{a\in(t,s)}\frac{\bar m_a}{240},\qquad
+ B_{t,s}=\sum_{a\in(t,s)}\frac{\bar m_a v_a}{80}.
+\end{equation}
+The eight status features are $A_{i,s}-A_{j,s}$ and $B_{i,s}-B_{j,s}$
+for the four statuses. Ten further coverage features comprise differences
+in submitted flags, unmapped counts, missing-history counts and valued-player
+counts, plus each side's submitted flag, unmapped count and missing-history
+count separately. Together with base log odds, the correction has 19 inputs.
+For raw input $u_k$, the fitted standardization is
+$d_k=(u_k-\mu_k)/s_k$, where $\mu_k,s_k$ use training rows only and
+scales below $10^{-10}$ are replaced by one. The base log odds appear both as a fixed
+offset and as a standardized covariate, allowing fitted recalibration. The constants 240 and
 80 set feature scales; 80 minutes at value 0.3 supplies a player-value prior.
 Coverage features distinguish submitted, unsubmitted, unmapped and
 no-prior-history cases. Missing records never imply observed health or zero
@@ -134,8 +177,35 @@ reports use explicit unknown indicators. Live collection rejects future-dated
 or more-than-16-hour-old reports. The Elo update always uses $p_i$, not $q_i$:
 the injury correction does not feed back into ratings.
 
+\subsubsection{From source reports to issued forecasts}
+The scheduled collector first reads the official report index, or checks at
+most four distinct already-due public quarter-hour PDF versions if the index
+is unavailable. It parses the PDF table and actual header publication time,
+rejects future or more-than-16-hour-old documents, and matches game date,
+teams and matchup. Normalized player names map only when unambiguous to
+ESPN athlete identifiers. Earlier completed ESPN player box scores supply
+minutes and PlayerScore; invalid team/player totals are excluded from player
+history rather than interpreted as zero minutes \cite{espn,sportsdataverse}.
+Expected-minute smoothing, shrinkage constants and feature scales are project choices, not independently established player-impact
+estimates or injury severity measurements.
+
+Historical forecasts freeze the whole Eastern-calendar slate at the earlier
+of 10 a.m. and one hour before its first tip-off; no player performance from
+that slate enters its own morning forecasts. Live revisions use information
+collected at their actual issuance time, never a backdated timestamp.
+Every issued revision preserves the report URL, publication time, hash,
+coverage, model fingerprint and numerical input vector. Partial submissions
+use unknown indicators; absent verified matchup coverage gives $q_i=p_i$.
+The two-hour collection cadence can lag later NBA report changes, which is
+why the dashboard exposes the report timestamp. Game results update the Elo
+state through the base residual $y_i-p_i$; the published injury probability
+$q_i$ is used for forecasts and their evaluation, not that rating residual.
+
 \subsection{A separately tracked boosted comparison}
-Shallow histogram gradient-boosted trees produce $q_{B,i}$. Inputs include
+Shallow histogram gradient-boosted trees produce $q_{B,i}$ in an internal
+research comparator. Gradient boosting follows the additive stagewise
+framework of Friedman \cite{friedman}; the histogram implementation is
+Scikit-learn \cite{boosting}. Inputs include
 base log odds, injury features, earlier form, schedule and rotation summaries.
 For each previous team game, store net efficiency, signed margin minus
 $7.5\operatorname{logit}(p)$, the eight raw box-score features, points for
@@ -161,7 +231,7 @@ For numerical feature vector $\mathbf f$, the comparison is
 Each $h_t$ is a trained tree with its learning rate included in leaf values.
 Earlier validation selects the settings and blend weight $\omega$. Both
 corrections share the same Elo rankings; boosting is a challenger, not the
-default forecast.
+public dashboard forecast.
 
 \section{Step 2: derive eight features from the completed box score}\label{sec:features}
 Only after the game finishes do its box-score counts become inputs to the
@@ -491,7 +561,9 @@ evidence; the observed test season is no longer untouched for such revisions.
 Probability quality is assessed by log loss, Brier score
 $N^{-1}\sum_g(p_g-y_g)^2$, and ten equal-width calibration bins with counts,
 mean forecasts, and observed home-win fractions. Lower log loss and Brier
-score are better. Winner accuracy is secondary, choosing home at exactly
+score are better. These are strictly proper probability scoring rules
+\cite{scoring}; winner accuracy discards confidence by applying a threshold.
+Winner accuracy is secondary, choosing home at exactly
 $p=0.5$. It is not an accuracy percentage for probabilities.
 
 \begin{table}[ht]
@@ -637,6 +709,13 @@ Boosted comparison & 3690 & 0.600005 & 0.206871 & 67.15\%\\
 \bottomrule
 \end{tabular}
 \end{center}
+The public dashboard exposes only Elo + injuries, which has the lowest
+pooled log loss and Brier score among the tested procedures. The boosted
+comparator predicts three more winners out of 3,690 games, but has worse
+probability scores. This is an operational choice for probability quality,
+not proof that one procedure dominates on all future seasons. The model
+comparison records remain available for reproducibility.
+
 These three-season retrospective comparisons include opening games and the
 deployed missing-report fallback. They are not directly comparable with the
 version 0.2 single-season warmup-filtered 68.56\% headline. Outcomes were
@@ -881,6 +960,9 @@ $\mathbf d_i$ & The standardized injury-head vector contains base log odds and p
 $b,\mathbf w$ & The intercept and standardized-feature weights define the fitted logistic correction. & b = 0.00231409; weights in JSON\\
 $\mathbf w_*,\eta$ & The penalized vector includes the intercept; eta controls its squared-norm penalty. & 20 coefficients; eta 0.0001\\
 $\bar m$ & Expected minutes average a player's earlier played observations with exponential decay. & Half-life 10 observations\\
+$a_i,a_j$ & Positive paired-comparison strengths are powers of ten of the rating divided by its scale. & $10^{r_i/c},10^{r_j/c}$\\
+$A_{t,s},B_{t,s}$ & Team $t$'s status $s$ totals summarize expected minutes and expected minutes times player value. & Vary by report\\
+$u_k,\mu_k,s_k,d_k$ & A raw injury-head input, its training mean and scale, and its standardized value determine one correction term. & $d_k=(u_k-\mu_k)/s_k$\\
 $\mathrm{PlayerScore}$ & The descriptive player box-score total combines scoring, shooting, rebounds, assists, steals, blocks, fouls and turnovers. & Formula in the text\\
 $M,V$ & Discounted sums retain earlier player minutes and PlayerScore. & Half-life 10 observations\\
 $v_p$ & Prior value per minute is shrunk toward a fixed descriptive reference. & 80 minutes at value 0.3\\
@@ -894,7 +976,38 @@ $s_{a,1},s_{a,2}$ & These are a player's minute shares in the last two observed 
 \endgroup
 
 \clearpage
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
+\bibitem{bradleyterry}
+R. A. Bradley and M. E. Terry (1952).
+Rank analysis of incomplete block designs: I. The method of paired comparisons.
+\emph{Biometrika}, 39(3--4), 324--345.
+\href{https://doi.org/10.1093/biomet/39.3-4.324}{doi:10.1093/biomet/39.3-4.324}.
+\bibitem{whr}
+R. Coulom (2008). Whole-History Rating: A Bayesian rating system for players
+of time-varying strength. In \emph{Computers and Games}, LNCS 5131,
+113--124. Springer. \url{https://www.remi-coulom.fr/WHR/}.
+\bibitem{onlineelo}
+F. J. Kir\'aly and Z. Qian (2017). Modelling competitive sports:
+Bradley--Terry--Elo models for supervised and on-line learning of paired
+competition outcomes. \emph{arXiv:1701.08055}.
+\url{https://arxiv.org/abs/1701.08055}.
+\bibitem{gamescore}
+Sports Reference. \emph{Basketball-Reference glossary}, Game Score definition.
+\url{https://www.basketball-reference.com/about/glossary.html}.
+\bibitem{esl}
+T. Hastie, R. Tibshirani and J. Friedman (2009).
+\emph{The Elements of Statistical Learning}, second edition. Springer.
+Sections 4.4 and 5.5: logistic regression and regularization.
+\url{https://hastie.su.domains/ElemStatLearn/}.
+\bibitem{scoring}
+T. Gneiting and A. E. Raftery (2007).
+Strictly proper scoring rules, prediction, and estimation.
+\emph{Journal of the American Statistical Association}, 102(477), 359--378.
+\href{https://doi.org/10.1198/016214506000001437}{doi:10.1198/016214506000001437}.
+\bibitem{friedman}
+J. H. Friedman (2001). Greedy function approximation: A gradient boosting machine.
+\emph{The Annals of Statistics}, 29(5), 1189--1232.
+\href{https://doi.org/10.1214/aos/1013203451}{doi:10.1214/aos/1013203451}.
 \bibitem{sportsdataverse}
 SportsDataverse. \emph{sportsdataverse-data}, ESPN NBA schedules, team box scores,
 and play-by-play releases, ending years 2022--2026.

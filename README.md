@@ -7,7 +7,7 @@ NBA team ratings and pregame win probabilities, with historical backtesting and 
 ## What it does
 
 - Ranks all NBA teams by Elo and estimates matchup win probabilities.
-- Displays upcoming forecasts and completed-game outcomes, with base, injury and boosted model comparisons.
+- Displays upcoming forecasts and completed-game outcomes, using one published forecast: Elo + injuries.
 - Shows report coverage and falls back to Elo when a verified injury report does not cover the game.
 - Supports the current season and five historical seasons, with downloadable datasets.
 - Collects results every two hours; open pages refresh saved snapshots every minute.
@@ -16,17 +16,23 @@ The frontend reads stored outputs rather than scraping or fitting on page load. 
 
 ## Models and historical performance
 
-Version **0.3.0** carries half of each team's previous-season Elo deviation forward. The default probability adds a regularized injury correction; a boosted model is available as a comparison. Both retain the same Elo rankings, and rating updates always use the base Elo probability.
+Version **0.3.0** carries half of each team's previous-season Elo deviation forward. The published probability adds a regularized injury correction. This is the only dashboard forecast: it has the lowest retrospective log loss and Brier score among the tested procedures. The boosted research comparator picked three more winners out of 3,690 games, but had worse probability scores. Rating updates always use the base Elo probability; injuries do not alter the Elo rankings. Research comparators and their original records remain available for reproducibility.
 
 | Retrospective procedure | Games | Log loss ↓ | Brier ↓ | Winner accuracy |
 | --- | ---: | ---: | ---: | ---: |
 | Carryover Elo | 3,690 | 0.6035 | 0.2084 | 66.64% |
-| Elo + injuries (default) | 3,690 | 0.5983 | 0.2062 | 67.07% |
+| Elo + injuries (published) | 3,690 | 0.5983 | 0.2062 | 67.07% |
 | Boosted comparison | 3,690 | 0.6000 | 0.2069 | 67.15% |
 
 Each evaluation season uses earlier seasons for fitting and selection. These all-game comparisons include opening games and the deployed missing-report fallback. The production checks corrected five exploratory injury-feature rows that could use another current-slate player's performance; refitted boosted selections therefore supersede earlier exploratory accuracy figures.
 
 These are reconstructed results on previously studied outcomes, not live accuracy claims. The retained v0.2 release scored 68.56% on a different population: one season after both teams' ten-game warmup. See [evaluation](docs/EVALUATION.md) for protocols, per-season scores and limitations.
+
+## Injury data and mathematical basis
+
+The scheduled collector reads [official NBA injury reports](https://official.nba.com/nba-injury-report-2026-27-season/), validates publication time and matchup identity, and maps unambiguous player names to ESPN IDs. Earlier completed player box scores supply expected minutes and a shrunk Game Score per minute. Separate status totals and explicit missingness indicators enter a fitted logistic correction to the base Elo log odds. Reports unavailable for a matchup trigger base Elo; partial reports remain unknown rather than healthy. See [data pipeline](docs/DATA.md#player-and-injury-inputs) and the paper for the full equations, timing and provenance.
+
+The base probability is a covariate-adjusted [Bradley–Terry](https://doi.org/10.1093/biomet/39.3-4.324) paired-comparison model. Ratings update sequentially; the implementation does **not** perform [Whole-History Rating](https://www.remi-coulom.fr/WHR/)'s joint Bayesian optimization of historical rating trajectories. Travel, schedule and performance multipliers are empirical project choices, not formulas derived in those papers.
 
 ## Symbol dictionary
 

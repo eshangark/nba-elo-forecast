@@ -9,7 +9,7 @@ HAS_STREAMLIT = importlib.util.find_spec("streamlit") is not None
 
 @unittest.skipUnless(HAS_STREAMLIT, "Streamlit not installed")
 class AppTests(unittest.TestCase):
-    def test_model_selector_changes_probabilities_without_changing_rankings(self):
+    def test_only_published_probability_is_available(self):
         from streamlit.testing.v1 import AppTest
         from unittest.mock import patch
         from nba_forecast.live import build_snapshot
@@ -33,12 +33,14 @@ class AppTests(unittest.TestCase):
             ratings = app.dataframe[0].value.copy()
             expected = payload['upcoming'][0]['probability_models']
             self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected['injury']['home_probability']*100)
-            for variant in ['base', 'boosted']:
-                app.session_state[f'forecast_variant_{season}'] = {'value': variant}
-                app.run()
-                self.assertFalse(app.exception)
-                self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected[variant]['home_probability']*100)
-                self.assertTrue(ratings.equals(app.dataframe[0].value))
+            self.assertNotIn('Forecast model', [element.label for element in app.selectbox])
+            self.assertNotIn('Boosted comparison', '\n'.join(element.value for element in app.caption))
+            # A stale session key from the removed selector cannot switch public forecasts.
+            app.session_state[f'forecast_variant_{season}'] = {'value': 'boosted'}
+            app.run()
+            self.assertFalse(app.exception)
+            self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected['injury']['home_probability']*100)
+            self.assertTrue(ratings.equals(app.dataframe[0].value))
 
     def test_switching_seasons_updates_the_views(self):
         from streamlit.testing.v1 import AppTest

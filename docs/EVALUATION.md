@@ -2,7 +2,7 @@
 
 ## Current v0.3 integrated models
 
-The default probability is carryover Elo plus a regularized injury correction. A boosted comparison uses the same ratings and additional prior team, schedule and rotation features. Both are implemented; the boosted model is a challenger. Missing verified report/game coverage falls back to carryover Elo. Unsubmitted teams remain explicit unknowns.
+The default probability is carryover Elo plus a regularized injury correction. A boosted comparison uses the same ratings and additional prior team, schedule and rotation features. Both are implemented internally; only Elo + injuries is exposed as a dashboard forecast. It has the lowest pooled log loss and Brier score. The boosted model picks three additional winners out of 3,690 games, which does not establish better probability estimates. Missing verified report/game coverage falls back to carryover Elo. Unsubmitted teams remain explicit unknowns.
 
 | Procedure | Games | Log loss ↓ | Brier ↓ | Winner accuracy |
 | --- | ---: | ---: | ---: | ---: |
