@@ -1,0 +1,27 @@
+{
+  "games": 6150,
+  "base_max_error": 6.106226635438361e-16,
+  "team_max_error": 1.4210854715202004e-13,
+  "causal_correction": {
+    "reason": "Freeze all player histories at the morning daily cutoff; do not use another current-slate game after an overlapping trade/report assignment",
+    "changed_games": [
+      "401360356",
+      "401468997",
+      "401468998",
+      "401585211",
+      "401705302"
+    ]
+  },
+  "production_pdf_parses_verified": 815,
+  "portable_tree_tolerance": 1e-12,
+  "standard_library_scoring_verified": true,
+  "live_dry_run": {
+    "valid_completed_games": 16,
+    "upcoming_predictions": 65,
+    "original_issued_rows_preserved": 348,
+    "fresh_official_report_collected": true,
+    "published": false
+  },
+  "source_outage_fallback_tested": true,
+  "annual_transition_integrity_tested": true
+}

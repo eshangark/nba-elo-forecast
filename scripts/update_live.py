@@ -1,9 +1,11 @@
 """Fetch observed NBA records and atomically publish a current-season snapshot."""
 
 import argparse
+import copy
 import json
 import hashlib
 import sys
+from collections import Counter
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -13,6 +15,10 @@ from nba_forecast.live import build_snapshot, event_kind, parse_schedule, live_l
 from nba_forecast.model import EASTERN, Parameters, timestamp
 from nba_forecast.seasons import current_season
 from nba_forecast.validation import validate_game
+from nba_forecast.forecasting import FeatureState, Forecaster, carryover_ratings
+from nba_forecast.injuries import latest_report, join_report
+from nba_forecast.players import parse_player_summary
+from nba_forecast.live import digest
 
 
 def collect(client, cities, previous, season, run_started, horizon_days=7, full_refresh=False):
@@ -86,6 +92,8 @@ def main():
     parser.add_argument('--cache', type=Path, default=Path('data/raw/live-espn'))
     parser.add_argument('--archives', type=Path, default=Path('data/seasons'))
     parser.add_argument('--parameters', type=Path, default=Path('models/nba-v0.2/parameters.json'))
+    parser.add_argument('--bundle', type=Path, default=Path('models/nba-v0.3/bundle.json'))
+    parser.add_argument('--legacy', action='store_true', help='Explicitly run the archived reset-Elo model')
     parser.add_argument('--horizon-days', type=int, default=7, choices=range(1, 15))
     parser.add_argument('--full-refresh', action='store_true', help='Recheck every current-season calendar date')
     args = parser.parse_args()
@@ -117,7 +125,8 @@ def run_update(args, started, season):
                 seed = load_season(args.archives, prior[0])
                 teams = seed.get('teams') or seed['result']['rankings']
                 roster = {t['team_id']: t['team'] for t in teams}
-        params = Parameters(**json.loads(args.parameters.read_text()))
+        forecaster = None if args.legacy else Forecaster(json.loads(args.bundle.read_text()))
+        params = Parameters(**forecaster.bundle['core_parameters']) if forecaster else Parameters(**json.loads(args.parameters.read_text()))
         client, cities = Client(args.cache), Cities(args.cities)
         games, pending, coverage = collect(client, cities, previous, season, started,
                                           args.horizon_days, args.full_refresh)
@@ -127,9 +136,29 @@ def run_update(args, started, season):
                 if g[side]['id'] not in roster:
                     raise ValueError('Unexpected team outside the seeded roster')
                 roster[g[side]['id']] = g[side]['name']
+        extra = {}
+        if forecaster:
+            initial = initialization(forecaster, previous, args.archives, season)
+            player_games, aliases, player_failures = collect_players(client, previous, games, forecaster, started, args.full_refresh)
+            reports, injury_source = {}, None
+            auxiliary = {'player_failures': player_failures}
+            try:
+                observed = datetime.now(timezone.utc)
+                report, injury_source = latest_report(season, observed)
+                reports = join_report(report, pending, aliases, datetime.now(timezone.utc))
+                client.manifest.append({'url': injury_source['url'], 'sha256': injury_source['sha256'],
+                                        'retrieved_at': datetime.now(timezone.utc).isoformat()})
+                auxiliary['injuries'] = {'state': 'available', **injury_source}
+            except Exception as exc:
+                auxiliary['injuries'] = {'state': 'unavailable', 'error': f'{type(exc).__name__}: {exc}'}
+            extra = {'forecaster': forecaster, 'initial_ratings': initial['ratings'], 'feature_seed': initial['features'],
+                     'player_games': player_games, 'injury_reports': reports, 'injury_source': injury_source,
+                     'auxiliary_status': auxiliary}
         # Issue time is observed AFTER fetching; there is no backdate option.
         snapshot = build_snapshot(previous, games, pending, params, roster, datetime.now(timezone.utc),
-                                  season, client.manifest, args.horizon_days)
+                                  season, client.manifest, args.horizon_days, **extra)
+        if forecaster:
+            snapshot['_internal']['player_aliases'] = aliases
         snapshot['_internal']['collection'] = coverage
         snapshot['_internal']['geonames_sha256'] = hashlib.sha256(args.cities.read_bytes()).hexdigest()
         write_json(live_path, snapshot)
@@ -146,6 +175,66 @@ def run_update(args, started, season):
                                  'last_successful_at': previous.get('published_at') if previous else None,
                                  'error': f'{type(exc).__name__}: {exc}'})
         raise
+
+
+def initialization(forecaster, previous, archives, season):
+    """Reuse the frozen start state, or advance a complete prior live season."""
+    old = (previous or {}).get('_internal', {})
+    if old.get('forecast_model_sha256') == forecaster.fingerprint and old.get('initialization', {}).get('feature_seed'):
+        saved = old['initialization']
+        if saved['feature_seed']['season'] != season:
+            raise ValueError('Saved initialization belongs to another season')
+        return {'ratings': copy.deepcopy(saved['ratings']), 'features': copy.deepcopy(saved['feature_seed'])}
+    initial = forecaster.bundle['initialization']
+    if initial['season'] == season:
+        return copy.deepcopy(initial)
+    if initial['season'] > season:
+        raise ValueError('Cannot use a future model initialization')
+    first_year = int(season[:4])-1
+    prior = f'{first_year}-{str(first_year+1)[-2:]}'
+    path = archives/prior/'live.json'
+    payload = json.loads(path.read_text())
+    internal = payload['_internal']
+    counts = Counter(g[s]['id'] for g in internal['games'] for s in ['home', 'away'])
+    if (internal.get('forecast_model_sha256') != forecaster.fingerprint
+            or len(internal['games']) != 1230 or len({g['game_id'] for g in internal['games']}) != 1230
+            or len(counts) != 30 or set(counts.values()) != {82}
+            or len(payload['result']['rankings']) != 30
+            or any(t['games'] != 82 for t in payload['result']['rankings'])):
+        raise ValueError('Season transition requires a complete compatible prior season')
+    ratings = {t['team_id']: t['elo'] for t in payload['result']['rankings']}
+    state = FeatureState(internal['feature_state'])
+    state.start_season(season)
+    return {'ratings': carryover_ratings(ratings, ratings, forecaster.bundle['carryover_fraction']), 'features': state.data}
+
+
+def collect_players(client, previous, games, forecaster, started, full_refresh):
+    internal = (previous or {}).get('_internal', {})
+    cached = internal.get('player_games', {})
+    old_games = {g['game_id']: g for g in internal.get('games', [])}
+    aliases = {name: set(ids) for name, ids in forecaster.bundle['player_aliases'].items()}
+    for name, ids in internal.get('player_aliases', {}).items():
+        aliases.setdefault(name, set()).update(ids)
+    result, failures = {}, []
+    for g in games:
+        identifier = g['game_id']
+        prior = cached.get(identifier)
+        recent = timestamp(g['start']).astimezone(EASTERN).date() >= started.astimezone(EASTERN).date()-timedelta(days=7)
+        if (prior and all(prior.values()) and not recent and not full_refresh
+                and identifier in old_games and digest(g) == digest(old_games[identifier])):
+            result[identifier] = copy.deepcopy(prior)
+            continue
+        try:
+            players, found, issues = parse_player_summary(client.get('summary', 'event='+identifier), g)
+            result[identifier] = players
+            failures.extend({'game_id': identifier, **issue} for issue in issues)
+            for name, ids in found.items():
+                aliases.setdefault(name, set()).update(ids)
+        except Exception as exc:
+            # Invalid player records never invalidate an otherwise valid team box.
+            result[identifier] = {g[s]['id']: None for s in ['home', 'away']}
+            failures.append({'game_id': identifier, 'error': f'{type(exc).__name__}: {exc}'})
+    return result, {name: sorted(ids) for name, ids in aliases.items()}, failures
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@
 \title{Dynamic NBA Team Ratings and Pregame Win Probabilities\\
 \large Model Specification, Calibration, and Historical Evaluation}
 \author{Eshan Garkhedkar}
-\date{Working draft 0.9}
+\date{}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -17,13 +17,15 @@ An NBA forecasting system maintains team ratings and estimates pregame win
 probabilities using a dynamic multifactor rating model. Rating differences, home court, rest, estimated travel, and time-zone
 changes determine pregame probabilities. Outcomes, schedule strength, lead
 retention, and box-score performance determine subsequent rating updates.
-Model version 0.2.0 is fitted on 2021--22 through 2023--24 regular-season
-history and frozen before evaluation on 2024--25 and 2025--26. Five validated
-full seasons contain 6,150 games. On 1,075 eligible games in the held-out
-2025--26 season, log loss is 0.5925, Brier score is 0.2035, and winner accuracy
-is 68.56\%. These are reconstructed historical forecasts, not predictions
-issued live. The manuscript specifies feature derivations, bounded parameter
-estimation, data repairs, and the limitations of this first NBA calibration.
+Five validated full seasons contain 6,150 games. Version 0.3 adds partial
+inter-season rating carryover, a regularized pregame injury correction, and
+a separately tracked boosted comparison. Across 3,690 games in three
+retrospective next-season evaluations, the injury model has log loss 0.5983
+and winner accuracy 67.07\%; the boosted comparison has log loss 0.6000 and
+accuracy 67.15\%. These include opening games. The original version 0.2
+evaluation is retained separately. Historical scores are reconstructed,
+not measured live performance, and previously observed outcomes cannot
+serve as a fresh independent test of the new structures.
 \end{abstract}
 
 \section{The prediction--update cycle}
@@ -42,10 +44,21 @@ where one is fixed or fitted.
 
 Team $i$ is the home team and $j$ the away team when defining a matchup.
 In a team-specific update, the same equations apply to either side using its
-own win probability and outcome. Every season starts at rating 1500. Ratings
-currently reset rather than carry over across seasons. The following is a
+own base win probability and outcome. The following is a
 step-by-step construction of an empirical model; its adjustments are modeling
 choices whose coefficients are fitted, not consequences of a physical law.
+
+\section{Step 0: initialize the season}
+The first available historical season starts all teams at 1500. Version 0.3
+retains part of the preceding season's final rating deviation:
+\begin{equation}\label{eq:carryover}
+ r_{\mathrm{start}}=1500+\rho(r_{\mathrm{previous\ final}}-1500),\qquad \rho=0.5.
+\end{equation}
+A final rating of 1600 therefore becomes 1550. Season win records,
+schedule histories and team performance averages reset. Probability
+corrections retain earlier player values and team form. The version 0.2
+archives retain their original 1500 starts. Carryover supplies an initial
+strength estimate rather than a preseason roster valuation.
 
 \section{Step 1: turn pregame ratings into a win probability}
 \subsection{Start with the rating difference and home court}
@@ -81,6 +94,74 @@ box score cannot enter their own prediction.
 
 The base is fixed at 10 and $c=497.3558141396255$. Fixing the base and rating scale anchors the model's rating units rather
 than fitting redundant scales. Display rounding does not affect calculations.
+
+\subsection{Version 0.3: adjust the published probability for injuries}
+Write $p_i$ for the base Elo probability and $q_i$ for the default published
+probability. Define $\sigma(a)=(1+e^{-a})^{-1}$ and
+$\operatorname{logit}(p)=\ln(p/(1-p))$. The regularized correction is
+\begin{equation}\label{eq:injury}
+ \boxed{q_i=\sigma\!\left(\operatorname{logit}(p_i)+b+
+ \mathbf w^{\mathsf T}\mathbf d_i\right)},\qquad q_j=1-q_i.
+\end{equation}
+The vector $\mathbf d_i$ contains standardized pregame covariates: base log
+odds, status-weighted prior player minutes and value, and explicit coverage
+indicators. It is separate from the postgame features $X_1,\ldots,X_8$ below.
+Means, standard deviations, intercept and weights use earlier seasons only
+and are frozen with a feature-order schema.
+
+Official Out, Doubtful, Questionable and Probable designations are separate.
+For each player, estimate expected minutes $\bar m$ with a normalized
+exponential mean over earlier played observations, half-life ten observations.
+The fixed descriptive player score is
+\begin{align}
+ \mathrm{PlayerScore}={}&PTS+0.4FGM-0.7FGA-0.4(FTA-FTM)\notag\\
+ &+0.7OREB+0.3DREB+STL+0.7AST+0.7BLK-0.4PF-TOV.
+\end{align}
+$BLK$ and $PF$ are blocks and personal fouls. With discounted prior sums
+$V$ of PlayerScore and $M$ of minutes, the shrunk value per minute is
+\begin{equation}
+ v_p=\frac{V+80(0.3)}{M+80}.
+\end{equation}
+For each status, sum $\bar m/240$ and $\bar m v_p/80$ within each team and
+subtract away contributions from home contributions. The constants 240 and
+80 set feature scales; 80 minutes at value 0.3 supplies a player-value prior.
+Coverage features distinguish submitted, unsubmitted, unmapped and
+no-prior-history cases. Missing records never imply observed health or zero
+playing time. These descriptive player values are not RAPM.
+
+If no verified report covers the game, use $q_i=p_i$. Partially submitted
+reports use explicit unknown indicators. Live collection rejects future-dated
+or more-than-16-hour-old reports. The Elo update always uses $p_i$, not $q_i$:
+the injury correction does not feed back into ratings.
+
+\subsection{A separately tracked boosted comparison}
+Shallow histogram gradient-boosted trees produce $q_{B,i}$. Inputs include
+base log odds, injury features, earlier form, schedule and rotation summaries.
+For each previous team game, store net efficiency, signed margin minus
+$7.5\operatorname{logit}(p)$, the eight raw box-score features, points for
+and against, and estimated possessions. Use normalized exponential means
+with half-lives 5, 10 and 20 for the first two quantities and half-life 10
+for the remainder. These form summaries persist across seasons.
+
+Schedule inputs are clipped rest (maximum seven days), back-to-back
+indicators, previous games in four calendar days, distance in thousands of
+kilometres, signed and absolute time-zone movement, and each side's rest.
+Rotation inputs compare the last two observed minute-share distributions
+using $\sum_a\min(s_{a,1},s_{a,2})$, measure the last rotation's minutes
+belonging to observed prior-season players, and measure the cumulative-minute
+fraction of the three highest-minute players missing from the last rotation.
+History-coverage flags accompany these quantities. This is delayed rotation
+information, not a current-game lineup or preseason roster oracle.
+
+For numerical feature vector $\mathbf f$, the comparison is
+\begin{equation}
+ q_{B,i}=(1-\omega)p_i+\omega\,
+ \sigma\!\left(a_0+\sum_{t=1}^{T}h_t(\mathbf f_i)\right).
+\end{equation}
+Each $h_t$ is a trained tree with its learning rate included in leaf values.
+Earlier validation selects the settings and blend weight $\omega$. Both
+corrections share the same Elo rankings; boosting is a challenger, not the
+default forecast.
 
 \section{Step 2: derive eight features from the completed box score}\label{sec:features}
 Only after the game finishes do its box-score counts become inputs to the
@@ -247,13 +328,15 @@ Both teams' updates use their pregame ratings and are computed before either
 is committed. Asymmetric updates can change the league mean. After the
 historical slate, subtracting that mean minus 1500 from every rating recenters
 the league without changing pairwise rating differences. Live state recenters
-after individual completed games. Inter-season carryover is not implemented.
+after individual completed games. Inter-season initialization follows
+Equation~\eqref{eq:carryover}; it does not change the within-season equation.
 
 \begin{minipage}{\textwidth}
-\subsection{Worked example from a stored historical replay}
+\subsection{Worked example from the retained version 0.2 replay}
 Consider Detroit Pistons against Washington Wizards, game
 \texttt{401810054} in the 2025--26 archive. This is an existing
-reconstructed forecast, not a new test or an issued live prediction. For the
+reconstructed forecast in the original \texttt{snapshot.json}, retained
+beside the new version 0.3 archive, not an issued live prediction. For the
 home team, the stored eight box-score features and frozen weights give
 \begin{align*}
  \mathrm{Score}&=0.611115,\\
@@ -345,7 +428,7 @@ a live feed. Genuinely issued forecasts record their actual issue time,
 data cutoff, and model version in a separately preserved ledger.
 
 
-\section{Parameter estimation}
+\section{Reference version 0.2 parameter estimation}
 Training uses 2021--22 through 2023--24; 2024--25 is validation and 2025--26 is
 a held-out test. The objective is mean binary log loss,
 \begin{equation}
@@ -366,9 +449,8 @@ Travel is optimized on a base-10 logarithmic scale. Settings are random seed
 42, population multiplier 8, maximum 150 generations, relative tolerance
 $10^{-5}$, one worker, and polishing enabled. The run converged in 44 generations
 and 5,520 objective evaluations. Training log loss decreased from 0.637588 at
-the reference starting configuration to 0.628210. Constants were frozen at
-03:04:25 UTC on October 13, 2026 (October 12 Eastern), before validation/test
-evaluation. No parameters or formula choices were changed after those scores.
+the reference starting configuration to 0.628210. That release's constants
+remain frozen; new structures are versioned and evaluated separately below.
 
 \begin{table}[ht]
 \centering\small
@@ -386,7 +468,7 @@ $\beta$ & $[0,1]$ & 0.978548\\
 $u_1,\ldots,u_7$ & $[-5,5]$ & softmax weights below\\
 \bottomrule
 \end{tabular}
-\caption{Rounded fitted constants. Full precision is retained in the versioned
+\caption{Reference version 0.2 constants. Full precision is retained in the versioned
 configuration. Base 10, $c$, initial rating 1500, and time-zone scale 3 are fixed.}
 \end{table}
 
@@ -405,7 +487,7 @@ causal effects. Fixed feature scales also influence weight interpretation.
 Future constraint changes require a new model version and new prospective
 evidence; the observed test season is no longer untouched for such revisions.
 
-\section{Historical evaluation}
+\section{Reference version 0.2 historical evaluation}
 Probability quality is assessed by log loss, Brier score
 $N^{-1}\sum_g(p_g-y_g)^2$, and ten equal-width calibration bins with counts,
 mean forecasts, and observed home-win fractions. Lower log loss and Brier
@@ -507,13 +589,68 @@ advantage for the model family, while leaving uncertainty about unique feature
 effects and overfitting. Attributing improvement to individual features would
 require an ablation study.
 
-The original v0.2 configuration is retained provisionally for live integration.
-The four-season refit is not promoted merely because its now-observed score
-is slightly better. Source hashes, per-fold fit reports, metrics, paired
+The original v0.2 configuration and issued ledger are retained as reference
+records. Source hashes, per-fold fit reports, metrics, paired
 predictions, and intervals are saved under the comparison release directory.
 Future issued forecasts will provide prospective monitoring. The historical
 outcomes were already available during development, so these expanding-window
 checks must not be presented as newly untouched evidence.
+
+\section{Version 0.3 fitting and integrated evaluation}
+The release core coefficients use all five complete earlier seasons, with
+the original bounded objective and ten-game warmup. Carryover is fixed at
+0.5. Probability heads use historically generated base forecasts from each
+season's earlier-prefix fit, with fixed defaults for the first anchor season.
+For each outer year, the last earlier season selects settings, earlier
+seasons fit candidates, and all earlier seasons refit the selected head
+before the outer year is evaluated.
+
+The injury head minimizes mean binary log loss plus
+$\eta\|\mathbf w_*\|_2^2/2$, including the intercept in $\mathbf w_*$.
+Select $\eta\in\{10^{-4},10^{-3},10^{-2},0.1,1,10\}$, with an unchanged-base
+option. Standardization uses fit rows only. Boosting selects earlier
+validation winner accuracy, breaking ties by log loss. Candidate depths are
+2 or 3, learning rates 0.03 or 0.1, iterations 100 or 250, and L2 penalties
+1 or 10; minimum leaf size is 50, maximum leaves 15, seed 42, with no random
+early-stopping split. Blend weights are $\{0,0.25,0.5,0.75,1\}$.
+The future-season release selects 100 depth-two trees, rate 0.03, L2 penalty
+10 and $\omega=1$; its injury penalty is $10^{-4}$.
+
+Across 816 historical game dates, 815 official morning PDFs were retrieved
+and validated. Player totals/minutes pass checks for 12,235 of 12,300
+team-games; invalid player histories are excluded while valid team records
+remain usable. Reports are matched by date, team and matchup, and their
+header timestamps must precede the cutoff. All current-slate player updates
+are withheld until every morning forecast has been captured. This production
+check corrected five earlier exploratory feature rows affected by overlapping
+trade/report assignments. Refitting changes some boosted selections; the
+following results supersede earlier exploratory boosted-accuracy numbers.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Integrated procedure & Games & Log loss & Brier & Accuracy\\
+\midrule
+Carryover Elo & 3690 & 0.603496 & 0.208434 & 66.64\%\\
+Elo + injuries (default) & 3690 & 0.598309 & 0.206217 & 67.07\%\\
+Boosted comparison & 3690 & 0.600005 & 0.206871 & 67.15\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+These three-season retrospective comparisons include opening games and the
+deployed missing-report fallback. They are not directly comparable with the
+version 0.2 single-season warmup-filtered 68.56\% headline. Outcomes were
+already studied during development; searching multiple families adds
+selection uncertainty. Boosting is sensitive to small preparation/refitting
+changes, reinforcing its role as a challenger. Frozen prospective forecasts
+provide the next evidence.
+
+The current core fit uses 5,370 eligible games and converges in 37
+generations at training loss 0.615970. Rounded constants are $K=13.748881$,
+$H=40.034399$, $\gamma=0.179560$, $\nu=0.000095344$, $\beta=0.708190$,
+$\phi=2$ and $\lambda=0.25$. Full coefficients, scalers, numerical tree
+nodes, provenance and per-fold reports are stored in versioned JSON.
+Boundary estimates and changing feature weights remain empirical limitations.
 
 \section{Reproducibility and live use}
 The repository records source URLs/hashes, validation actions, canonical
@@ -538,7 +675,10 @@ provider availability and scheduler timing are not guaranteed.
 Live rating state can be reconstructed after source corrections, while its
 issued-forecast ledger remains immutable. A forecast receives its actual
 issue time after collection and can be issued only before tip-off. Changed
-inputs append a revision; identical inputs do not. Only the latest matching
+inputs append a revision; identical inputs do not. New-version rows retain
+the base, injury and boosted probabilities, input vectors, report timestamp/hash
+and frozen model specification. Old rows are neither overwritten nor given
+fabricated comparison probabilities. Only the latest matching
 revision issued before the recorded start is scored. A backfilled completed
 game with no issued forecast can update ratings but never becomes a live
 prediction. Primary scoring requires ten observed prior games for each team
@@ -570,8 +710,9 @@ The dictionary lists model constants and the quantities used in the construction
 names replace opaque intermediate symbols: Score is the weighted feature
 sum, Perf is a bounded game score, PriorPerf is its prior average, and P is
 their clipped ratio. Constants are rounded for display; the frozen release
-configuration retains full precision. This notation revision does not change
-model version 0.2.0, its fitted values, or its forecasts.
+configuration retains full precision. Dictionary values refer to the current
+version 0.3 core fit unless a reference version is stated explicitly.
+The version 0.2 artifacts and forecasts remain unchanged.
 \begingroup
 \normalsize
 \setlength{\tabcolsep}{4pt}
@@ -588,12 +729,12 @@ Symbol & Meaning & Value or range\\
 \endhead
 \bottomrule
 \endfoot
-$K$ & The base update coefficient controls how much a game can change Elo. & 12.21734709\\
-$H$ & Home advantage adds this many Elo points to the home-side rating difference. & 41.55284709\\
+$K$ & The base update coefficient controls how much a game can change Elo. & 13.748881\\
+$H$ & Home advantage adds this many Elo points to the home-side rating difference. & 40.03439907\\
 $c$ & The fixed rating scale converts Elo differences into probability differences. & 497.3558141 (fixed)\\
-$\gamma$ & The fatigue coefficient weights the logarithm of the rest/travel index ratio. & 0.1647242036\\
-$\nu$ & The travel coefficient weights venue-city distance inside the fatigue indices. & 0.0001097348541\\
-$\beta$ & The schedule coefficient weights the prior strength-of-schedule adjustment. & 0.9785483342\\
+$\gamma$ & The fatigue coefficient weights the logarithm of the rest/travel index ratio. & 0.179559595\\
+$\nu$ & The travel coefficient weights venue-city distance inside the fatigue indices. & 9.534356884e-05\\
+$\beta$ & The schedule coefficient weights the prior strength-of-schedule adjustment. & 0.7081901219\\
 $\phi$ & The lead coefficient weights the logarithmic lead-retention adjustment. & 2\\
 $\lambda$ & The performance coefficient weights relative box-score performance. & 0.25\\
 $10$ & The probability exponent uses a fixed base of ten. & 10 (fixed)\\
@@ -612,14 +753,14 @@ Symbol & Meaning & Value or range\\
 \endhead
 \bottomrule
 \endfoot
-$\alpha_1$ & The normalized weight multiplies scaled net efficiency. & 0.1619541794\\
-$\alpha_2$ & The normalized weight multiplies scaled effective field-goal percentage. & 0.004364883064\\
-$\alpha_3$ & The normalized weight multiplies scaled true shooting percentage. & 0.006380439345\\
-$\alpha_4$ & The normalized weight multiplies scaled offensive-rebound rate. & 0.002773641359\\
-$\alpha_5$ & The normalized weight multiplies scaled defensive-rebound rate. & 0.6869916183\\
-$\alpha_6$ & The normalized weight multiplies scaled assist-to-turnover ratio. & 0.07304149277\\
-$\alpha_7$ & The normalized weight multiplies scaled turnover fraction. & 0.007925905426\\
-$\alpha_8$ & The normalized weight multiplies scaled steal rate. & 0.05656784034\\
+$\alpha_1$ & The normalized weight multiplies scaled net efficiency. & 0.0006686328527\\
+$\alpha_2$ & The normalized weight multiplies scaled effective field-goal percentage. & 0.0008033843254\\
+$\alpha_3$ & The normalized weight multiplies scaled true shooting percentage. & 0.008884867219\\
+$\alpha_4$ & The normalized weight multiplies scaled offensive-rebound rate. & 0.0007283531314\\
+$\alpha_5$ & The normalized weight multiplies scaled defensive-rebound rate. & 0.1613285001\\
+$\alpha_6$ & The normalized weight multiplies scaled assist-to-turnover ratio. & 0.8047679813\\
+$\alpha_7$ & The normalized weight multiplies scaled turnover fraction. & 0.01518263624\\
+$\alpha_8$ & The normalized weight multiplies scaled steal rate. & 0.007635644786\\
 \end{longtable}
 \subsection*{Matchup and rating-update quantities}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
@@ -635,7 +776,7 @@ Symbol & Meaning & Value or range\\
 \endfoot
 $i,j,O$ & In the probability equation, i is the home team and j the away team; O denotes an opponent in feature derivations. & Team identifiers\\
 $g,t$ & The index g labels a game; t labels a team in win-rate notation and a time instant in the offset function. & Context dependent\\
-$r_i,r_j$ & These are the team ratings available before the game. & Varies; season opener 1500\\
+$r_i,r_j$ & These are the team ratings available before the game. & Carryover; first anchor 1500\\
 $r_{\mathrm{new}}$ & This is a team rating after its game update, before league recentering. & Varies by game\\
 $p_i,p_j$ & These are the complementary pregame probabilities of a home and away win. & Between 0 and 1; sum 1\\
 $z_i$ & The probability exponent combines the rating difference, home advantage, and fatigue adjustment. & Varies by matchup\\
@@ -706,15 +847,15 @@ Symbol & Meaning & Value or range\\
 \bottomrule
 \endfoot
 $\theta$ & The fitted parameter vector contains seven scalar coefficients and seven independent feature-weight logits. & 14 free coordinates\\
-$\mathcal L(\theta)$ & Training loss is the mean binary log loss across eligible training games. & 0.6282097079 at fitted solution\\
-$N$ & The number of eligible games normalizes a stated fitting or evaluation score. & 3220 training; 1075 test\\
-$u_1$ & This softmax logit parameterizes feature weight alpha1 relative to alpha8. & 1.05187282\\
-$u_2$ & This softmax logit parameterizes feature weight alpha2 relative to alpha8. & -2.561849232\\
-$u_3$ & This softmax logit parameterizes feature weight alpha3 relative to alpha8. & -2.182203674\\
-$u_4$ & This softmax logit parameterizes feature weight alpha4 relative to alpha8. & -3.015279605\\
-$u_5$ & This softmax logit parameterizes feature weight alpha5 relative to alpha8. & 2.49688146\\
-$u_6$ & This softmax logit parameterizes feature weight alpha6 relative to alpha8. & 0.2555870419\\
-$u_7$ & This softmax logit parameterizes feature weight alpha7 relative to alpha8. & -1.965304069\\
+$\mathcal L(\theta)$ & Training loss is the mean binary log loss across eligible training games. & 0.6159695469 at fitted solution\\
+$N$ & The number of eligible games normalizes a stated fitting or evaluation score. & 5370 release fit; 3690 new evaluation\\
+$u_1$ & This softmax logit parameterizes feature weight alpha1 relative to alpha8. & -2.435347556\\
+$u_2$ & This softmax logit parameterizes feature weight alpha2 relative to alpha8. & -2.251749454\\
+$u_3$ & This softmax logit parameterizes feature weight alpha3 relative to alpha8. & 0.1515221307\\
+$u_4$ & This softmax logit parameterizes feature weight alpha4 relative to alpha8. & -2.349796664\\
+$u_5$ & This softmax logit parameterizes feature weight alpha5 relative to alpha8. & 3.050615273\\
+$u_6$ & This softmax logit parameterizes feature weight alpha6 relative to alpha8. & 4.657726628\\
+$u_7$ & This softmax logit parameterizes feature weight alpha7 relative to alpha8. & 0.6873250356\\
 $u_8$ & The final softmax logit is fixed to identify the normalized feature weights. & 0 (fixed)\\
 $\varphi_1,\varphi_2,\ell_1,\ell_2$ & These are the latitudes and longitudes of consecutive venue cities, expressed in radians. & Varies by venue\\
 $a_v$ & The Haversine intermediate combines the angular latitude and longitude differences. & Between 0 and 1\\
@@ -722,6 +863,34 @@ $v,o(v,t)$ & The venue v and its UTC-offset function define a location's dated t
 $\ln,\log_2,\exp$ & These functions are the natural logarithm, base-two logarithm, and natural exponential. & Function definitions\\
 $\operatorname{clip}$ & Clipping limits an input to its stated lower and upper bounds. & Bounds stated above\\
 \end{longtable}
+
+\clearpage
+\subsection*{Carryover and probability corrections}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.51\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}@{}}
+\toprule
+Symbol & Meaning & Value or range\\
+\midrule
+\endfirsthead
+\toprule Symbol & Meaning & Value or range\\\midrule
+\endhead
+\bottomrule\endfoot
+$\rho$ & The season-start rating retains this fraction of the prior final deviation from 1500. & 0.5\\
+$q_i,q_j$ & These are the default published injury-adjusted probabilities; their sum is one. & Between 0 and 1\\
+$\sigma,\operatorname{logit}$ & The sigmoid and log odds convert between probability and an unconstrained score. & Defined in the text\\
+$\mathbf d_i$ & The standardized injury-head vector contains base log odds and prior player/report features. & 19 coordinates\\
+$b,\mathbf w$ & The intercept and standardized-feature weights define the fitted logistic correction. & b = 0.00231409; weights in JSON\\
+$\mathbf w_*,\eta$ & The penalized vector includes the intercept; eta controls its squared-norm penalty. & 20 coefficients; eta 0.0001\\
+$\bar m$ & Expected minutes average a player's earlier played observations with exponential decay. & Half-life 10 observations\\
+$\mathrm{PlayerScore}$ & The descriptive player box-score total combines scoring, shooting, rebounds, assists, steals, blocks, fouls and turnovers. & Formula in the text\\
+$M,V$ & Discounted sums retain earlier player minutes and PlayerScore. & Half-life 10 observations\\
+$v_p$ & Prior value per minute is shrunk toward a fixed descriptive reference. & 80 minutes at value 0.3\\
+$FTM,BLK,PF$ & These counts are free throws made, blocks and personal fouls. & Completed player box only\\
+$q_{B,i},\mathbf f_i$ & The challenger uses this win probability and vector of prior team/injury covariates. & 50 input coordinates\\
+$a_0,h_t,T$ & The boosted score adds numerical tree-leaf contributions to an initial log-odds score. & a0 = 0.21349012; 100 trees\\
+$\omega$ & The blend weight controls how much the tree probability replaces base Elo. & 1 in the current release\\
+$s_{a,1},s_{a,2}$ & These are a player's minute shares in the last two observed rotations. & Fractions of team minutes\\
+\end{longtable}
+
 \endgroup
 
 \clearpage
@@ -730,17 +899,24 @@ $\operatorname{clip}$ & Clipping limits an input to its stated lower and upper b
 SportsDataverse. \emph{sportsdataverse-data}, ESPN NBA schedules, team box scores,
 and play-by-play releases, ending years 2022--2026.
 \url{https://github.com/sportsdataverse/sportsdataverse-data}.
-Retrieved October 12, 2026; exact URLs and hashes in collection manifests.
+Exact URLs and hashes are recorded in collection manifests.
 \bibitem{espn}
 ESPN. NBA public game-summary responses.
 \url{https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary}.
-Primary replacements retrieved October 12, 2026; event URLs/hashes recorded.
+Event URLs and source hashes are recorded with primary replacements.
 \bibitem{geonames}
 GeoNames. \emph{cities15000 geographical database}.
 \url{https://download.geonames.org/export/dump/}.
-Retrieved October 12, 2026. Creative Commons Attribution 4.0.
+Creative Commons Attribution 4.0.
 \bibitem{scipy}
 SciPy. \emph{scipy.optimize.differential\_evolution}, version 1.18.1.
 \url{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.differential_evolution.html}.
+\bibitem{injuries}
+NBA. Official injury-report publication policy and historical report PDFs.
+\url{https://official.nba.com/nba-injury-report-2026-27-season/}.
+Individual publication timestamps and hashes are retained with research sources.
+\bibitem{boosting}
+Scikit-learn. Histogram gradient boosting, version 1.9.1.
+\url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html}.
 \end{thebibliography}
 \end{document}

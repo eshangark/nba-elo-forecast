@@ -1,6 +1,13 @@
 name: Update NBA forecasts
 
 "on":
+  push:
+    branches: [main]
+    paths:
+      - 'nba_forecast/**'
+      - 'scripts/update_live.py'
+      - 'models/nba-v0.3/**'
+      - '.github/workflows/update-live.yml'
   schedule:
     # UTC; off the hour to avoid the busiest scheduler period.
     - cron: '17 */2 * * *'
@@ -22,7 +29,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-24.04
-    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && inputs.full_refresh && 10 || 3 }}
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && inputs.full_refresh && 10 || 5 }}
     env:
       NBA_FULL_REFRESH: ${{ inputs.full_refresh && 'true' || 'false' }}
     steps:
@@ -34,6 +41,8 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.12'
+      - name: Install live collection dependencies
+        run: python -m pip install -r requirements-live.txt
       - name: Run core checks
         run: python -m unittest discover -s tests -v
       - name: Download geography

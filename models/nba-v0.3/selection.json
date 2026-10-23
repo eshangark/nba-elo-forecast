@@ -1,0 +1,760 @@
+{
+  "inner_validation_end_year": 2026,
+  "injury_selected": {
+    "penalty": 0.0001,
+    "validation_log_loss": 0.5834078596283732
+  },
+  "boosted_selected": {
+    "config": {
+      "max_depth": 2,
+      "learning_rate": 0.03,
+      "max_iter": 100,
+      "l2_regularization": 10.0
+    },
+    "blend": 1.0,
+    "validation_log_loss": 0.5970496191297711,
+    "validation_accuracy": 0.697560975609756
+  },
+  "ridge_search": [
+    {
+      "penalty": null,
+      "validation_log_loss": 0.5955662897660533
+    },
+    {
+      "penalty": 0.0001,
+      "validation_log_loss": 0.5834078596283732
+    },
+    {
+      "penalty": 0.001,
+      "validation_log_loss": 0.5836146523119888
+    },
+    {
+      "penalty": 0.01,
+      "validation_log_loss": 0.5845766831364061
+    },
+    {
+      "penalty": 0.1,
+      "validation_log_loss": 0.586492662295851
+    },
+    {
+      "penalty": 1.0,
+      "validation_log_loss": 0.5920178878839477
+    },
+    {
+      "penalty": 10.0,
+      "validation_log_loss": 0.5950407159827871
+    }
+  ],
+  "boosting_search": [
+    {
+      "config": null,
+      "blend": 0.0,
+      "validation_log_loss": 0.5955662897660533,
+      "validation_accuracy": 0.6869918699186992
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5940641866901901,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5937559801032923,
+      "validation_accuracy": 0.6869918699186992
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5945036746598504,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.596230846095099,
+      "validation_accuracy": 0.6934959349593496
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.594242622388455,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5941398521492977,
+      "validation_accuracy": 0.6845528455284553
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5951039421033063,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5970496191297711,
+      "validation_accuracy": 0.697560975609756
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5924891491481431,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5907307701527112,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5902271225250445,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5909721000790953,
+      "validation_accuracy": 0.6934959349593496
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5922883143023733,
+      "validation_accuracy": 0.6902439024390243
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5903569080771568,
+      "validation_accuracy": 0.6959349593495935
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5896854049264407,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5902503101817888,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5921039062414496,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5902009586355632,
+      "validation_accuracy": 0.6943089430894309
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.589796705897977,
+      "validation_accuracy": 0.6967479674796748
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5909035981234841,
+      "validation_accuracy": 0.6967479674796748
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5923311264136925,
+      "validation_accuracy": 0.6869918699186992
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5906073123233939,
+      "validation_accuracy": 0.6902439024390243
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5903379903747374,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5915443874557365,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5926343591065688,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5921921759708006,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5942757722445083,
+      "validation_accuracy": 0.6853658536585366
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5991413858283399,
+      "validation_accuracy": 0.6804878048780488
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5926929654020981,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5920883559836209,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5937603875485822,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 2,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5979015914371079,
+      "validation_accuracy": 0.6780487804878049
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5939126245184302,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5934894583391912,
+      "validation_accuracy": 0.6902439024390243
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5942059139933394,
+      "validation_accuracy": 0.691869918699187
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5960225024652513,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5940694657540917,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5938562549158187,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5948082590047988,
+      "validation_accuracy": 0.6886178861788618
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5968675485840189,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5926181440098183,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5914209752888837,
+      "validation_accuracy": 0.6951219512195121
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5919489842941885,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5942727570747922,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5922314270945446,
+      "validation_accuracy": 0.6861788617886179
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5906872720442045,
+      "validation_accuracy": 0.691869918699187
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5908473974908367,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.03,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5927299872047113,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5926496473607886,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5919928136511124,
+      "validation_accuracy": 0.6910569105691057
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5935676288714281,
+      "validation_accuracy": 0.6943089430894309
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5975156928230736,
+      "validation_accuracy": 0.6878048780487804
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5924068074693787,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5913878087514937,
+      "validation_accuracy": 0.6943089430894309
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5924360677540363,
+      "validation_accuracy": 0.6902439024390243
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 100,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.5956251417889324,
+      "validation_accuracy": 0.683739837398374
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.593815411641336,
+      "validation_accuracy": 0.691869918699187
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.596061534404397,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.6025271348424797,
+      "validation_accuracy": 0.6772357723577236
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 1.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.6143080347454155,
+      "validation_accuracy": 0.6715447154471544
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.25,
+      "validation_log_loss": 0.5932783721257141,
+      "validation_accuracy": 0.6959349593495935
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.5,
+      "validation_log_loss": 0.5944764907584585,
+      "validation_accuracy": 0.6894308943089431
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 0.75,
+      "validation_log_loss": 0.5992755586749559,
+      "validation_accuracy": 0.683739837398374
+    },
+    {
+      "config": {
+        "max_depth": 3,
+        "learning_rate": 0.1,
+        "max_iter": 250,
+        "l2_regularization": 10.0
+      },
+      "blend": 1.0,
+      "validation_log_loss": 0.6082771814874736,
+      "validation_accuracy": 0.6715447154471544
+    }
+  ]
+}

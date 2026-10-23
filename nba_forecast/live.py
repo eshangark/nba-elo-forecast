@@ -12,6 +12,7 @@ from .data import BASE
 from .model import EASTERN, Engine, MODEL_VERSION, timestamp
 from .replay import metrics
 from .validation import validate_game
+from .forecasting import FeatureState
 
 
 @contextmanager
@@ -73,11 +74,20 @@ def parse_schedule(event, cities):
             'source': f"{BASE}/scoreboard?dates={timestamp(start).astimezone(EASTERN):%Y%m%d}"}
 
 
-def rebuild(games, params, roster, now):
+def rebuild(games, params, roster, now, initial_ratings=None, feature_seed=None, player_games=None):
     """Reconstruct rating state; these estimates are never issued retrospectively."""
     engine = Engine(params)
     for identifier in roster:
         engine.team(identifier)
+    if initial_ratings is not None:
+        if set(initial_ratings) != set(roster):
+            raise ValueError('Initial rating universe differs from roster')
+        import math
+        if not all(math.isfinite(v) for v in initial_ratings.values()):
+            raise ValueError('Nonfinite initial rating')
+        for identifier, rating in initial_ratings.items():
+            engine.team(identifier).rating = rating
+    features = FeatureState(feature_seed)
     if len({g['game_id'] for g in games}) != len(games):
         raise ValueError('Duplicate completed games')
     timeline = []
@@ -101,15 +111,19 @@ def rebuild(games, params, roster, now):
             row = predictions[g['game_id']]
             engine.update(g, row)
             engine.recenter()
+            features.observe(g, row['home_probability'], (player_games or {}).get(g['game_id']))
             row.update(home_win=int(g['home']['points'] > g['away']['points']),
                        home_score=g['home']['points'], away_score=g['away']['points'],
                        home_rating_after=engine.team(g['home']['id']).rating,
                        away_rating_after=engine.team(g['away']['id']).rating)
             active.difference_update(ids)
+    engine.forecast_features = features
     return engine, predictions
 
 
-def build_snapshot(previous, games, pending, params, roster, now, season, source_manifest=None, horizon_days=7):
+def build_snapshot(previous, games, pending, params, roster, now, season, source_manifest=None, horizon_days=7,
+                   forecaster=None, initial_ratings=None, feature_seed=None, player_games=None,
+                   injury_reports=None, injury_source=None, auxiliary_status=None):
     """Pure transaction: failure cannot mutate the prior valid snapshot."""
     previous = copy.deepcopy(previous or {})
     now = timestamp(now) if isinstance(now, str) else now
@@ -130,13 +144,27 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
     for source in source_manifest or []:
         if timestamp(source['retrieved_at']) > now:
             raise ValueError('Forecast time precedes source retrieval')
-    engine, estimates = rebuild(games, params, roster, now)
+    if injury_source and timestamp(injury_source['published_at']) > now:
+        raise ValueError('Injury source is newer than issuance')
+    if injury_source and now-timestamp(injury_source['published_at']) > timedelta(hours=16):
+        injury_source, injury_reports = None, {}
+        auxiliary_status = {**(auxiliary_status or {}), 'injuries': {'state': 'unavailable', 'error': 'Report is stale'}}
+    engine, estimates = rebuild(games, params, roster, now, initial_ratings, feature_seed, player_games)
     forecasts = copy.deepcopy(old_internal.get('forecasts', []))
     parameters = asdict(params)
-    parameter_hash = digest(parameters)
+    forecast_version = forecaster.bundle['version'] if forecaster else MODEL_VERSION
+    configuration = {'parameters': parameters}
+    if forecaster:
+        configuration.update(forecast_model_sha256=forecaster.fingerprint, initial_ratings=initial_ratings,
+                             initialization_sha256=digest(feature_seed), carryover_fraction=forecaster.bundle['carryover_fraction'])
+    parameter_hash = digest(configuration) if forecaster else digest(parameters)
     registry = copy.deepcopy(old_internal.get('parameter_registry', {}))
-    registry.setdefault(parameter_hash, {'model_version': MODEL_VERSION, 'parameters': parameters})
-    state_hash = digest({'parameters': parameters, 'games': sorted(games, key=lambda g: g['game_id'])})
+    registry.setdefault(parameter_hash, {'model_version': forecast_version, **configuration})
+    if forecaster:
+        registry[parameter_hash]['forecast_specification'] = {
+            k: copy.deepcopy(forecaster.bundle[k]) for k in ['version', 'feature_schema', 'injury_head', 'boosted_head']}
+    state_hash = digest({'configuration': configuration, 'games': sorted(games, key=lambda g: g['game_id']),
+                         'player_games': player_games or {}})
     corrections = copy.deepcopy(old_internal.get('corrections', []))
     old_games = {g['game_id']: g for g in old_internal.get('games', [])}
     observations = copy.deepcopy(old_internal.get('first_observed_at', {}))
@@ -155,6 +183,7 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
         latest[f['game_id']] = f
     # Project announced venue/rest routes, but never fabricate future results or ratings.
     planning = copy.deepcopy(engine)
+    feature_planning = FeatureState(engine.forecast_features.data)
     projected = set()
     upcoming, active_events = [], []
     for g in sorted(pending, key=lambda g: (timestamp(g['start']), g['game_id'])):
@@ -165,11 +194,16 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
             continue
         if start > now and g.get('event_state', 'pre') == 'pre':
             row = planning.predict(g)
+            if forecaster:
+                row.update(forecaster.predict(g, row, feature_planning,
+                                               (injury_reports or {}).get(g['game_id']), injury_source))
             signature = digest({'state': state_hash, 'game': g, 'home_context': row['home_context'],
-                                'away_context': row['away_context'], 'parameter_hash': parameter_hash})
+                                'away_context': row['away_context'], 'parameter_hash': parameter_hash,
+                                'probability_models': row.get('probability_models'), 'injury_source': row.get('injury_source'),
+                                'forecast_features': row.get('forecast_features')})
             if g['game_id'] not in latest or latest[g['game_id']]['input_signature'] != signature:
                 row.update(issued_at=now.isoformat(), forecast_cutoff=now.isoformat(),
-                           kind='issued_live', forecast_policy_version='after-game-v1', input_signature=signature, parameter_hash=parameter_hash,
+                           kind='issued_live', forecast_policy_version='after-game-v3' if forecaster else 'after-game-v1', input_signature=signature, parameter_hash=parameter_hash,
                            state_sha256=state_hash, home_id=g['home']['id'], away_id=g['away']['id'],
                            scheduled_context_projected=any(g[s]['id'] in projected for s in ['home', 'away']),
                            eligible_for_evaluation=all(engine.team(g[s]['id']).games >= 10 for s in ['home', 'away']))
@@ -186,6 +220,7 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
                 raise ValueError('Invalid announced team chronology')
             t.last_start, t.last_location = g['start'], g['location']
             projected.add(g[side]['id'])
+        feature_planning.project_schedule(g)
     past = []
     for g in sorted(games, key=lambda g: (timestamp(g['start']), g['game_id'])):
         estimate = estimates[g['game_id']]
@@ -202,17 +237,29 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
         past.append(row)
     scored = [r for r in past if r['kind'] == 'issued_live' and r['eligible_for_evaluation']]
     all_issued = [r for r in past if r['kind'] == 'issued_live']
+    comparison = {}
+    if forecaster:
+        for variant in ['base', 'injury', 'boosted']:
+            comparable = [{**r, **r['probability_models'][variant]} for r in all_issued
+                          if r.get('forecast_model_sha256') == forecaster.fingerprint and variant in r.get('probability_models', {})]
+            comparison[variant] = {'metrics': metrics([r for r in comparable if r['eligible_for_evaluation']]),
+                                   'metrics_all_issued': metrics(comparable)}
     rankings = sorted([{'team_id': k, 'team': roster[k], 'elo': t.rating, 'games': t.games, 'wins': t.wins}
                        for k, t in engine.teams.items()], key=lambda r: (-r['elo'], r['team']))
     return {'schema_version': 1, 'season': season, 'status': 'live', 'published_at': now.isoformat(),
             'coverage': {'start': str(min(timestamp(g['start']) for g in games).astimezone(EASTERN).date()) if games else None,
                          'end': str(max(timestamp(g['start']) for g in games).astimezone(EASTERN).date()) if games else None,
                          'parsed': len(games), 'failures': []},
-            'result': {'status': 'live_forecasts', 'model_version': MODEL_VERSION, 'parameters': parameters,
+            'result': {'status': 'live_forecasts', 'model_version': forecast_version, 'parameters': parameters,
                        'metrics': metrics(scored), 'metrics_all_issued': metrics(all_issued),
+                       'model_comparison': comparison, 'initial_ratings': initial_ratings,
                        'rankings': rankings, 'predictions': past, 'warmup_games': 10},
             'upcoming': upcoming, 'awaiting_final': active_events,
             '_internal': {'roster': roster, 'games': games, 'pending': pending, 'forecasts': forecasts,
                           'parameter_registry': registry, 'first_observed_at': observations, 'corrections': corrections,
                           'latest_sources': source_manifest or [], 'state_sha256': state_hash,
+                          'player_games': player_games or {}, 'feature_state': engine.forecast_features.data,
+                          'initialization': {'ratings': initial_ratings, 'feature_seed': feature_seed},
+                          'forecast_model_sha256': forecaster.fingerprint if forecaster else None,
+                          'auxiliary_status': auxiliary_status or {},
                           'policy': 'Source-completion event replay for rating state; observed runs issue upcoming revisions. No historical forecast fabrication.'}}

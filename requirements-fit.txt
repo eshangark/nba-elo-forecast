@@ -1,5 +1,6 @@
--r requirements.txt
+-r requirements-live.txt
 scipy==1.18.1
 numba==0.68.0
 pandas==3.0.6
 pyarrow==25.0.1
+scikit-learn==1.9.1

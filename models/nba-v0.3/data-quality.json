@@ -1,0 +1,379 @@
+{
+  "player_archives": [
+    {
+      "season_end_year": 2022,
+      "validated_team_games": 2449,
+      "failures": [
+        {
+          "game_id": "401358774",
+          "team_id": "9",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401359968",
+          "team_id": "25",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401359975",
+          "team_id": "7",
+          "error": "Player total disagrees with team fta"
+        },
+        {
+          "game_id": "401360491",
+          "team_id": "14",
+          "error": "Player total disagrees with team fta"
+        },
+        {
+          "game_id": "401401134",
+          "team_id": "7",
+          "error": "Player total disagrees with team tov"
+        },
+        {
+          "game_id": "401360613",
+          "team_id": "3",
+          "error": "Player total disagrees with team stl"
+        },
+        {
+          "game_id": "401360673",
+          "team_id": "9",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401360737",
+          "team_id": "7",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401360768",
+          "team_id": "15",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401360954",
+          "team_id": "12",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401360967",
+          "team_id": "15",
+          "error": "Player total disagrees with team dreb"
+        }
+      ],
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2022.parquet",
+      "sha256": "474d15255f2a908f2c0ac0f7104b504c3cf2815b02dd0b0097c69cb634fe4395"
+    },
+    {
+      "season_end_year": 2023,
+      "validated_team_games": 2452,
+      "failures": [
+        {
+          "game_id": "401468202",
+          "team_id": "4",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401468306",
+          "team_id": "4",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401468346",
+          "team_id": "3",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401468531",
+          "team_id": "22",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401468853",
+          "team_id": "23",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401469258",
+          "team_id": "20",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401469294",
+          "team_id": "20",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401469380",
+          "team_id": "16",
+          "error": "Player total disagrees with team points"
+        }
+      ],
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2023.parquet",
+      "sha256": "968d835cd04b10533c5b5af8c0e41bf0154a73782e9446c76f765109223e8679"
+    },
+    {
+      "season_end_year": 2024,
+      "validated_team_games": 2450,
+      "failures": [
+        {
+          "game_id": "401616460",
+          "team_id": "29",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401585016",
+          "team_id": "15",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401585126",
+          "team_id": "17",
+          "error": "Player total disagrees with team tov"
+        },
+        {
+          "game_id": "401585299",
+          "team_id": "18",
+          "error": "Player total disagrees with team tov"
+        },
+        {
+          "game_id": "401585353",
+          "team_id": "21",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401585381",
+          "team_id": "27",
+          "error": "Player total disagrees with team threea"
+        },
+        {
+          "game_id": "401585387",
+          "team_id": "14",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401585443",
+          "team_id": "16",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401585466",
+          "team_id": "16",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401585535",
+          "team_id": "9",
+          "error": "Player total disagrees with team fga"
+        }
+      ],
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2024.parquet",
+      "sha256": "1e500a538ec45ddbcb58d9789b5494f8db4f25658eafd01d90f2d09600921665"
+    },
+    {
+      "season_end_year": 2025,
+      "validated_team_games": 2445,
+      "failures": [
+        {
+          "game_id": "401704696",
+          "team_id": "24",
+          "error": "Player total disagrees with team ast"
+        },
+        {
+          "game_id": "401704749",
+          "team_id": "24",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401704800",
+          "team_id": "16",
+          "error": "Player total disagrees with team ast"
+        },
+        {
+          "game_id": "401704804",
+          "team_id": "29",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401704873",
+          "team_id": "2",
+          "error": "Player total disagrees with team oreb"
+        },
+        {
+          "game_id": "401704929",
+          "team_id": "2",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401705162",
+          "team_id": "12",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401705335",
+          "team_id": "24",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401705338",
+          "team_id": "17",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401705508",
+          "team_id": "11",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401705513",
+          "team_id": "20",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401705552",
+          "team_id": "11",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401705558",
+          "team_id": "23",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401705616",
+          "team_id": "26",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401705746",
+          "team_id": "29",
+          "error": "Player total disagrees with team fga"
+        }
+      ],
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2025.parquet",
+      "sha256": "e89f7fbc1124092c715b722e6d72d9dd1b9d28776ca6888b508fd2831cd705e2"
+    },
+    {
+      "season_end_year": 2026,
+      "validated_team_games": 2439,
+      "failures": [
+        {
+          "game_id": "401809776",
+          "team_id": "29",
+          "error": "Player total disagrees with team stl"
+        },
+        {
+          "game_id": "401810150",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810169",
+          "team_id": "4",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401810183",
+          "team_id": "18",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810184",
+          "team_id": "4",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401810216",
+          "team_id": "4",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401810358",
+          "team_id": "4",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401810372",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810401",
+          "team_id": "4",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810458",
+          "team_id": "4",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810469",
+          "team_id": "4",
+          "error": "Player total disagrees with team oreb"
+        },
+        {
+          "game_id": "401810516",
+          "team_id": "4",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810547",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810560",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810577",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810591",
+          "team_id": "28",
+          "error": "Player total disagrees with team stl"
+        },
+        {
+          "game_id": "401810633",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        },
+        {
+          "game_id": "401810698",
+          "team_id": "28",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810744",
+          "team_id": "4",
+          "error": "Player total disagrees with team fga"
+        },
+        {
+          "game_id": "401810756",
+          "team_id": "14",
+          "error": "Player total disagrees with team dreb"
+        },
+        {
+          "game_id": "401810760",
+          "team_id": "4",
+          "error": "Player total disagrees with team points"
+        }
+      ],
+      "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/espn_nba_player_boxscores/player_box_2026.parquet",
+      "sha256": "29a29dc9efd055a93e069a0382ac830d98a13274bee655beba69d95cff099713"
+    }
+  ],
+  "canonical_sha256": {
+    "2022": "d40bf232e29bf412013e67f5757e6b0356d3d15c4f154c8b8aadc686a7f54cc4",
+    "2023": "7ae38a4a89d6c0035d9624de3cbe9ed0fc26ce8b8d337d966f983b4405349aed",
+    "2024": "84d574b45633dfaf0f36d8f5ef0c665b82b3a3c7060383825c18dfa5ba952422",
+    "2025": "8d0ecb662d73b4c2ce2b9a2d3ea4fdef8dab2468c37a656cb793ee25fd2888b6",
+    "2026": "7f619768552a77903c5fa596c1f1195f35b7c14b73a455693340fd3f3f37c57c"
+  },
+  "normalized_reports_sha256": "237dcc4d212b443b8a9fbd32a0aa26462c078a354a1a778c9902834ae4054fa7",
+  "report_dates": 815,
+  "training_games": 6150
+}

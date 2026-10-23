@@ -1,4 +1,32 @@
-# Simple Elo comparison and chronological checks
+# Evaluation
+
+## Current v0.3 integrated models
+
+The default probability is carryover Elo plus a regularized injury correction. A boosted comparison uses the same ratings and additional prior team, schedule and rotation features. Both are implemented; the boosted model is a challenger. Missing verified report/game coverage falls back to carryover Elo. Unsubmitted teams remain explicit unknowns.
+
+| Procedure | Games | Log loss ↓ | Brier ↓ | Winner accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| Carryover Elo | 3,690 | 0.603496 | 0.208434 | 66.64% |
+| Elo + injuries | 3,690 | 0.598309 | 0.206217 | 67.07% |
+| Boosted comparison | 3,690 | 0.600005 | 0.206871 | 67.15% |
+
+These corrected, integrated backtests cover 2023–24 through 2025–26, including opening games. Fit on earlier seasons; select on the last earlier season; refit on all earlier seasons; then evaluate the next season. The first anchor season uses fixed default base coefficients; later training covariates use their own earlier-prefix core fits. All current-slate player updates are withheld until all morning forecasts are captured.
+
+A production parity check corrected five exploratory injury-feature rows where overlapping trade/report assignments could use a player's performance from another game on the same slate. Retrospective heads were refitted. Boosted selections are sensitive to these small changes, so these integrated results supersede the earlier exploratory 67.72% boosted-accuracy figure. They do not establish unique coefficients or future accuracy.
+
+| Season | Carryover LL / accuracy | Injury LL / accuracy | Boosted LL / accuracy |
+| --- | ---: | ---: | ---: |
+| 2023–24 | 0.608223 / 64.96% | 0.608223 / 64.96% | 0.608223 / 64.96% |
+| 2024–25 | 0.606698 / 66.26% | 0.603297 / 66.83% | 0.601994 / 66.83% |
+| 2025–26 | 0.595566 / 68.70% | 0.583408 / 69.43% | 0.589797 / 69.67% |
+
+The unchanged base is an available inner candidate. In the first fold, both procedures select it; this is not evidence that an injury or tree term helped that fold. The original 68.56% v0.2 headline refers to one warmup-filtered season and is not directly comparable with this table.
+
+The current release core is fitted on all five completed seasons. The injury head selects mean validation log loss with L2 penalties 0.0001–10; the boosted challenger selects validation winner accuracy, with log loss as a tie-breaker. Scalers fit only training rows. The portable numerical trees reproduce their training estimator within 1e-12. [Frozen bundle](../models/nba-v0.3/bundle.json), [per-fold results](../models/nba-v0.3/evaluation.json), [selection](../models/nba-v0.3/selection.json), and [verification](../models/nba-v0.3/verification.json) record the complete implementation.
+
+All historical outcomes were already examined during development, and multiple model families were explored. These are retrospective chronological comparisons, not fresh confirmation. Live scoring compares only genuinely issued forecasts from the same frozen bundle. Earlier issued versions remain unchanged and never receive fabricated base/boosted probabilities.
+
+## Reference v0.2 comparisons
 
 These diagnostics compare the unchanged v0.2 multifactor equations with simple Elo. The comparator fits only K and home advantage; fatigue, schedule strength, lead retention, and performance adjustments are disabled. Both models use the same rating scale, independent 1500 season initialization, daily forecast cutoff, ten-game warmup, and scored games. Both optimize training log loss within the same K/home-advantage bounds.
 

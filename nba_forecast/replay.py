@@ -37,19 +37,24 @@ def slate_cutoff(day, games):
                min(timestamp(g["start"]) for g in games) - timedelta(hours=1))
 
 
-def replay(games, params=None, evaluate_from=None, fitted=False, warmup_games=0):
+def replay(games, params=None, evaluate_from=None, fitted=False, warmup_games=0, initial_ratings=None):
     if not games:
         raise ValueError("No games to replay")
     if len({g["game_id"] for g in games}) != len(games):
         raise ValueError("Duplicate game IDs")
     if len({g["season"] for g in games}) != 1:
-        raise ValueError("Pilot supports one season; season carryover is not implemented")
+        raise ValueError("Replay one season at a time, passing prior-season initial ratings explicitly")
     games = sorted(games, key=lambda g: (timestamp(g["start"]), g["game_id"]))
     engine = Engine(params)
     names = {g[s]["id"]: g[s]["name"] for g in games for s in ["home", "away"]}
     # Roster identities contain no game results; use the same starting universe throughout.
     for team_id in names:
         engine.team(team_id)
+    if initial_ratings is not None:
+        if set(initial_ratings) != set(names) or not all(math.isfinite(v) for v in initial_ratings.values()):
+            raise ValueError('Initial ratings must match the complete season roster')
+        for team_id, value in initial_ratings.items():
+            engine.team(team_id).rating = value
     predictions = []
     last_completion = None
     for day, batch_iterator in groupby(games, slate_date):
@@ -86,7 +91,8 @@ def replay(games, params=None, evaluate_from=None, fitted=False, warmup_games=0)
             "start": games[0]["start"], "end": games[-1]["start"], "evaluation_from": evaluate_from,
             "dataset_sha256": hashlib.sha256(json.dumps(games, sort_keys=True).encode()).hexdigest(),
             "limitations": ([] if fitted else ["Parameters not fitted on NBA data", "Short historical sample, not final test performance"])
-                            + ["Independent season initialization", "City-centre travel estimates", "Historical source corrections may be present"],
+                            + (["Independent season initialization"] if initial_ratings is None else ["Explicit prior-season rating initialization"])
+                            + ["City-centre travel estimates", "Historical source corrections may be present"],
             "metrics": metrics(evaluated), "predictions": predictions,
             "rankings": sorted([{"team_id": k, "team": names[k], "elo": v.rating, "games": v.games,
                                   "wins": v.wins} for k,v in engine.teams.items()], key=lambda r: -r["elo"])}

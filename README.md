@@ -7,41 +7,57 @@ NBA team ratings and pregame win probabilities, with historical backtesting and 
 ## What it does
 
 - Ranks all NBA teams by Elo and estimates matchup win probabilities.
-- Displays upcoming forecasts and completed-game outcomes.
+- Displays upcoming forecasts and completed-game outcomes, with base, injury and boosted model comparisons.
+- Shows report coverage and falls back to Elo when a verified injury report does not cover the game.
 - Supports the current season and five historical seasons, with downloadable datasets.
 - Collects results every two hours; open pages refresh saved snapshots every minute.
 
 The frontend reads stored outputs rather than scraping or fitting on page load. The live ledger preserves issued forecasts through source corrections; games discovered after completion never receive fabricated pregame predictions.
 
-## Historical performance
+## Models and historical performance
 
-Model **0.2.0** was trained on 2021–22 through 2023–24. Constants were frozen before evaluating the following seasons. Scoring begins once both teams have played ten games; earlier games still update ratings.
+Version **0.3.0** carries half of each team's previous-season Elo deviation forward. The default probability adds a regularized injury correction; a boosted model is available as a comparison. Both retain the same Elo rankings, and rating updates always use the base Elo probability.
 
-| Evaluation | Games | Log loss ↓ | Brier score ↓ | Winner accuracy |
+| Retrospective procedure | Games | Log loss ↓ | Brier ↓ | Winner accuracy |
 | --- | ---: | ---: | ---: | ---: |
-| 2024–25 validation | 1,075 | 0.6043 | 0.2088 | 66.42% |
-| 2025–26 held-out test | 1,075 | 0.5925 | 0.2035 | 68.56% |
-| Simple Elo, same 2025–26 test | 1,075 | 0.6018 | 0.2073 | 66.79% |
+| Carryover Elo | 3,690 | 0.6035 | 0.2084 | 66.64% |
+| Elo + injuries (default) | 3,690 | 0.5983 | 0.2062 | 67.07% |
+| Boosted comparison | 3,690 | 0.6000 | 0.2069 | 67.15% |
 
-These are reconstructed historical forecasts, not measured live performance. Probability scores are the primary measures; accuracy is secondary. Some fitted weights are unstable or reach their bounds. See [evaluation results](docs/EVALUATION.md) for comparisons and limitations, and the [paper](paper/main.pdf) for equations and derivations.
+Each evaluation season uses earlier seasons for fitting and selection. These all-game comparisons include opening games and the deployed missing-report fallback. The production checks corrected five exploratory injury-feature rows that could use another current-slate player's performance; refitted boosted selections therefore supersede earlier exploratory accuracy figures.
+
+These are reconstructed results on previously studied outcomes, not live accuracy claims. The retained v0.2 release scored 68.56% on a different population: one season after both teams' ten-game warmup. See [evaluation](docs/EVALUATION.md) for protocols, per-season scores and limitations.
 
 ## Symbol dictionary
 
-The paper builds the model in order: pregame forecast → box-score features → performance factor → final Elo update. Constants below are rounded; the frozen [parameter file](models/nba-v0.2/parameters.json) retains full precision. Game-dependent quantities have no single value. Model 0.2.0 still resets every season to 1500.
+The paper builds the model in order: season carryover → base forecast → published probability corrections → completed-game features → performance factor → Elo update. Constants below refer to v0.3 and are rounded; the [model bundle](models/nba-v0.3/bundle.json) retains full precision. Game-dependent quantities have no single value. Original v0.2 configurations remain preserved.
 
 <details>
 <summary>Notation, English meanings, and numerical values</summary>
+
+### Carryover and published probabilities
+
+| Symbol | Meaning | Numerical value or range |
+| --- | --- | --- |
+| $\rho$ | The season-start Elo retains this fraction of the previous final deviation from 1500. | 0.5 |
+| $q_i,q_j$ | The default probabilities include the fitted injury correction and sum to one. | Between 0 and 1 |
+| $\mathbf d_i$ | Standardized base log odds, earlier player value/minutes by status, and report-coverage indicators form this vector. | 19 features |
+| $b,\mathbf w$ | The intercept and feature weights adjust base log odds. | Intercept 0.00231409; 19 weights in the model bundle |
+| $\eta$ | This penalty shrinks the logistic correction. | 0.0001 in the current release |
+| $\bar m,v_p$ | Expected minutes and shrunk value use earlier played observations. | Half-life 10; value prior 80 minutes at 0.3 |
+| $q_{B,i},\mathbf f_i$ | The challenger probability uses prior team, schedule, rotation and injury inputs. | 50 features |
+| $T,\omega$ | Trees contribute to the challenger score; the blend controls its weight relative to Elo. | 100 trees; initial score 0.21349012; blend 1 |
 
 ### Fitted constants and fixed scales
 
 | Symbol | Meaning | Numerical value or range |
 | --- | --- | --- |
-| $K$ | The base update coefficient controls how much a game can change Elo. | 12.21734709 |
-| $H$ | Home advantage adds this many Elo points to the home-side rating difference. | 41.55284709 |
+| $K$ | The base update coefficient controls how much a game can change Elo. | 13.748881 |
+| $H$ | Home advantage adds this many Elo points to the home-side rating difference. | 40.03439907 |
 | $c$ | The fixed rating scale converts Elo differences into probability differences. | 497.3558141 (fixed) |
-| $\gamma$ | The fatigue coefficient weights the logarithm of the rest/travel index ratio. | 0.1647242036 |
-| $\nu$ | The travel coefficient weights venue-city distance inside the fatigue indices. | 0.0001097348541 |
-| $\beta$ | The schedule coefficient weights the prior strength-of-schedule adjustment. | 0.9785483342 |
+| $\gamma$ | The fatigue coefficient weights the logarithm of the rest/travel index ratio. | 0.179559595 |
+| $\nu$ | The travel coefficient weights venue-city distance inside the fatigue indices. | 9.534356884e-05 |
+| $\beta$ | The schedule coefficient weights the prior strength-of-schedule adjustment. | 0.7081901219 |
 | $\phi$ | The lead coefficient weights the logarithmic lead-retention adjustment. | 2 |
 | $\lambda$ | The performance coefficient weights relative box-score performance. | 0.25 |
 | $10$ | The probability exponent uses a fixed base of ten. | 10 (fixed) |
@@ -52,14 +68,14 @@ The paper builds the model in order: pregame forecast → box-score features →
 
 | Symbol | Meaning | Numerical value or range |
 | --- | --- | --- |
-| $\alpha_1$ | The normalized weight multiplies scaled net efficiency. | 0.1619541794 |
-| $\alpha_2$ | The normalized weight multiplies scaled effective field-goal percentage. | 0.004364883064 |
-| $\alpha_3$ | The normalized weight multiplies scaled true shooting percentage. | 0.006380439345 |
-| $\alpha_4$ | The normalized weight multiplies scaled offensive-rebound rate. | 0.002773641359 |
-| $\alpha_5$ | The normalized weight multiplies scaled defensive-rebound rate. | 0.6869916183 |
-| $\alpha_6$ | The normalized weight multiplies scaled assist-to-turnover ratio. | 0.07304149277 |
-| $\alpha_7$ | The normalized weight multiplies scaled turnover fraction. | 0.007925905426 |
-| $\alpha_8$ | The normalized weight multiplies scaled steal rate. | 0.05656784034 |
+| $\alpha_1$ | The normalized weight multiplies scaled net efficiency. | 0.0006686328527 |
+| $\alpha_2$ | The normalized weight multiplies scaled effective field-goal percentage. | 0.0008033843254 |
+| $\alpha_3$ | The normalized weight multiplies scaled true shooting percentage. | 0.008884867219 |
+| $\alpha_4$ | The normalized weight multiplies scaled offensive-rebound rate. | 0.0007283531314 |
+| $\alpha_5$ | The normalized weight multiplies scaled defensive-rebound rate. | 0.1613285001 |
+| $\alpha_6$ | The normalized weight multiplies scaled assist-to-turnover ratio. | 0.8047679813 |
+| $\alpha_7$ | The normalized weight multiplies scaled turnover fraction. | 0.01518263624 |
+| $\alpha_8$ | The normalized weight multiplies scaled steal rate. | 0.007635644786 |
 
 ### Matchup and rating-update quantities
 
@@ -67,7 +83,7 @@ The paper builds the model in order: pregame forecast → box-score features →
 | --- | --- | --- |
 | $i,j,O$ | In the probability equation, i is the home team and j the away team; O denotes an opponent in feature derivations. | Team identifiers |
 | $g,t$ | The index g labels a game; t labels a team in win-rate notation and a time instant in the offset function. | Context dependent |
-| $r_i,r_j$ | These are the team ratings available before the game. | Varies; season opener 1500 |
+| $r_i,r_j$ | These are the team ratings available before the game. | Carryover; first anchor 1500 |
 | $r_{\mathrm{new}}$ | This is a team rating after its game update, before league recentering. | Varies by game |
 | $p_i,p_j$ | These are the complementary pregame probabilities of a home and away win. | Between 0 and 1; sum 1 |
 | $z_i$ | The probability exponent combines the rating difference, home advantage, and fatigue adjustment. | Varies by matchup |
@@ -120,15 +136,15 @@ The paper builds the model in order: pregame forecast → box-score features →
 | Symbol | Meaning | Numerical value or range |
 | --- | --- | --- |
 | $\theta$ | The fitted parameter vector contains seven scalar coefficients and seven independent feature-weight logits. | 14 free coordinates |
-| $\mathcal L(\theta)$ | Training loss is the mean binary log loss across eligible training games. | 0.6282097079 at fitted solution |
-| $N$ | The number of eligible games normalizes a stated fitting or evaluation score. | 3220 training; 1075 test |
-| $u_1$ | This softmax logit parameterizes feature weight alpha1 relative to alpha8. | 1.05187282 |
-| $u_2$ | This softmax logit parameterizes feature weight alpha2 relative to alpha8. | -2.561849232 |
-| $u_3$ | This softmax logit parameterizes feature weight alpha3 relative to alpha8. | -2.182203674 |
-| $u_4$ | This softmax logit parameterizes feature weight alpha4 relative to alpha8. | -3.015279605 |
-| $u_5$ | This softmax logit parameterizes feature weight alpha5 relative to alpha8. | 2.49688146 |
-| $u_6$ | This softmax logit parameterizes feature weight alpha6 relative to alpha8. | 0.2555870419 |
-| $u_7$ | This softmax logit parameterizes feature weight alpha7 relative to alpha8. | -1.965304069 |
+| $\mathcal L(\theta)$ | Training loss is the mean binary log loss across eligible training games. | 0.6159695469 at fitted solution |
+| $N$ | The number of eligible games normalizes a stated fitting or evaluation score. | 5370 release fit; 3690 new evaluation |
+| $u_1$ | This softmax logit parameterizes feature weight alpha1 relative to alpha8. | -2.435347556 |
+| $u_2$ | This softmax logit parameterizes feature weight alpha2 relative to alpha8. | -2.251749454 |
+| $u_3$ | This softmax logit parameterizes feature weight alpha3 relative to alpha8. | 0.1515221307 |
+| $u_4$ | This softmax logit parameterizes feature weight alpha4 relative to alpha8. | -2.349796664 |
+| $u_5$ | This softmax logit parameterizes feature weight alpha5 relative to alpha8. | 3.050615273 |
+| $u_6$ | This softmax logit parameterizes feature weight alpha6 relative to alpha8. | 4.657726628 |
+| $u_7$ | This softmax logit parameterizes feature weight alpha7 relative to alpha8. | 0.6873250356 |
 | $u_8$ | The final softmax logit is fixed to identify the normalized feature weights. | 0 (fixed) |
 | $\varphi_1,\varphi_2,\ell_1,\ell_2$ | These are the latitudes and longitudes of consecutive venue cities, expressed in radians. | Varies by venue |
 | $a_v$ | The Haversine intermediate combines the angular latitude and longitude differences. | Between 0 and 1 |
@@ -149,11 +165,11 @@ python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-The committed snapshots are sufficient to run the app. No API key or source collection is required. Each season starts teams at 1500; preseason results are excluded.
+The committed snapshots are sufficient to run the app. No API key or source collection is required. The current model carries ratings across seasons; preseason results are excluded. Archived v0.2 outputs retain their original resets.
 
 ## Data and code
 
-The repository includes **6,150 games and 12,300 team-game records** across five complete regular seasons, 2021–22 through 2025–26. Basketball records come from ESPN through SportsDataverse archives and primary summaries; GeoNames supplies city coordinates and time zones.
+The repository includes **6,150 games and 12,300 team-game records** across five complete regular seasons, 2021–22 through 2025–26. Basketball records come from ESPN through SportsDataverse archives and primary summaries; official NBA reports supply timestamped injury designations, and GeoNames supplies city coordinates and time zones.
 
 | Directory | Contents |
 | --- | --- |

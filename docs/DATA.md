@@ -11,10 +11,11 @@ Each historical directory under [`data/seasons/`](../data/seasons/) contains:
 | `games.json` | Validated game records, box-score counts, venues, availability-time proxies, quality flags |
 | `team_games.csv` | Two normalized team box-score rows per game |
 | `model_features.csv` | Pregame context and probabilities, plus explicitly named postgame update features |
-| `snapshot.json` | Reconstructed forecasts, outcomes, final ratings, evaluation, and calibration bins |
+| `snapshot.json` | Preserved original v0.2 forecasts, outcomes, final ratings and evaluation |
+| `snapshot-v0.3.json` | Corrected retrospective carryover, injury and boosted forecasts for the three evaluation seasons |
 | `collection_manifest.json` | Coverage checks, source URLs/hashes, retrieval metadata, and source replacements |
 
-Treat IDs as strings. Postgame columns describe information available after completion and must not predict that same game's outcome. The [paper](../paper/main.pdf) defines every derived feature, equation, unit, and numerical convention; [`model.py`](../nba_forecast/model.py) is the canonical implementation. Frozen constants are in [`parameters.json`](../models/nba-v0.2/parameters.json).
+Treat IDs as strings. Postgame columns describe information available after completion and must not predict that same game's outcome. The [paper](../paper/main.pdf) defines every derived feature, equation, unit, and numerical convention; [`model.py`](../nba_forecast/model.py) is the canonical implementation. The active core coefficients, player/form initialization state, logistic scalers/weights, portable trees and feature order are in the [v0.3 model bundle](../models/nba-v0.3/bundle.json). The original [v0.2 parameters](../models/nba-v0.2/parameters.json) remain preserved.
 
 [`data/seasons/index.json`](../data/seasons/index.json) identifies available seasons and snapshot paths. The current-season `live.json` is the authoritative atomic bundle: ratings, observed games, schedule, issued revisions, parameter registry, source provenance, and correction history. `update_status.json` records the latest collection attempt. The initial `snapshot.json` is retained as a seed, not the active ledger.
 
@@ -45,6 +46,20 @@ Historical forecasts freeze an entire Eastern-calendar slate at the earlier of 1
 
 Live collection updates ratings after individual completions and stores actual forecast issue times. Only predictions genuinely issued before recorded tip-off are scored as live. Backfilled games without issued predictions can update ratings but are excluded from live scores. Primary scoring additionally requires ten observed prior games for each team at issuance. These cutoff policies differ, so historical accuracy is not a live-service claim. See [development and operation](DEVELOPMENT.md#live-forecast-lifecycle).
 
+## Player and injury inputs
+
+SportsDataverse's free `espn_nba_player_boxscores` release supplies `player_box_YEAR.parquet`. Played-player IDs, minutes and box counts are validated against canonical opponents, team totals and plausible complete minute totals. Float and integer player IDs normalize to the same string identity. Across the five seasons, 12,235 of 12,300 team-games pass; 65 inconsistent player histories are excluded rather than treated as absences. The core team records remain valid. Full archived player boxes stay in ignored raw caches; frozen player-history summaries needed for live initialization are in the model bundle.
+
+Official NBA injury PDFs provide actual publication timestamps, matchup/date/team, player names and participation designations. Of 816 historical game dates, 815 morning reports were retrieved. Every production parse matched the audited records; independent PDF text checks verified designation counts. Exact unambiguous normalized names map to stable ESPN IDs; unmapped players are explicitly unknown. A full-season roster union, eventual minutes or final absence never becomes a pregame feature.
+
+Player value uses earlier Game Score per minute, shrunk toward 0.3 with 80 prior minutes; expected minutes use a ten-observation exponential history. This is a descriptive proxy, not RAPM. Current-slate player histories are frozen at the morning historical cutoff, including cross-team trade/report overlaps. Live feature histories update only from completed games.
+
+The live collector reads the official index or at most four already-due, distinct public quarter-hour PDF versions. It verifies the PDF header timestamp, rejects future/stale reports, and requires date/team/matchup agreement. An unavailable index is not evidence that a dated public PDF is absent. If no verified report covers a game, both adjusted models fall back to base Elo; an unsubmitted team is modeled with explicit missingness. No access-denied URL is retried.
+
+New issued forecast rows store all three model probabilities, the actual standardized-model input vectors, report timestamp/hash, coverage, version and bundle fingerprint. The parameter registry preserves the numerical heads as well as core constants. Unavailable player records and injury-source errors are visible in `_internal.auxiliary_status`; an injury outage does not stop valid team-result ingestion. A mandatory game-source failure still preserves the last valid snapshot.
+
+The two `tests/fixtures/injury-*.pdf` files are unmodified official NBA reports used to check old table headers, page continuations and unsubmitted teams. Their underlying source URLs follow the official `ak-static.cms.nba.com/referee/injury/Injury-Report_DATE_08AM.pdf` path. They retain provider rights; the project's MIT license does not relicense them.
+
 ## Sources and reuse
 
 ## Basketball records
@@ -60,6 +75,10 @@ YEAR is the season's ending year, 2022–2026. Each season's `collection_manifes
 Primary replacements use ESPN's public NBA summary feed:
 `https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=GAME_ID`.
 Collection manifests record replacement URLs, retrieval times, and hashes. Endpoints have no service guarantee. Raw source caches remain local; committed files contain validated normalized records and derived features.
+
+## Official injury reports
+
+[NBA publication policy](https://official.nba.com/nba-injury-report-2026-27-season/) and public timestamped PDFs under `https://ak-static.cms.nba.com/referee/injury/` supply status information. Publication continues during the day; later updates cannot enter a morning historical forecast. Header timestamps do not prove the source never received later corrections.
 
 ## Geography
 
