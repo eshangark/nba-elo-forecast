@@ -94,13 +94,13 @@ def render_dashboard():
 - **Inputs ($\mathbf{d}_i$):** standardized base log odds, injury-status contributions based on earlier player minutes/value, and missing-report indicators.
 - **Fitted correction ($b,\mathbf{w}$):** regularized coefficients selected using earlier seasons only.
             ''')
-            st.caption('Unavailable or stale report/game coverage falls back to carryover Elo. An unsubmitted team is recorded as unknown, never healthy. Neither probability correction feeds back into Elo.')
+            st.caption('Unavailable or stale report/game coverage falls back to carryover Elo. An unsubmitted team is recorded as unknown, never healthy. The injury correction does not feed back into Elo.')
             with st.expander('How injury data becomes a forecast'):
                 st.markdown('''
 1. **Collect:** the scheduled job checks official NBA injury PDFs every two hours. It verifies the publication time and matches the report to the game, teams and date. Reports more than 16 hours old or dated in the future are rejected.
 2. **Match players:** normalized report names map to ESPN player IDs. Earlier completed box scores supply minutes and a descriptive Game Score per minute. Ambiguous names and missing histories remain unknown.
 3. **Build features:** expected minutes use a ten-appearance exponential half-life. Value per minute is shrunk toward 0.3 using 80 prior minutes. Out, Doubtful, Questionable and Probable each have separate minutes and value totals; their effects are learned rather than assigned fixed absence probabilities.
-4. **Predict:** home-minus-away status totals and coverage indicators enter the fitted logistic correction below. Coefficients and standardization are frozen from earlier seasons. Every issued revision stores its report timestamp and hash.
+4. **Predict:** home-minus-away status totals and coverage indicators enter the fitted logistic correction. Coefficients and standardization are frozen from earlier seasons. Every issued revision stores its report timestamp and hash.
 5. **Update after games:** completed results update Elo using the base probability. Injury adjustments affect the published win probability directly; they do not change the Elo rankings.
                 ''')
                 st.latex(r'A_{t,s}=\sum_{a\in(t,s)}\bar m_a/240,\qquad B_{t,s}=\sum_{a\in(t,s)}\bar m_a v_a/80,\qquad v_a=(V_a+24)/(M_a+80)')
@@ -239,7 +239,9 @@ def render_dashboard():
                        'Evaluation begins once both teams have played 10 games; opening games still update ratings and retain forecasts.'))
             if is_live and not m["games"]:
                 all_scores = comparison['metrics_all_issued'] if comparison else result['metrics_all_issued']
-                st.caption(f"{all_scores['games']} completed games have comparable issued forecasts. Primary evaluation waits until both teams have ten prior games.")
+                st.caption(f"{all_scores['games']} completed games have comparable issued forecasts. " +
+                           ("No completed games have eligible forecasts from the current model bundle yet." if evaluation_window == 'all' else
+                            "This window waits until both teams have ten prior games."))
             calibration = pd.DataFrame(m["calibration"])
             if not calibration.empty:
                 st.dataframe(calibration.rename(columns={"games": "Games", "mean_probability": "Mean forecast",
