@@ -1,0 +1,891 @@
+{
+  "season": "2026-27",
+  "result": {
+    "status": "current_method_replay",
+    "model_version": "0.3.0",
+    "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+    "parameters": {
+      "k": 13.748880997933203,
+      "c": 497.3558141396255,
+      "home_advantage": 40.034399069413546,
+      "fatigue_weight": 0.17955959497994678,
+      "travel_weight": 9.534356883758692e-05,
+      "lead_weight": 2.0,
+      "performance_weight": 0.25,
+      "schedule_weight": 0.7081901218929665,
+      "alpha_weights": [
+        0.0006686328527021553,
+        0.0008033843253798839,
+        0.008884867219254858,
+        0.0007283531313796161,
+        0.16132850011791944,
+        0.8047679813319892,
+        0.015182636235868846,
+        0.007635644785505957
+      ]
+    },
+    "evaluation_role": "post_fit_replay",
+    "metrics": {
+      "games": 0,
+      "log_loss": null,
+      "brier_score": null,
+      "winner_accuracy": null,
+      "calibration": []
+    },
+    "metrics_all_issued": {
+      "games": 16,
+      "log_loss": 0.6290794251359901,
+      "brier_score": 0.22046279603981223,
+      "winner_accuracy": 0.5625,
+      "tie_policy": "pick home when probability equals 0.5",
+      "calibration": [
+        {
+          "lower": 0.2,
+          "upper": 0.3,
+          "games": 1,
+          "mean_probability": 0.27683701296701363,
+          "observed_home_win_rate": 0
+        },
+        {
+          "lower": 0.4,
+          "upper": 0.5,
+          "games": 2,
+          "mean_probability": 0.42302793004873707,
+          "observed_home_win_rate": 1
+        },
+        {
+          "lower": 0.5,
+          "upper": 0.6,
+          "games": 7,
+          "mean_probability": 0.5366013387977062,
+          "observed_home_win_rate": 0.5714285714285714
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.7,
+          "games": 5,
+          "mean_probability": 0.6630849274629458,
+          "observed_home_win_rate": 0.6
+        },
+        {
+          "lower": 0.7,
+          "upper": 0.8,
+          "games": 1,
+          "mean_probability": 0.7302908029996726,
+          "observed_home_win_rate": 1
+        }
+      ]
+    },
+    "warmup_games": 10,
+    "rankings": [
+      {
+        "team_id": "25",
+        "team": "Oklahoma City Thunder",
+        "elo": 1678.772634410878,
+        "games": 2,
+        "wins": 2
+      },
+      {
+        "team_id": "24",
+        "team": "San Antonio Spurs",
+        "elo": 1635.5933732222363,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "8",
+        "team": "Detroit Pistons",
+        "elo": 1634.0910816855653,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "2",
+        "team": "Boston Celtics",
+        "elo": 1614.4052330614934,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "7",
+        "team": "Denver Nuggets",
+        "elo": 1598.4817116696338,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "13",
+        "team": "Los Angeles Lakers",
+        "elo": 1594.0456195618635,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "30",
+        "team": "Charlotte Hornets",
+        "elo": 1587.970083812899,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "10",
+        "team": "Houston Rockets",
+        "elo": 1577.6065357593102,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "18",
+        "team": "New York Knicks",
+        "elo": 1571.1260372775973,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "1",
+        "team": "Atlanta Hawks",
+        "elo": 1571.0879388184635,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "16",
+        "team": "Minnesota Timberwolves",
+        "elo": 1571.0105466782177,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "5",
+        "team": "Cleveland Cavaliers",
+        "elo": 1560.9123494488388,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "20",
+        "team": "Philadelphia 76ers",
+        "elo": 1558.9659017555023,
+        "games": 2,
+        "wins": 2
+      },
+      {
+        "team_id": "28",
+        "team": "Toronto Raptors",
+        "elo": 1541.6870707533806,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "12",
+        "team": "LA Clippers",
+        "elo": 1540.4101345443623,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "22",
+        "team": "Portland Trail Blazers",
+        "elo": 1540.27179496265,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "19",
+        "team": "Orlando Magic",
+        "elo": 1514.5183670948977,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "21",
+        "team": "Phoenix Suns",
+        "elo": 1510.6672798452785,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "14",
+        "team": "Miami Heat",
+        "elo": 1501.5193491151763,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "9",
+        "team": "Golden State Warriors",
+        "elo": 1434.844169579701,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "3",
+        "team": "New Orleans Pelicans",
+        "elo": 1403.1839448415892,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "15",
+        "team": "Milwaukee Bucks",
+        "elo": 1398.3172330003404,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "6",
+        "team": "Dallas Mavericks",
+        "elo": 1386.5854011763372,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "4",
+        "team": "Chicago Bulls",
+        "elo": 1384.5756656620115,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "11",
+        "team": "Indiana Pacers",
+        "elo": 1380.540437341639,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "23",
+        "team": "Sacramento Kings",
+        "elo": 1374.0706916747856,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "29",
+        "team": "Memphis Grizzlies",
+        "elo": 1367.6406606779879,
+        "games": 1,
+        "wins": 1
+      },
+      {
+        "team_id": "26",
+        "team": "Utah Jazz",
+        "elo": 1325.2714464056894,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "17",
+        "team": "Brooklyn Nets",
+        "elo": 1321.2648153140774,
+        "games": 1,
+        "wins": 0
+      },
+      {
+        "team_id": "27",
+        "team": "Washington Wizards",
+        "elo": 1320.5624908475982,
+        "games": 1,
+        "wins": 1
+      }
+    ],
+    "predictions": [
+      {
+        "game_id": "401909088",
+        "start": "2026-10-20T19:00Z",
+        "home": "Detroit Pistons",
+        "away": "Boston Celtics",
+        "home_rating": 1623.4725927972556,
+        "away_rating": 1627.6842812334542,
+        "home_probability": 0.5413669110927757,
+        "away_probability": 0.4586330889072243,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-14T00:59:12.576100+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 121,
+        "away_score": 113,
+        "home_rating_after": 1639.3702945869102,
+        "away_rating_after": 1619.6844459628383
+      },
+      {
+        "game_id": "401909089",
+        "start": "2026-10-20T23:00Z",
+        "home": "New York Knicks",
+        "away": "Philadelphia 76ers",
+        "home_rating": 1589.4709453279795,
+        "away_rating": 1519.6781512535258,
+        "home_probability": 0.6244458272149532,
+        "away_probability": 0.37555417278504677,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-20T21:38:57.448385+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 100,
+        "away_score": 106,
+        "home_rating_after": 1575.9277291238177,
+        "away_rating_after": 1546.5919570011802
+      },
+      {
+        "game_id": "401909090",
+        "start": "2026-10-21T01:50Z",
+        "home": "San Antonio Spurs",
+        "away": "Oklahoma City Thunder",
+        "home_rating": 1651.2702627267795,
+        "away_rating": 1640.1923033597773,
+        "home_probability": 0.558883618141317,
+        "away_probability": 0.44111638185868296,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-20T21:38:57.448385+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 104,
+        "away_score": 116,
+        "home_rating_after": 1640.0150539442286,
+        "away_rating_after": 1661.1327815104605
+      },
+      {
+        "game_id": "401909834",
+        "start": "2026-10-21T23:00Z",
+        "home": "Orlando Magic",
+        "away": "Atlanta Hawks",
+        "home_rating": 1528.8935124675675,
+        "away_rating": 1554.6428688657545,
+        "home_probability": 0.516527675863514,
+        "away_probability": 0.483472324136486,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 125,
+        "away_score": 132,
+        "home_rating_after": 1518.0166502637148,
+        "away_rating_after": 1574.5862219872806
+      },
+      {
+        "game_id": "401909835",
+        "start": "2026-10-21T23:00Z",
+        "home": "Washington Wizards",
+        "away": "Milwaukee Bucks",
+        "home_rating": 1292.8834480848507,
+        "away_rating": 1418.0509966358409,
+        "home_probability": 0.4027218038005343,
+        "away_probability": 0.5972781961994658,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 128,
+        "away_score": 116,
+        "home_rating_after": 1324.4245502172162,
+        "away_rating_after": 1402.1792923699584
+      },
+      {
+        "game_id": "401909091",
+        "start": "2026-10-21T23:30Z",
+        "home": "Miami Heat",
+        "away": "Minnesota Timberwolves",
+        "home_rating": 1518.4050947052435,
+        "away_rating": 1549.3021768978736,
+        "home_probability": 0.5105740759767413,
+        "away_probability": 0.4894259240232587,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 106,
+        "away_score": 131,
+        "home_rating_after": 1504.3346817693466,
+        "away_rating_after": 1573.825879332388
+      },
+      {
+        "game_id": "401909836",
+        "start": "2026-10-21T23:30Z",
+        "home": "Brooklyn Nets",
+        "away": "Charlotte Hornets",
+        "home_rating": 1331.9089856779794,
+        "away_rating": 1579.3467450878381,
+        "home_probability": 0.27683701296701363,
+        "away_probability": 0.7231629870329863,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 103,
+        "away_score": 110,
+        "home_rating_after": 1324.5356808227232,
+        "away_rating_after": 1591.2409493215448
+      },
+      {
+        "game_id": "401909837",
+        "start": "2026-10-21T23:30Z",
+        "home": "Toronto Raptors",
+        "away": "Chicago Bulls",
+        "home_rating": 1529.6890146197309,
+        "away_rating": 1396.8295802048738,
+        "home_probability": 0.6900682820958904,
+        "away_probability": 0.30993171790410956,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 135,
+        "away_score": 92,
+        "home_rating_after": 1544.2161533063918,
+        "away_rating_after": 1387.1047482150227
+      },
+      {
+        "game_id": "401909838",
+        "start": "2026-10-22T00:00Z",
+        "home": "Memphis Grizzlies",
+        "away": "Utah Jazz",
+        "home_rating": 1350.7006662614915,
+        "away_rating": 1339.882671330555,
+        "home_probability": 0.5585868838605725,
+        "away_probability": 0.44141311613942746,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 123,
+        "away_score": 103,
+        "home_rating_after": 1369.4524521414755,
+        "away_rating_after": 1327.083237869177
+      },
+      {
+        "game_id": "401909839",
+        "start": "2026-10-22T00:00Z",
+        "home": "New Orleans Pelicans",
+        "away": "Indiana Pacers",
+        "home_rating": 1417.0422457114862,
+        "away_rating": 1365.1788961656378,
+        "home_probability": 0.6047877804025894,
+        "away_probability": 0.3952122195974106,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 0,
+        "home_score": 120,
+        "away_score": 123,
+        "home_rating_after": 1405.3681406695976,
+        "away_rating_after": 1382.7246331696474
+      },
+      {
+        "game_id": "401909840",
+        "start": "2026-10-22T00:30Z",
+        "home": "Houston Rockets",
+        "away": "Dallas Mavericks",
+        "home_rating": 1571.263586615187,
+        "away_rating": 1396.1418230240722,
+        "home_probability": 0.7302908029996726,
+        "away_probability": 0.26970919700032736,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 128,
+        "away_score": 110,
+        "home_rating_after": 1579.2306642647854,
+        "away_rating_after": 1388.2095296818125
+      },
+      {
+        "game_id": "401909092",
+        "start": "2026-10-22T02:00Z",
+        "home": "Los Angeles Lakers",
+        "away": "Golden State Warriors",
+        "home_rating": 1584.852520666839,
+        "away_rating": 1445.7601162157937,
+        "home_probability": 0.696205848156648,
+        "away_probability": 0.303794151843352,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 127,
+        "away_score": 105,
+        "home_rating_after": 1595.0339040237404,
+        "away_rating_after": 1435.8324540415779
+      },
+      {
+        "game_id": "401909841",
+        "start": "2026-10-22T02:00Z",
+        "home": "Portland Trail Blazers",
+        "away": "Phoenix Suns",
+        "home_rating": 1521.8352834674467,
+        "away_rating": 1525.9923451794273,
+        "home_probability": 0.5414297033642871,
+        "away_probability": 0.4585702966357129,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 124,
+        "away_score": 83,
+        "home_rating_after": 1541.4974298812906,
+        "away_rating_after": 1511.8929147639192
+      },
+      {
+        "game_id": "401909842",
+        "start": "2026-10-22T02:30Z",
+        "home": "LA Clippers",
+        "away": "Sacramento Kings",
+        "home_rating": 1528.959169862919,
+        "away_rating": 1386.0636429505291,
+        "home_probability": 0.6999168994446477,
+        "away_probability": 0.30008310055535226,
+        "home_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-21T07:41:28.453899+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 121,
+        "away_score": 96,
+        "home_rating_after": 1541.1217065112496,
+        "away_rating_after": 1374.782263641673
+      },
+      {
+        "game_id": "401909093",
+        "start": "2026-10-22T23:00Z",
+        "home": "Philadelphia 76ers",
+        "away": "Cleveland Cavaliers",
+        "home_rating": 1542.501837121847,
+        "away_rating": 1569.529562167884,
+        "home_probability": 0.44333405629693984,
+        "away_probability": 0.5566659437030601,
+        "home_context": {
+          "rest": 1,
+          "travel": 129.63523988229818,
+          "timezone_change": 0.0,
+          "opening_prior": false
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5555555555555555,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-22T17:12:52.215653+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 114,
+        "away_score": 106,
+        "home_rating_after": 1559.368473860777,
+        "away_rating_after": 1561.3149215541134
+      },
+      {
+        "game_id": "401909094",
+        "start": "2026-10-23T01:30Z",
+        "home": "Oklahoma City Thunder",
+        "away": "Denver Nuggets",
+        "home_rating": 1657.4226727553555,
+        "away_rating": 1609.177654100693,
+        "home_probability": 0.5288405032847361,
+        "away_probability": 0.4711594967152639,
+        "home_context": {
+          "rest": 1,
+          "travel": 678.2145604487658,
+          "timezone_change": 0.0,
+          "opening_prior": false
+        },
+        "away_context": {
+          "rest": 3,
+          "travel": 0.0,
+          "timezone_change": 0.0,
+          "opening_prior": true
+        },
+        "home_sos": 0.5,
+        "away_sos": 0.5555555555555555,
+        "model_version": "0.3.0",
+        "injury_source": null,
+        "injury_status": "elo_fallback",
+        "kind": "current_method_replay",
+        "forecast_cutoff": "2026-10-22T17:12:52.215653+00:00",
+        "replay_input_basis": "no_recoverable_pregame_injury_inputs",
+        "forecast_model_sha256": "d3d8b51844c172b0210e1ae3db6519eac33c73bb262a8e9b65fbedecd805fa37",
+        "eligible_for_evaluation": false,
+        "home_win": 1,
+        "home_score": 96,
+        "away_score": 84,
+        "home_rating_after": 1678.772634410878,
+        "away_rating_after": 1598.4817116696338
+      }
+    ],
+    "replay_policy": "current-method-v1"
+  },
+  "input_sha256": "d76d6fcda1d7c2148c7db07b98a834ae678dca92f84474d50728bbe0165fb700",
+  "source_result_sha256": "2e266961f93858fd6abbc753f24a098569784afd39dbb5a3615889a4fdc88e02",
+  "provenance": "Current-method retrospective reconstruction; original issued forecasts and chronological backtests remain separate."
+}

@@ -87,3 +87,11 @@ Collection manifests record replacement URLs, retrieval times, and hashes. Endpo
 Original project code and documentation use the [MIT License](../LICENSE). Provider records, raw-source fixtures, derived datasets, and third-party materials retain separate rights and notices. No blanket license for all dataset contents is asserted here; GeoNames material retains its CC BY 4.0 attribution requirements.
 
 Raw parquet files, geography downloads, and response caches are excluded from Git. Rebuilding requires network access and may receive revised records; manifests identify downloads used for the recorded release.
+
+## Current-method replay inputs and outputs
+
+Each historical season has a deterministic `replay-inputs.json.gz`: normalized, validated prior-player observations (athlete ID, minutes and descriptive Game Score), date/team/matchup-matched injury statuses, cutoff timestamps and source hashes. These are derived provider records with the same reuse notices as the other datasets. A source archive hash and player validation failures accompany each season. Outcome columns remain in the existing `games.json`; own-game player observations enter history only after its pregame predictions.
+
+`current-model.json` stores the current specification's retrospective predictions, reconstructed ratings, all-game and ten-prior-game scores, bundle fingerprint and source hashes. Original `snapshot*.json` and issued live ledgers remain intact. Historical inputs use the original morning cutoff; current-season rows use the last actual pregame issuance cutoff and recorded rest/travel inputs. Saved raw reports allow rebuilding injury features; older saved injury covariates use the current base probability and fitted head. Missing historical injury inputs fall back to Elo explicitly. Corrected historical provider records can differ from what the provider originally published; this reconstruction is not a historical source-vintage guarantee.
+
+The collector regenerates these views after every successful update. Model/engine/input changes trigger that workflow, and `python scripts/replay_current.py` rebuilds them locally. Source-result and model fingerprints prevent the dashboard loading a replay for a different snapshot or bundle.

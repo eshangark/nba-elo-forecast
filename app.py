@@ -10,6 +10,8 @@ import streamlit as st
 
 from nba_forecast.seasons import load_index, load_season
 from nba_forecast.ui import native_select
+from nba_forecast.forecasting import Forecaster
+from nba_forecast.live import digest
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -42,13 +44,29 @@ def render_dashboard():
                             format_func=lambda s: s + (" · Current" if s == current else " · Archive"),
                             key="selected_season")
     archive = load_season(ARCHIVES, lookup[selected])
+    current_replay = None
+    stale_replay = False
+    replay_path = ARCHIVES / selected / 'current-model.json'
+    if archive and replay_path.exists():
+        candidate = json.loads(replay_path.read_text())
+        bundle = Forecaster(json.loads((ROOT/'models/nba-v0.3/bundle.json').read_text()))
+        if (candidate['result']['forecast_model_sha256'] == bundle.fingerprint
+                and candidate['source_result_sha256'] == digest(archive['result'])):
+            current_replay = candidate
+            archive['result'] = candidate['result']
+        else:
+            stale_replay = True
     version_three = bool(archive and archive.get('result', {}).get('model_version') == '0.3.0')
     teams_tab, games_tab, method_tab = st.tabs(["Teams", "Games", "Methodology"])
 
     with teams_tab:
         st.caption("Compare team strength for the selected season. Teams are ordered by Elo, with higher ratings indicating stronger teams; ratings change as completed games are processed.")
     with games_tab:
-        st.caption("Explore win probabilities for upcoming games and compare past predictions with final outcomes. Historical seasons show reconstructed forecasts; current-season games retain predictions actually issued before tip-off.")
+        st.caption("Explore win probabilities and completed-game outcomes. " +
+                   ("Past games replay the current methodology with pregame inputs. Original issued forecasts remain downloadable." if current_replay else
+                    "Past games show original stored forecasts while the current-method replay is unavailable."))
+        if stale_replay:
+            st.info("The current-method replay is being rebuilt for this model or data snapshot. Showing original stored forecasts in the meantime.")
     with method_tab:
         st.caption("See how matchup probabilities and Elo updates are calculated, explore the fitted constants, and review how accurately the model's probabilities match game outcomes.")
         st.html("""<style>
@@ -167,7 +185,7 @@ def render_dashboard():
         with games_tab:
             st.subheader("Games")
             if version_three:
-                st.caption('Elo + injuries is the published model, selected for the lowest retrospective log loss and Brier score. Archived forecasts retain the model version originally used.')
+                st.caption('Elo + injuries is the published model, selected for the lowest retrospective log loss and Brier score.')
                 st.caption('Coverage describes team report submission. Unmatched players and missing player histories remain explicitly unknown.')
             upcoming = archive.get("upcoming", [])
             if upcoming:
@@ -196,19 +214,29 @@ def render_dashboard():
                 daily["Away win %"] = daily["away_probability"] * 100
                 daily["Final score"] = daily["home_score"].astype(str) + "–" + daily["away_score"].astype(str)
                 daily["Winner"] = daily.apply(lambda g: g["home"] if g["home_win"] else g["away"], axis=1)
-                columns = ["home", "away", "Home win %", "Away win %", "Final score", "Winner"]+(['Coverage'] if version_three else [])
+                daily["Prediction"] = daily.apply(lambda g: 'Unavailable' if pd.isna(g['home_probability']) else
+                                                   'Correct' if int(g['home_probability'] >= 0.5) == g['home_win'] else 'Incorrect', axis=1)
+                columns = ["home", "away", "Home win %", "Away win %", "Final score", "Winner", "Prediction"]
                 st.dataframe(daily[columns].rename(
                     columns={"home": "Home", "away": "Away"}), hide_index=True, width="stretch",
                     column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
                                    "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
-                if is_live:
-                    st.caption("Probabilities are the last stored forecast before tip-off. A blank probability means the game was backfilled without an issued forecast.")
+                if current_replay:
+                    st.caption("Current-method retrospective replay. Correct means the team given at least 50% won; an exact 50% tie picks home. Only pregame inputs enter each prediction. Original issued forecasts are preserved separately.")
+                elif is_live:
+                    st.caption("Original issued forecasts. A blank probability means no pregame forecast was recorded.")
                 else:
-                    st.caption("These probabilities were reconstructed from historical data. They were not issued live before those games.")
+                    st.caption("Historical reconstructed forecasts; not issued live.")
             else:
                 st.info("No completed regular-season games are stored for this season yet.")
         with method_tab:
-            if result["status"] == "live_forecasts":
+            if current_replay:
+                role = 'Training replay: this season helped fit the current model.' if result['evaluation_role'] == 'training_replay' else 'Post-fit reconstruction using the current model.'
+                st.info(role + ' These scores evaluate the current methodology with pregame inputs; they are not the original live track record or a new held-out test.')
+                if is_live:
+                    st.download_button("Download original issued forecast history", json.dumps(archive["_internal"]["forecasts"], indent=2),
+                                       file_name=f"{selected}-original-issued-forecasts.json", mime="application/json")
+            elif result["status"] == "live_forecasts":
                 st.info("Frozen NBA model · Evaluation includes genuinely issued pregame forecasts only. Backfilled games can update ratings but never become live predictions.")
                 st.download_button("Download issued forecast history", json.dumps(archive["_internal"]["forecasts"], indent=2),
                                    file_name=f"{selected}-issued-forecasts.json", mime="application/json")
@@ -226,9 +254,9 @@ def render_dashboard():
                 evaluation_window = native_select('Evaluation window', ['all', 'established'],
                                                    format_func=lambda value: 'All games, including openers' if value == 'all' else 'After ten prior games per team',
                                                    key=f'evaluation_window_{selected}')
-                if comparison and evaluation_window == 'all':
-                    m = comparison['metrics_all_issued']
-                st.caption("Scoring: Elo + injuries. Live scores include only forecasts issued with the current frozen model bundle; earlier versions remain in the issued-history download.")
+                if evaluation_window == 'all':
+                    m = comparison['metrics_all_issued'] if comparison else result['metrics_all_issued']
+                st.caption("Scoring: current-method Elo + injuries replay. Historical training replays measure fit, not performance on unseen games." if current_replay else "Scoring: Elo + injuries, original stored forecasts.")
             if m["games"]:
                 cols = st.columns(4)
                 cols[0].metric("Evaluation games", m["games"])
@@ -261,7 +289,7 @@ def render_dashboard():
         with st.expander("Fitted NBA constants"):
             st.json(result['parameters'] if result else json.loads((ROOT / 'models/nba-v0.3/bundle.json').read_text())['core_parameters'])
         if version_three:
-            with st.expander('Published-model historical evaluation'):
+            with st.expander('Chronological backtests with earlier-season fits'):
                 evaluation = json.loads((ROOT/'models/nba-v0.3/evaluation.json').read_text())
                 rows = []
                 for fold in evaluation['folds']:

@@ -94,3 +94,7 @@ tectonic --outdir paper paper/main.tex
 Inspect the PDF after compiling. Keep credentials, personal filesystem paths, raw downloads, environments, and generated build files outside tracked files; retain third-party notices.
 
 Preserve the frozen v0.2 configuration and issued ledger. New formulas, constraints, or training studies require a separately versioned model and evaluation protocol. The observed 2025–26 test cannot become an untouched test again. Carryover and both probability heads are implemented in v0.3. Prospective comparisons remain necessary; the boosted challenger is not a claim of stable superiority. Original issued rows and v0.2 artifacts remain unchanged.
+
+## Rebuild the current-method dashboard views
+
+Run `python scripts/replay_current.py` after changing the active model. It rebuilds all five archived seasons from committed normalized pregame inputs and the current season from recorded pregame cutoffs, without changing original archives or issued forecasts. The live collector runs this step after successful collection, and the scheduled workflow commits the resulting `current-model.json` files. Regenerating inputs after changing player-history derivations requires the validated source player observations already included in the compressed replay inputs; provider corrections should be documented as a new input snapshot.

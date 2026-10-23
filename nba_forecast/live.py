@@ -197,6 +197,7 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
             if forecaster:
                 row.update(forecaster.predict(g, row, feature_planning,
                                                (injury_reports or {}).get(g['game_id']), injury_source))
+                row['injury_report'] = copy.deepcopy((injury_reports or {}).get(g['game_id']))
             signature = digest({'state': state_hash, 'game': g, 'home_context': row['home_context'],
                                 'away_context': row['away_context'], 'parameter_hash': parameter_hash,
                                 'probability_models': row.get('probability_models'), 'injury_source': row.get('injury_source'),

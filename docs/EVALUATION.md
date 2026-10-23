@@ -90,3 +90,7 @@ python scripts/compare_models.py
 ```
 
 Results, per-fold fitting reports, and paired predictions are under `models/comparison-v0.2/`. `predictions.csv` distinguishes `expanding_window` from `original_frozen_release`. All 1,230 forecasts per evaluation season are retained, with an eligibility flag; only eligible forecasts enter scores.
+
+## Current specification dashboard replay
+
+The dashboard now evaluates `current-model.json`, a separate replay of the active specification using pregame inputs. All five complete seasons helped fit the current release and are labeled **training replay**. The current season is a **post-fit reconstruction**, using each game's recorded pregame cutoff and saved inputs; it is not the original live record. These metrics answer how the current method reconstructs stored history, not how it generalizes to unseen seasons. The earlier-prefix chronological results above and original issued forecasts are retained separately. In the past-game table, Correct/Incorrect compares the probability's favored team with the final winner, choosing home at exactly 50%.

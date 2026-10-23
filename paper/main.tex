@@ -731,6 +731,47 @@ $\phi=2$ and $\lambda=0.25$. Full coefficients, scalers, numerical tree
 nodes, provenance and per-fold reports are stored in versioned JSON.
 Boundary estimates and changing feature weights remain empirical limitations.
 
+\section{Current-method reconstruction in the dashboard}
+The past-game dashboard uses a separate reconstruction of the current
+specification. A model change therefore rebuilds past Elo states and win
+probabilities as well as upcoming forecasts. Original issued forecasts and
+the earlier-prefix backtests above are retained separately. A reconstructed
+probability is never inserted into the original issued ledger.
+
+For each archived season, replay starts from the earliest stored season,
+with half-carryover at season boundaries. Saved, validated player
+observations and matched morning report inputs reconstruct the pregame
+injury covariates. All predictions for a daily slate precede that slate's
+player updates. Current-season reconstruction instead uses the last actual
+pregame issuance cutoff for each game and its captured rest/travel context.
+Rating and player states advance only when earlier games have completed;
+the Elo residual at completion uses the current core's pregame base
+probability. Updated Elo ratings replace old ratings as derived quantities,
+while report/player inputs remain limited to their pregame availability.
+
+New issued revisions also retain normalized raw report inputs. Where an
+older revision saved only raw numerical injury covariates, those inputs
+are reused with newly reconstructed base log odds and the current scaler
+and coefficients. Such rows cannot support a new derivation requiring
+uncaptured player-report details without a separately documented source
+reconstruction. If neither raw report inputs nor injury covariates were
+captured, the replay explicitly falls back to Elo. Later reports are never
+substituted for a missing earlier report. Source-result and model hashes
+bind the displayed reconstruction to its underlying snapshot and bundle.
+Provider corrections present in historical archives remain a source-vintage
+limitation; these are not guaranteed original-as-published records.
+
+The table labels a prediction Correct when the higher-probability team
+won, choosing home at exactly $0.5$, and Incorrect otherwise. The displayed
+scorecard is recomputed from these same reconstructed rows. All five
+complete historical seasons were used to fit the current release, so their
+current-method scores are labeled training replays. The current season is
+labeled a post-fit reconstruction. Neither designation makes these scores
+an untouched test or the original live track record. The chronological
+backtests reported earlier answer a different question: performance of an
+earlier-season-fitted procedure on the next season. This distinction is
+necessary when comparing updated methodologies after observing outcomes.
+
 \section{Reproducibility and live use}
 The repository records source URLs/hashes, validation actions, canonical
 feature tables, frozen constants, optimizer settings, reconstructed forecasts,

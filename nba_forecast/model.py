@@ -136,11 +136,11 @@ class Engine:
         other_rates = [self.team(t).win_rate for t in opponent.opponents]
         return (2 * opponent.win_rate + (mean(other_rates) if other_rates else 0.5)) / 3
 
-    def predict(self, game):
+    def predict(self, game, contexts=None):
         home = self.team(game["home"]["id"])
         away = self.team(game["away"]["id"])
-        hc = self.context(game["home"]["id"], game)
-        ac = self.context(game["away"]["id"], game)
+        hc = dict(contexts["home_context"]) if contexts else self.context(game["home"]["id"], game)
+        ac = dict(contexts["away_context"]) if contexts else self.context(game["away"]["id"], game)
         p = self.params
         ortf = ac["rest"] + math.exp(abs(hc["timezone_change"]) / 3) + p.travel_weight * hc["travel"]
         trof = hc["rest"] + math.exp(abs(ac["timezone_change"]) / 3) + p.travel_weight * ac["travel"]

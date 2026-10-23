@@ -83,3 +83,6 @@ class AppTests(unittest.TestCase):
             self.assertFalse(app.exception)
             self.assertEqual(len(app.dataframe[0].value), 2)
             self.assertEqual(len(app.dataframe[1].value), 1)
+            self.assertIn("Prediction", app.dataframe[1].value.columns)
+            self.assertNotIn("Coverage", app.dataframe[1].value.columns)
+            self.assertEqual(app.dataframe[1].value["Prediction"][0], "Correct" if previous else "Unavailable")

@@ -6,6 +6,8 @@ name: Update NBA forecasts
     paths:
       - 'nba_forecast/**'
       - 'scripts/update_live.py'
+      - 'scripts/replay_current.py'
+      - 'data/seasons/*/replay-inputs.json.gz'
       - 'models/nba-v0.3/**'
       - '.github/workflows/update-live.yml'
   schedule:
@@ -66,7 +68,7 @@ jobs:
             echo 'Main changed during collection; refusing to overwrite newer history.'
             exit 1
           fi
-          git add data/seasons/index.json data/seasons/*/live.json data/seasons/*/update_status.json
+          git add data/seasons/index.json data/seasons/*/live.json data/seasons/*/update_status.json data/seasons/*/current-model.json
           if git diff --cached --quiet; then
             echo 'No published data changes.'
             exit 0

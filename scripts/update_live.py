@@ -166,6 +166,9 @@ def run_update(args, started, season):
         index['seasons'].append({'season': season, 'status': 'live', 'file': f'{season}/live.json'})
         index['seasons'].sort(key=lambda e: e['season'], reverse=True)
         write_json(args.archives/'index.json', index)
+        if forecaster:
+            from nba_forecast.current_replay import refresh_current_replays
+            refresh_current_replays(Path(__file__).resolve().parents[1], args.archives)
         write_json(status_path, {'state': 'success', 'attempted_at': started.isoformat(),
                                  'finished_at': snapshot['published_at'], 'last_successful_at': snapshot['published_at']})
         print(json.dumps({'season': season, 'completed_games': len(games), 'upcoming_forecasts': len(snapshot['upcoming']),
