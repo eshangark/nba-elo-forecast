@@ -64,7 +64,7 @@
           "lower": 0.4,
           "upper": 0.5,
           "games": 161,
-          "mean_probability": 0.4506053495906902,
+          "mean_probability": 0.45060534959069026,
           "observed_home_win_rate": 0.4472049689440994
         },
         {
@@ -1413,7 +1413,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 704.0133378317206,
+          "travel": 704.0133378317207,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -1557,7 +1557,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -1887,7 +1887,7 @@
         "away_probability": 0.5878276538765506,
         "home_context": {
           "rest": 0,
-          "travel": 704.0133378317206,
+          "travel": 704.0133378317207,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -2181,7 +2181,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 3871.738260016483,
+          "travel": 3871.7382600164838,
           "timezone_change": 3.0,
           "opening_prior": false
         },
@@ -2223,7 +2223,7 @@
         "away_probability": 0.22187947419508258,
         "home_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -2603,8 +2603,8 @@
         "away": "Miami Heat",
         "home_rating": 1572.2564920047525,
         "away_rating": 1498.4619462377962,
-        "home_probability": 0.4828253009800908,
-        "away_probability": 0.5171746990199092,
+        "home_probability": 0.48282530098009074,
+        "away_probability": 0.5171746990199093,
         "home_context": {
           "rest": 0,
           "travel": 0.0,
@@ -2843,8 +2843,8 @@
         "away": "New York Knicks",
         "home_rating": 1525.4262942928053,
         "away_rating": 1539.2330289275199,
-        "home_probability": 0.47635792348601547,
-        "away_probability": 0.5236420765139845,
+        "home_probability": 0.4763579234860155,
+        "away_probability": 0.5236420765139844,
         "home_context": {
           "rest": 2,
           "travel": 0.0,
@@ -2997,7 +2997,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 333.5574637140462,
+          "travel": 333.55746371404626,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -3471,7 +3471,7 @@
         "away_probability": 0.32392003035562866,
         "home_context": {
           "rest": 1,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -3717,7 +3717,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -3957,7 +3957,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1913.7201356729001,
+          "travel": 1913.7201356729006,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -4095,13 +4095,13 @@
         "away_probability": 0.4145877829006871,
         "home_context": {
           "rest": 1,
-          "travel": 3161.094268071378,
+          "travel": 3161.0942680713783,
           "timezone_change": -3.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -4197,7 +4197,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1392.7791569177111,
+          "travel": 1392.779156917711,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -5339,7 +5339,7 @@
         "away": "Washington Wizards",
         "home_rating": 1389.6275246292207,
         "away_rating": 1392.0826251188678,
-        "home_probability": 0.44257537579137723,
+        "home_probability": 0.4425753757913773,
         "away_probability": 0.5574246242086227,
         "home_context": {
           "rest": 2,
@@ -5685,7 +5685,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1405.1327615818761,
+          "travel": 1405.132761581876,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -6351,7 +6351,7 @@
         "away_probability": 0.7019698932795324,
         "home_context": {
           "rest": 1,
-          "travel": 2545.0797888035563,
+          "travel": 2545.079788803556,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -6549,7 +6549,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -7311,7 +7311,7 @@
         "away_probability": 0.21859690707173385,
         "home_context": {
           "rest": 1,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -7749,7 +7749,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -8271,7 +8271,7 @@
         "away_probability": 0.7200552970973502,
         "home_context": {
           "rest": 0,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -9045,7 +9045,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1913.7201356729001,
+          "travel": 1913.7201356729006,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -9285,7 +9285,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -9711,7 +9711,7 @@
         "away_probability": 0.7815281708359036,
         "home_context": {
           "rest": 0,
-          "travel": 333.5574637140462,
+          "travel": 333.55746371404626,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -10047,13 +10047,13 @@
         "away_probability": 0.4981783867283669,
         "home_context": {
           "rest": 1,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1695.827950908101,
+          "travel": 1695.8279509081008,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -10245,7 +10245,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -10533,7 +10533,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -10719,7 +10719,7 @@
         "away_probability": 0.3927977667885154,
         "home_context": {
           "rest": 2,
-          "travel": 2389.234389819769,
+          "travel": 2389.2343898197696,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -11055,7 +11055,7 @@
         "away_probability": 0.30546137036156973,
         "home_context": {
           "rest": 3,
-          "travel": 1635.5471780523228,
+          "travel": 1635.5471780523221,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -11631,13 +11631,13 @@
         "away_probability": 0.545129664975223,
         "home_context": {
           "rest": 2,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": 1.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 0,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -12021,7 +12021,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -12207,7 +12207,7 @@
         "away_probability": 0.3469512845779794,
         "home_context": {
           "rest": 1,
-          "travel": 2022.6619209490675,
+          "travel": 2022.661920949068,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -13269,7 +13269,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1913.7201356729001,
+          "travel": 1913.7201356729006,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -13413,7 +13413,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2022.4343005835985,
+          "travel": 2022.434300583599,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -13739,11 +13739,11 @@
         "away": "Denver Nuggets",
         "home_rating": 1558.9272197637492,
         "away_rating": 1597.7379132533183,
-        "home_probability": 0.4537158858009722,
+        "home_probability": 0.4537158858009723,
         "away_probability": 0.5462841141990278,
         "home_context": {
           "rest": 1,
-          "travel": 3036.4144461872693,
+          "travel": 3036.4144461872697,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -14315,8 +14315,8 @@
         "away": "Houston Rockets",
         "home_rating": 1547.7330009497146,
         "away_rating": 1442.838239723014,
-        "home_probability": 0.5937683110814104,
-        "away_probability": 0.40623168891858963,
+        "home_probability": 0.5937683110814105,
+        "away_probability": 0.4062316889185895,
         "home_context": {
           "rest": 1,
           "travel": 1896.514980651158,
@@ -14747,7 +14747,7 @@
         "away": "Brooklyn Nets",
         "home_rating": 1475.5254125034992,
         "away_rating": 1546.618278362782,
-        "home_probability": 0.45600992060635037,
+        "home_probability": 0.4560099206063504,
         "away_probability": 0.5439900793936496,
         "home_context": {
           "rest": 3,
@@ -14949,7 +14949,7 @@
         },
         "away_context": {
           "rest": 3,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -15231,7 +15231,7 @@
         "away_probability": 0.15301249319267607,
         "home_context": {
           "rest": 1,
-          "travel": 1441.499759916837,
+          "travel": 1441.4997599168369,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -15711,13 +15711,13 @@
         "away_probability": 0.7206366326835507,
         "home_context": {
           "rest": 1,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": -1.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -16293,7 +16293,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1386.2038508477124,
+          "travel": 1386.2038508477121,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -16383,7 +16383,7 @@
         "away_probability": 0.17492352845398462,
         "home_context": {
           "rest": 2,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -17055,7 +17055,7 @@
         "away_probability": 0.7325039129995758,
         "home_context": {
           "rest": 1,
-          "travel": 1386.2038508477124,
+          "travel": 1386.2038508477121,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -17157,7 +17157,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1913.7201356729001,
+          "travel": 1913.7201356729006,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -17301,7 +17301,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -17925,7 +17925,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -18021,7 +18021,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1499.4166245881786,
+          "travel": 1499.4166245881784,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -18549,7 +18549,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 538.813338946211,
+          "travel": 538.8133389462109,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -18597,7 +18597,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2906.147173826253,
+          "travel": 2906.1471738262526,
           "timezone_change": 3.0,
           "opening_prior": false
         },
@@ -18885,7 +18885,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -19455,7 +19455,7 @@
         "away_probability": 0.5189883065726364,
         "home_context": {
           "rest": 1,
-          "travel": 3172.822024519178,
+          "travel": 3172.8220245191783,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -19509,7 +19509,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2159.661879763472,
+          "travel": 2159.6618797634724,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -19595,8 +19595,8 @@
         "away": "Atlanta Hawks",
         "home_rating": 1486.2429855882403,
         "away_rating": 1452.4065917974478,
-        "home_probability": 0.606178201676156,
-        "away_probability": 0.393821798323844,
+        "home_probability": 0.6061782016761559,
+        "away_probability": 0.3938217983238441,
         "home_context": {
           "rest": 1,
           "travel": 1792.4451929325414,
@@ -20757,7 +20757,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 333.5574637140462,
+          "travel": 333.55746371404626,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -21083,8 +21083,8 @@
         "away": "Golden State Warriors",
         "home_rating": 1645.5377182172463,
         "away_rating": 1527.9592226376383,
-        "home_probability": 0.6945103689578079,
-        "away_probability": 0.30548963104219207,
+        "home_probability": 0.694510368957808,
+        "away_probability": 0.30548963104219196,
         "home_context": {
           "rest": 1,
           "travel": 2181.2360465262213,
@@ -21429,7 +21429,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1392.7791569177111,
+          "travel": 1392.779156917711,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -21909,7 +21909,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2131.2993814819283,
+          "travel": 2131.299381481928,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -22389,7 +22389,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1702.547632506722,
+          "travel": 1702.5476325067218,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -22485,7 +22485,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 3490.2538623171254,
+          "travel": 3490.253862317126,
           "timezone_change": 3.0,
           "opening_prior": false
         },
@@ -22965,7 +22965,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -23445,7 +23445,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1635.5471780523228,
+          "travel": 1635.5471780523221,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -23487,13 +23487,13 @@
         "away_probability": 0.5079695354826466,
         "home_context": {
           "rest": 1,
-          "travel": 333.5574637140462,
+          "travel": 333.55746371404626,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 2,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -23583,7 +23583,7 @@
         "away_probability": 0.27620485285016594,
         "home_context": {
           "rest": 2,
-          "travel": 538.813338946211,
+          "travel": 538.8133389462109,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -23781,7 +23781,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -24111,7 +24111,7 @@
         "away_probability": 0.32738332773295054,
         "home_context": {
           "rest": 1,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -24351,7 +24351,7 @@
         "away_probability": 0.27993496465531176,
         "home_context": {
           "rest": 1,
-          "travel": 1635.5471780523228,
+          "travel": 1635.5471780523221,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -24447,7 +24447,7 @@
         "away_probability": 0.15951924677279683,
         "home_context": {
           "rest": 1,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -24549,7 +24549,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1929.9372957112823,
+          "travel": 1929.9372957112826,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -25023,7 +25023,7 @@
         "away_probability": 0.2542243142659497,
         "home_context": {
           "rest": 1,
-          "travel": 1145.837188812144,
+          "travel": 1145.8371888121437,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -25653,7 +25653,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 2022.4343005835985,
+          "travel": 2022.434300583599,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -25749,7 +25749,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -26075,7 +26075,7 @@
         "away": "Chicago Bulls",
         "home_rating": 1267.479543402875,
         "away_rating": 1496.3782700859563,
-        "home_probability": 0.2729384645787243,
+        "home_probability": 0.27293846457872434,
         "away_probability": 0.7270615354212757,
         "home_context": {
           "rest": 2,
@@ -26799,7 +26799,7 @@
         "away_probability": 0.5020600681448277,
         "home_context": {
           "rest": 2,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -26901,7 +26901,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1913.7201356729001,
+          "travel": 1913.7201356729006,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -26997,7 +26997,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -27189,7 +27189,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2131.2993814819283,
+          "travel": 2131.299381481928,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -27717,7 +27717,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -27759,7 +27759,7 @@
         "away_probability": 0.2961336712036474,
         "home_context": {
           "rest": 1,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -28149,7 +28149,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -28331,7 +28331,7 @@
         "away": "LA Clippers",
         "home_rating": 1645.130441853965,
         "away_rating": 1661.7038369449795,
-        "home_probability": 0.49257019920916617,
+        "home_probability": 0.4925701992091662,
         "away_probability": 0.5074298007908338,
         "home_context": {
           "rest": 1,
@@ -28383,7 +28383,7 @@
         "away_probability": 0.7763890139938652,
         "home_context": {
           "rest": 1,
-          "travel": 2290.280164082484,
+          "travel": 2290.2801640824846,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -28533,7 +28533,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2131.2993814819283,
+          "travel": 2131.299381481928,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -28725,7 +28725,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2022.4343005835985,
+          "travel": 2022.434300583599,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -28815,13 +28815,13 @@
         "away_probability": 0.7618467599439347,
         "home_context": {
           "rest": 2,
-          "travel": 2677.7223377451255,
+          "travel": 2677.722337745126,
           "timezone_change": 2.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -28869,7 +28869,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -28911,7 +28911,7 @@
         "away_probability": 0.6249532262801065,
         "home_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -29199,7 +29199,7 @@
         "away_probability": 0.09966849028902935,
         "home_context": {
           "rest": 1,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -29253,7 +29253,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 538.813338946211,
+          "travel": 538.8133389462109,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -29493,7 +29493,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 3932.536816452525,
+          "travel": 3932.5368164525253,
           "timezone_change": -3.0,
           "opening_prior": false
         },
@@ -29589,7 +29589,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -29637,7 +29637,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -29675,8 +29675,8 @@
         "away": "Memphis Grizzlies",
         "home_rating": 1653.9116422590007,
         "away_rating": 1486.183423341814,
-        "home_probability": 0.7373812810348118,
-        "away_probability": 0.2626187189651882,
+        "home_probability": 0.7373812810348119,
+        "away_probability": 0.26261871896518807,
         "home_context": {
           "rest": 0,
           "travel": 872.4574402114184,
@@ -29823,13 +29823,13 @@
         "away_probability": 0.5901578883638915,
         "home_context": {
           "rest": 1,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 2,
-          "travel": 1390.8813989075104,
+          "travel": 1390.8813989075102,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -30351,7 +30351,7 @@
         "away_probability": 0.29534705791906535,
         "home_context": {
           "rest": 1,
-          "travel": 704.0133378317206,
+          "travel": 704.0133378317207,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -30395,17 +30395,17 @@
         "away": "Utah Jazz",
         "home_rating": 1432.9044437348234,
         "away_rating": 1578.2683295192137,
-        "home_probability": 0.39234305947780923,
+        "home_probability": 0.3923430594778093,
         "away_probability": 0.6076569405221908,
         "home_context": {
           "rest": 2,
-          "travel": 2280.7237472345864,
+          "travel": 2280.723747234586,
           "timezone_change": -1.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1929.9372957112823,
+          "travel": 1929.9372957112826,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -30827,7 +30827,7 @@
         "away": "Cleveland Cavaliers",
         "home_rating": 1533.456641243074,
         "away_rating": 1617.9677923579854,
-        "home_probability": 0.4387643675889885,
+        "home_probability": 0.43876436758898846,
         "away_probability": 0.5612356324110115,
         "home_context": {
           "rest": 0,
@@ -30837,7 +30837,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -30933,7 +30933,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 704.0133378317206,
+          "travel": 704.0133378317207,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -31461,7 +31461,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1499.4166245881786,
+          "travel": 1499.4166245881784,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -31547,8 +31547,8 @@
         "away": "Portland Trail Blazers",
         "home_rating": 1436.1168897064294,
         "away_rating": 1297.2082468723243,
-        "home_probability": 0.7696692561136579,
-        "away_probability": 0.23033074388634212,
+        "home_probability": 0.769669256113658,
+        "away_probability": 0.230330743886342,
         "home_context": {
           "rest": 2,
           "travel": 0.0,
@@ -32319,7 +32319,7 @@
         "away_probability": 0.76479309058347,
         "home_context": {
           "rest": 1,
-          "travel": 1405.1327615818761,
+          "travel": 1405.132761581876,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -32709,7 +32709,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -32949,7 +32949,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2382.1523043539178,
+          "travel": 2382.152304353918,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -33141,7 +33141,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -33279,7 +33279,7 @@
         "away_probability": 0.5438083276841167,
         "home_context": {
           "rest": 2,
-          "travel": 538.813338946211,
+          "travel": 538.8133389462109,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -33765,7 +33765,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -33951,7 +33951,7 @@
         "away_probability": 0.3723190266977947,
         "home_context": {
           "rest": 1,
-          "travel": 2822.9913487232043,
+          "travel": 2822.9913487232047,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -34197,7 +34197,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1405.1327615818761,
+          "travel": 1405.132761581876,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -34485,7 +34485,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -35157,7 +35157,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -35195,8 +35195,8 @@
         "away": "Brooklyn Nets",
         "home_rating": 1579.513481921925,
         "away_rating": 1413.9267150606245,
-        "home_probability": 0.5177732355983274,
-        "away_probability": 0.48222676440167256,
+        "home_probability": 0.5177732355983273,
+        "away_probability": 0.48222676440167267,
         "home_context": {
           "rest": 1,
           "travel": 3090.4462727197306,
@@ -35829,7 +35829,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -35967,7 +35967,7 @@
         "away_probability": 0.38104535841070797,
         "home_context": {
           "rest": 1,
-          "travel": 2022.4343005835985,
+          "travel": 2022.434300583599,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -36395,8 +36395,8 @@
         "away": "Minnesota Timberwolves",
         "home_rating": 1468.5333095809046,
         "away_rating": 1659.066819981393,
-        "home_probability": 0.27769152978901246,
-        "away_probability": 0.7223084702109875,
+        "home_probability": 0.27769152978901235,
+        "away_probability": 0.7223084702109877,
         "home_context": {
           "rest": 2,
           "travel": 0.0,
@@ -36453,7 +36453,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1386.2038508477124,
+          "travel": 1386.2038508477121,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -37077,7 +37077,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 773.6609025940976,
+          "travel": 773.6609025940977,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -37263,7 +37263,7 @@
         "away_probability": 0.23647453219169867,
         "home_context": {
           "rest": 3,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -37605,7 +37605,7 @@
         },
         "away_context": {
           "rest": 3,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -38027,8 +38027,8 @@
         "away": "Phoenix Suns",
         "home_rating": 1552.9586072555742,
         "away_rating": 1610.0946683261425,
-        "home_probability": 0.43622044933481713,
-        "away_probability": 0.5637795506651828,
+        "home_probability": 0.4362204493348171,
+        "away_probability": 0.5637795506651829,
         "home_context": {
           "rest": 1,
           "travel": 3129.951875490542,
@@ -38271,7 +38271,7 @@
         "away_probability": 0.1454703818697839,
         "home_context": {
           "rest": 1,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -38325,7 +38325,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -38421,7 +38421,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2280.7237472345864,
+          "travel": 2280.723747234586,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -38757,7 +38757,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1702.547632506722,
+          "travel": 1702.5476325067218,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -39525,7 +39525,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -39765,7 +39765,7 @@
         },
         "away_context": {
           "rest": 7,
-          "travel": 1441.499759916837,
+          "travel": 1441.4997599168369,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -39861,7 +39861,7 @@
         },
         "away_context": {
           "rest": 7,
-          "travel": 1390.8813989075104,
+          "travel": 1390.8813989075102,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -39909,7 +39909,7 @@
         },
         "away_context": {
           "rest": 7,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -40095,7 +40095,7 @@
         "away_probability": 0.46404137390373423,
         "home_context": {
           "rest": 8,
-          "travel": 1702.547632506722,
+          "travel": 1702.5476325067218,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -40620,7 +40620,7 @@
         "away_probability": 0.31555982029665697,
         "home_context": {
           "rest": 7,
-          "travel": 2290.280164082484,
+          "travel": 2290.2801640824846,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -40722,7 +40722,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -40866,7 +40866,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1145.837188812144,
+          "travel": 1145.8371888121437,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -41346,7 +41346,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -41672,8 +41672,8 @@
         "away": "Dallas Mavericks",
         "home_rating": 1663.0303202483387,
         "away_rating": 1577.9184425155047,
-        "home_probability": 0.6468879725130173,
-        "away_probability": 0.35311202748698267,
+        "home_probability": 0.6468879725130172,
+        "away_probability": 0.3531120274869828,
         "home_context": {
           "rest": 1,
           "travel": 490.23491969930916,
@@ -41724,7 +41724,7 @@
         "away_probability": 0.19991778988886966,
         "home_context": {
           "rest": 1,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -41922,7 +41922,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1880.3688329837319,
+          "travel": 1880.3688329837314,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -42018,7 +42018,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1145.837188812144,
+          "travel": 1145.8371888121437,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -42258,7 +42258,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -42536,8 +42536,8 @@
         "away": "Utah Jazz",
         "home_rating": 1559.756438223501,
         "away_rating": 1445.7924940942978,
-        "home_probability": 0.6423198939497112,
-        "away_probability": 0.35768010605028877,
+        "home_probability": 0.6423198939497111,
+        "away_probability": 0.3576801060502889,
         "home_context": {
           "rest": 1,
           "travel": 0.0,
@@ -42546,7 +42546,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -42786,7 +42786,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -42978,7 +42978,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -43356,7 +43356,7 @@
         "away_probability": 0.4313777766091327,
         "home_context": {
           "rest": 1,
-          "travel": 2775.032069382792,
+          "travel": 2775.0320693827916,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -43602,7 +43602,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 693.8311703548997,
+          "travel": 693.8311703548998,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -43938,7 +43938,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1536.3067419671502,
+          "travel": 1536.30674196715,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -44076,13 +44076,13 @@
         "away_probability": 0.32082767536675105,
         "home_context": {
           "rest": 1,
-          "travel": 3358.48693876774,
+          "travel": 3358.486938767741,
           "timezone_change": -2.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 2,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -44552,8 +44552,8 @@
         "away": "Indiana Pacers",
         "home_rating": 1563.9503760306122,
         "away_rating": 1523.779636069336,
-        "home_probability": 0.5551853292294664,
-        "away_probability": 0.4448146707705336,
+        "home_probability": 0.5551853292294665,
+        "away_probability": 0.4448146707705335,
         "home_context": {
           "rest": 1,
           "travel": 0.0,
@@ -44940,7 +44940,7 @@
         "away_probability": 0.9121449624734461,
         "home_context": {
           "rest": 1,
-          "travel": 2290.280164082484,
+          "travel": 2290.2801640824846,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -45186,7 +45186,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 3036.4144461872693,
+          "travel": 3036.4144461872697,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -45234,7 +45234,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1969.3967480272722,
+          "travel": 1969.3967480272727,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -45612,7 +45612,7 @@
         "away_probability": 0.2814257366377355,
         "home_context": {
           "rest": 1,
-          "travel": 2389.234389819769,
+          "travel": 2389.2343898197696,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -45714,7 +45714,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2951.412734137723,
+          "travel": 2951.4127341377225,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -46002,7 +46002,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -46242,7 +46242,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -46722,7 +46722,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -46866,7 +46866,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1405.1327615818761,
+          "travel": 1405.132761581876,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -46914,7 +46914,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1702.547632506722,
+          "travel": 1702.5476325067218,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -46952,8 +46952,8 @@
         "away": "Houston Rockets",
         "home_rating": 1254.2024419051506,
         "away_rating": 1448.8028369651956,
-        "home_probability": 0.41605213254086915,
-        "away_probability": 0.5839478674591309,
+        "home_probability": 0.4160521325408691,
+        "away_probability": 0.583947867459131,
         "home_context": {
           "rest": 0,
           "travel": 0.0,
@@ -47004,13 +47004,13 @@
         "away_probability": 0.7005969466898403,
         "home_context": {
           "rest": 2,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 0,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -47202,7 +47202,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1441.499759916837,
+          "travel": 1441.4997599168369,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -47298,7 +47298,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2775.032069382792,
+          "travel": 2775.0320693827916,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -47490,7 +47490,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 3490.2538623171254,
+          "travel": 3490.253862317126,
           "timezone_change": -3.0,
           "opening_prior": false
         },
@@ -47964,13 +47964,13 @@
         "away_probability": 0.8213366051662992,
         "home_context": {
           "rest": 1,
-          "travel": 333.5574637140462,
+          "travel": 333.55746371404626,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1695.827950908101,
+          "travel": 1695.8279509081008,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -48008,8 +48008,8 @@
         "away": "LA Clippers",
         "home_rating": 1625.4560354397331,
         "away_rating": 1649.85265160627,
-        "home_probability": 0.688436373808651,
-        "away_probability": 0.31156362619134903,
+        "home_probability": 0.6884363738086511,
+        "away_probability": 0.3115636261913489,
         "home_context": {
           "rest": 1,
           "travel": 0.0,
@@ -48114,7 +48114,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -48210,7 +48210,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1323.31606279183,
+          "travel": 1323.3160627918298,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -48306,7 +48306,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 3314.8794392455293,
+          "travel": 3314.8794392455297,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -48498,7 +48498,7 @@
         },
         "away_context": {
           "rest": 3,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -48732,13 +48732,13 @@
         "away_probability": 0.12236472650805064,
         "home_context": {
           "rest": 1,
-          "travel": 1695.827950908101,
+          "travel": 1695.8279509081008,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1695.827950908101,
+          "travel": 1695.8279509081008,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -48882,7 +48882,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -48930,7 +48930,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1392.7791569177111,
+          "travel": 1392.779156917711,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -49314,7 +49314,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 1390.8813989075104,
+          "travel": 1390.8813989075102,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -49692,7 +49692,7 @@
         "away_probability": 0.8096076358995368,
         "home_context": {
           "rest": 2,
-          "travel": 1695.827950908101,
+          "travel": 1695.8279509081008,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -49746,7 +49746,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1386.2038508477124,
+          "travel": 1386.2038508477121,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -49884,7 +49884,7 @@
         "away_probability": 0.8508096535863889,
         "home_context": {
           "rest": 1,
-          "travel": 2822.9913487232043,
+          "travel": 2822.9913487232047,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -50754,7 +50754,7 @@
         },
         "away_context": {
           "rest": 3,
-          "travel": 646.19587532831,
+          "travel": 646.1958753283099,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -50994,7 +50994,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -51570,7 +51570,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 2951.412734137723,
+          "travel": 2951.4127341377225,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -51660,7 +51660,7 @@
         "away_probability": 0.06997800485951611,
         "home_context": {
           "rest": 1,
-          "travel": 1579.3909112261363,
+          "travel": 1579.3909112261365,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -51708,13 +51708,13 @@
         "away_probability": 0.7723541507021283,
         "home_context": {
           "rest": 1,
-          "travel": 1929.9372957112823,
+          "travel": 1929.9372957112826,
           "timezone_change": -1.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 3,
-          "travel": 1606.397663095041,
+          "travel": 1606.3976630950415,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -51944,8 +51944,8 @@
         "away": "Oklahoma City Thunder",
         "home_rating": 1659.6736179189536,
         "away_rating": 1655.8592446523564,
-        "home_probability": 0.4832967961921549,
-        "away_probability": 0.5167032038078452,
+        "home_probability": 0.48329679619215493,
+        "away_probability": 0.5167032038078451,
         "home_context": {
           "rest": 1,
           "travel": 1512.6867307476841,
@@ -52434,7 +52434,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1635.5471780523228,
+          "travel": 1635.5471780523221,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -52818,7 +52818,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1390.8813989075104,
+          "travel": 1390.8813989075102,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -52866,7 +52866,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1499.4166245881786,
+          "travel": 1499.4166245881784,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -53202,7 +53202,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1386.2038508477124,
+          "travel": 1386.2038508477121,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -53442,7 +53442,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1969.3967480272722,
+          "travel": 1969.3967480272727,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -53586,7 +53586,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -53676,13 +53676,13 @@
         "away_probability": 0.6251263124988004,
         "home_context": {
           "rest": 1,
-          "travel": 2545.0797888035563,
+          "travel": 2545.079788803556,
           "timezone_change": 1.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 2131.2993814819283,
+          "travel": 2131.299381481928,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -53724,7 +53724,7 @@
         "away_probability": 0.6092969140078216,
         "home_context": {
           "rest": 1,
-          "travel": 1929.9372957112823,
+          "travel": 1929.9372957112826,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -54248,7 +54248,7 @@
         "away": "Milwaukee Bucks",
         "home_rating": 1141.3981815956615,
         "away_rating": 1640.3539164537642,
-        "home_probability": 0.10134042258318396,
+        "home_probability": 0.10134042258318397,
         "away_probability": 0.898659577416816,
         "home_context": {
           "rest": 1,
@@ -54498,7 +54498,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -55112,7 +55112,7 @@
         "away": "Sacramento Kings",
         "home_rating": 1580.9453042469736,
         "away_rating": 1593.55856477531,
-        "home_probability": 0.46565118605355993,
+        "home_probability": 0.46565118605356,
         "away_probability": 0.5343488139464401,
         "home_context": {
           "rest": 1,
@@ -55164,7 +55164,7 @@
         "away_probability": 0.25556863148099485,
         "home_context": {
           "rest": 1,
-          "travel": 2382.1523043539178,
+          "travel": 2382.152304353918,
           "timezone_change": 2.0,
           "opening_prior": false
         },
@@ -55506,7 +55506,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1145.837188812144,
+          "travel": 1145.8371888121437,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -55842,7 +55842,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -55938,7 +55938,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1536.3067419671502,
+          "travel": 1536.30674196715,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -55986,7 +55986,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1405.1327615818761,
+          "travel": 1405.132761581876,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -56178,7 +56178,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1392.7791569177111,
+          "travel": 1392.779156917711,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -56604,7 +56604,7 @@
         "away_probability": 0.13751403065558943,
         "home_context": {
           "rest": 1,
-          "travel": 2382.1523043539178,
+          "travel": 2382.152304353918,
           "timezone_change": -2.0,
           "opening_prior": false
         },
@@ -57186,7 +57186,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -57320,7 +57320,7 @@
         "away": "New Orleans Pelicans",
         "home_rating": 1231.157740218474,
         "away_rating": 1628.0811366942403,
-        "home_probability": 0.10772279439482144,
+        "home_probability": 0.10772279439482145,
         "away_probability": 0.8922772056051785,
         "home_context": {
           "rest": 1,
@@ -57660,7 +57660,7 @@
         "away_probability": 0.43394822754884343,
         "home_context": {
           "rest": 0,
-          "travel": 596.863170942569,
+          "travel": 596.8631709425691,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -57848,8 +57848,8 @@
         "away": "Houston Rockets",
         "home_rating": 1280.723345647321,
         "away_rating": 1499.7181912139754,
-        "home_probability": 0.26624537367679346,
-        "away_probability": 0.7337546263232065,
+        "home_probability": 0.26624537367679335,
+        "away_probability": 0.7337546263232066,
         "home_context": {
           "rest": 1,
           "travel": 0.0,
@@ -57858,7 +57858,7 @@
         },
         "away_context": {
           "rest": 1,
-          "travel": 1929.9372957112823,
+          "travel": 1929.9372957112826,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -58044,7 +58044,7 @@
         "away_probability": 0.7999935633368723,
         "home_context": {
           "rest": 2,
-          "travel": 1499.4166245881786,
+          "travel": 1499.4166245881784,
           "timezone_change": 1.0,
           "opening_prior": false
         },
@@ -58146,7 +58146,7 @@
         },
         "away_context": {
           "rest": 2,
-          "travel": 309.09640636340635,
+          "travel": 309.0964063634064,
           "timezone_change": 0.0,
           "opening_prior": false
         },
@@ -58578,7 +58578,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 1021.5222934216874,
+          "travel": 1021.5222934216877,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -58626,7 +58626,7 @@
         },
         "away_context": {
           "rest": 0,
-          "travel": 932.8371840941226,
+          "travel": 932.8371840941228,
           "timezone_change": -1.0,
           "opening_prior": false
         },
@@ -58956,13 +58956,13 @@
         "away_probability": 0.3943157080290687,
         "home_context": {
           "rest": 1,
-          "travel": 1390.8813989075104,
+          "travel": 1390.8813989075102,
           "timezone_change": 0.0,
           "opening_prior": false
         },
         "away_context": {
           "rest": 1,
-          "travel": 1702.547632506722,
+          "travel": 1702.5476325067218,
           "timezone_change": 1.0,
           "opening_prior": false
         },
