@@ -11,6 +11,7 @@ from datetime import timedelta
 from .data import BASE
 from .model import EASTERN, Engine, MODEL_VERSION, timestamp
 from .replay import metrics
+from .evaluation import compare_variants
 from .validation import validate_game
 from .forecasting import FeatureState
 
@@ -240,11 +241,13 @@ def build_snapshot(previous, games, pending, params, roster, now, season, source
     all_issued = [r for r in past if r['kind'] == 'issued_live']
     comparison = {}
     if forecaster:
-        for variant in ['base', 'injury', 'boosted']:
-            comparable = [{**r, **r['probability_models'][variant]} for r in all_issued
-                          if r.get('forecast_model_sha256') == forecaster.fingerprint and variant in r.get('probability_models', {})]
-            comparison[variant] = {'metrics': metrics([r for r in comparable if r['eligible_for_evaluation']]),
-                                   'metrics_all_issued': metrics(comparable)}
+        comparable = [r for r in all_issued if r.get('forecast_model_sha256') == forecaster.fingerprint]
+        matched_all = compare_variants(comparable)
+        matched_established = compare_variants(comparable, established=True)
+        for variant in ['base','injury','boosted']:
+            comparison[variant] = {'metrics': matched_established['metrics'][variant],
+                                   'metrics_all_issued': matched_all['metrics'][variant],
+                                   'sample_sha256': matched_all['sample_sha256']}
     rankings = sorted([{'team_id': k, 'team': roster[k], 'elo': t.rating, 'games': t.games, 'wins': t.wins}
                        for k, t in engine.teams.items()], key=lambda r: (-r['elo'], r['team']))
     return {'schema_version': 1, 'season': season, 'status': 'live', 'published_at': now.isoformat(),

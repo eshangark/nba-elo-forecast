@@ -12,6 +12,7 @@ from nba_forecast.seasons import load_index, load_season
 from nba_forecast.ui import native_select
 from nba_forecast.forecasting import Forecaster
 from nba_forecast.live import digest
+from nba_forecast.dashboard_views import matchup_overview, performance_view
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -44,6 +45,7 @@ def render_dashboard():
                             format_func=lambda s: s + (" · Current" if s == current else " · Archive"),
                             key="selected_season")
     archive = load_season(ARCHIVES, lookup[selected])
+    original_archive = dict(archive) if archive else None
     current_replay = None
     stale_replay = False
     replay_path = ARCHIVES / selected / 'current-model.json'
@@ -186,19 +188,10 @@ def render_dashboard():
             st.subheader("Games")
             if version_three:
                 st.caption('Elo + injuries is the published model, selected for the lowest retrospective log loss and Brier score.')
-                st.caption('Coverage describes team report submission. Unmatched players and missing player histories remain explicitly unknown.')
+                st.caption('Injury data describes report availability. Submitted reports can still contain unmatched players or missing histories.')
             upcoming = archive.get("upcoming", [])
             if upcoming:
-                future = model_frame(upcoming)
-                future["start"] = pd.to_datetime(future["start"], utc=True).dt.tz_convert("America/New_York").dt.strftime("%b %d, %I:%M %p %Z")
-                future["Home win %"] = future["home_probability"] * 100
-                future["Away win %"] = future["away_probability"] * 100
-                st.markdown("**Upcoming**")
-                columns = ["start", "home", "away", "Home win %", "Away win %"]+(['Coverage', 'Injury report'] if version_three else [])
-                st.dataframe(future[columns].rename(
-                    columns={"start": "Tip-off", "home": "Home", "away": "Away"}), hide_index=True,
-                    column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
-                                   "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
+                matchup_overview(upcoming,archive,result,ARCHIVES,entries,selected,result.get('forecast_model_sha256',archive.get('_internal',{}).get('forecast_model_sha256')))
             if is_live:
                 st.caption("Upcoming probabilities use current ratings and announced rest/travel schedules, and are revised when new results or schedule changes arrive.")
             if archive.get("awaiting_final"):
@@ -230,53 +223,10 @@ def render_dashboard():
             else:
                 st.info("No completed regular-season games are stored for this season yet.")
         with method_tab:
-            if current_replay:
-                role = 'Training replay: this season helped fit the current model.' if result['evaluation_role'] == 'training_replay' else 'Post-fit reconstruction using the current model.'
-                st.info(role + ' These scores evaluate the current methodology with pregame inputs; they are not the original live track record or a new held-out test.')
-                if is_live:
-                    st.download_button("Download original issued forecast history", json.dumps(archive["_internal"]["forecasts"], indent=2),
-                                       file_name=f"{selected}-original-issued-forecasts.json", mime="application/json")
-            elif result["status"] == "live_forecasts":
-                st.info("Frozen NBA model · Evaluation includes genuinely issued pregame forecasts only. Backfilled games can update ratings but never become live predictions.")
-                st.download_button("Download issued forecast history", json.dumps(archive["_internal"]["forecasts"], indent=2),
-                                   file_name=f"{selected}-issued-forecasts.json", mime="application/json")
-            elif result['status'] == 'retrospective_historical_replay':
-                st.info('Retrospective comparison · Each season uses only earlier seasons for fitting and selection. These previously studied outcomes are not a fresh independent test.')
-            elif result["status"] == "fitted_historical_replay":
-                role = {"training": "Training history", "validation": "Validation season", "held_out_test": "Held-out test season"}[result["evaluation_role"]]
-                st.info(f"{role} · Parameters fitted on 2021–22 through 2023–24 and frozen before validation and testing.")
-            else:
-                st.warning("Unfitted development replay; these scores are a pipeline check.")
-            comparison = result.get('model_comparison', {}).get(PUBLIC_MODEL)
-            m = comparison['metrics'] if comparison else result["metrics"]
-            evaluation_window = 'established'
-            if version_three:
-                evaluation_window = native_select('Evaluation window', ['all', 'established'],
-                                                   format_func=lambda value: 'All games, including openers' if value == 'all' else 'After ten prior games per team',
-                                                   key=f'evaluation_window_{selected}')
-                if evaluation_window == 'all':
-                    m = comparison['metrics_all_issued'] if comparison else result['metrics_all_issued']
-                st.caption("Scoring: current-method Elo + injuries replay. Historical training replays measure fit, not performance on unseen games." if current_replay else "Scoring: Elo + injuries, original stored forecasts.")
-            if m["games"]:
-                cols = st.columns(4)
-                cols[0].metric("Evaluation games", m["games"])
-                cols[1].metric("Brier score", f"{m['brier_score']:.3f}")
-                cols[2].metric("Log loss", f"{m['log_loss']:.3f}")
-                cols[3].metric("Winner accuracy", f"{m['winner_accuracy']:.1%}")
-            st.caption(f"Model {result['model_version']}. "+('Evaluation includes opening games.' if version_three and evaluation_window == 'all' else
-                       'Evaluation begins once both teams have played 10 games; opening games still update ratings and retain forecasts.'))
-            if is_live and not m["games"]:
-                all_scores = comparison['metrics_all_issued'] if comparison else result['metrics_all_issued']
-                st.caption(f"{all_scores['games']} completed games have comparable issued forecasts. " +
-                           ("No completed games have eligible forecasts from the current model bundle yet." if evaluation_window == 'all' else
-                            "This window waits until both teams have ten prior games."))
-            calibration = pd.DataFrame(m["calibration"])
-            if not calibration.empty:
-                st.dataframe(calibration.rename(columns={"games": "Games", "mean_probability": "Mean forecast",
-                                                         "observed_home_win_rate": "Observed home win rate"}), hide_index=True)
+            performance_view(ROOT,original_archive,result,selected)
             st.subheader("Season datasets")
             if version_three:
-                st.download_button('Download published forecasts', json.dumps([{k: v for k, v in row.items() if k not in {'probability_models', 'forecast_features'}} for row in result['predictions']], indent=2),
+                st.download_button('Download selected-season replay' if current_replay else 'Download stored forecasts', json.dumps([{k: v for k, v in row.items() if k not in {'probability_models', 'forecast_features'}} for row in result['predictions']], indent=2),
                                    file_name=f'{selected}-v0.3-forecasts.json', mime='application/json')
             for filename, label in [("team_games.csv", "Clean box scores"), ("model_features.csv", "Original v0.2 model features")]:
                 path = ARCHIVES / selected / filename
@@ -288,19 +238,6 @@ def render_dashboard():
         st.caption("Sources: ESPN records archived by SportsDataverse, validated against primary ESPN summaries where needed; official NBA injury reports; GeoNames venue-city coordinates and time zones. Travel is an estimate between cities.")
         with st.expander("Fitted NBA constants"):
             st.json(result['parameters'] if result else json.loads((ROOT / 'models/nba-v0.3/bundle.json').read_text())['core_parameters'])
-        if version_three:
-            with st.expander('Chronological backtests with earlier-season fits'):
-                evaluation = json.loads((ROOT/'models/nba-v0.3/evaluation.json').read_text())
-                rows = []
-                for fold in evaluation['folds']:
-                    m = fold['model_comparison'][PUBLIC_MODEL]['metrics_all_issued']
-                    rows.append({'Season': fold['season'], 'Games': m['games'], 'Log loss': m['log_loss'],
-                                 'Brier': m['brier_score'], 'Winner accuracy': m['winner_accuracy']})
-                st.dataframe(pd.DataFrame(rows), hide_index=True, column_config={
-                    'Log loss': st.column_config.NumberColumn(format='%.4f'),
-                    'Brier': st.column_config.NumberColumn(format='%.4f'),
-                    'Winner accuracy': st.column_config.NumberColumn(format='percent')})
-                st.caption('Retrospective backtests include opening games and missing-report fallbacks. These are reconstructed results, not live accuracy claims. Research comparisons remain documented in the paper.')
         st.markdown("[Technical paper on GitHub](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.pdf)")
         with st.expander("Technical manuscript source"):
             st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),

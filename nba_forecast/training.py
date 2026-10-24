@@ -183,6 +183,8 @@ def export_trees(model, blend):
 
 
 def fit_heads(rows, target_year):
+    if len({r['game_id'] for r in rows}) != len(rows):
+        raise ValueError('Duplicate game IDs in fitting/validation sample')
     years = np.array([r['year'] for r in rows])
     base = np.array([r['base'] for r in rows]); z = logit(base); y = np.array([r['outcome'] for r in rows])
     Xi = np.column_stack([z, np.array([r['injury'] for r in rows])])
@@ -220,7 +222,11 @@ def fit_heads(rows, target_year):
         portable = np.array([tree_probability(boosted, x, b) for x, b in zip(Xb, base)])
         if not np.allclose(expected, portable, rtol=0, atol=1e-12):
             raise AssertionError('Portable trees differ from the training estimator')
-    return injury, boosted, {'inner_validation_end_year': target_year-1, 'injury_selected': chosen,
+    validation_ids = sorted(r['game_id'] for r in rows if r['year'] == target_year-1)
+    sample_hash = hashlib.sha256(json.dumps(validation_ids,separators=(',', ':')).encode()).hexdigest()
+    return injury, boosted, {'validation_games': len(validation_ids), 'validation_game_ids': validation_ids,
+                            'validation_sample_sha256': sample_hash,
+                            'inner_validation_end_year': target_year-1, 'injury_selected': chosen,
                             'boosted_selected': selected, 'ridge_search': ridge_search, 'boosting_search': booster_search}
 
 

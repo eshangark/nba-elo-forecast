@@ -13,6 +13,7 @@ from nba_forecast.forecasting import FeatureState, Forecaster, carryover_ratings
 from nba_forecast.model import Parameters
 from nba_forecast.fitting import fit
 from nba_forecast.replay import metrics
+from nba_forecast.evaluation import compare_variants
 from nba_forecast.training import (load_history, load_players, prepare_history, fit_heads, rating_path, make_bundle)
 
 
@@ -52,15 +53,16 @@ def main():
                 base = base_rows[g['game_id']]
                 base.update(predictor.predict(g, base, fold_state, r['report'], r['source']))
                 fold_state.observe(g, r['base'], players.get(g['game_id']))
+            matched_all = compare_variants(result["predictions"])
+            matched_established = compare_variants(result["predictions"], established=True)
             comparisons = {}
             for variant in ['base', 'injury', 'boosted']:
-                all_rows = [{**r, **r['probability_models'][variant]} for r in result['predictions']]
-                comparisons[variant] = {'metrics': metrics([r for r in all_rows if r['eligible_for_evaluation']]),
-                                        'metrics_all_issued': metrics(all_rows)}
+                comparisons[variant] = {'metrics': matched_established['metrics'][variant],
+                                        'metrics_all_issued': matched_all['metrics'][variant]}
             result.update(model_version='0.3.0', status='retrospective_historical_replay',
                           evaluation_role='retrospective', metrics=comparisons['injury']['metrics'],
                           metrics_all_issued=comparisons['injury']['metrics_all_issued'], model_comparison=comparisons,
-                          probability_selection=bundle['selection'])
+                          probability_selection=bundle['selection'], matched_sample_sha256=matched_all['sample_sha256'])
             original = json.loads((root/f'data/seasons/{initial["season"]}/snapshot.json').read_text())
             archive = {'season': initial['season'], 'status': 'complete_historical_replay',
                        'coverage': original['coverage'], 'result': result,
@@ -69,6 +71,8 @@ def main():
             write_json(args.output/f'folds/{year}-selection.json', selection)
             write_json(root/f'data/seasons/{initial["season"]}/snapshot-v0.3.json', archive)
             scores.append({'season': initial['season'], 'model_comparison': comparisons})
+        from scripts.audit_comparisons import audit
+        audit(root)
         pooled = {}
         for variant in ['base', 'injury', 'boosted']:
             values = [row['model_comparison'][variant]['metrics_all_issued'] for row in scores]

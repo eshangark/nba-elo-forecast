@@ -34,6 +34,11 @@ class AppTests(unittest.TestCase):
             expected = payload['upcoming'][0]['probability_models']
             self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected['injury']['home_probability']*100)
             self.assertNotIn('Forecast model', [element.label for element in app.selectbox])
+            for label in ['Elo rank · H / A','Prior final rank · H / A','Last 10 · H / A','Injury data']:
+                self.assertIn(label,app.dataframe[1].value.columns)
+            self.assertTrue(any(tab.label == 'Information gaps' for tab in app.tabs))
+            self.assertTrue(any(tab.label == 'Original forecasts this season' for tab in app.tabs))
+            self.assertTrue(any(tab.label == 'Historical chronological backtests' for tab in app.tabs))
             self.assertNotIn('Boosted comparison', '\n'.join(element.value for element in app.caption))
             # A stale session key from the removed selector cannot switch public forecasts.
             app.session_state[f'forecast_variant_{season}'] = {'value': 'boosted'}
@@ -41,6 +46,27 @@ class AppTests(unittest.TestCase):
             self.assertFalse(app.exception)
             self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected['injury']['home_probability']*100)
             self.assertTrue(ratings.equals(app.dataframe[0].value))
+
+    def test_matchup_selection_updates_explanation_and_performance_samples(self):
+        import json
+        from streamlit.testing.v1 import AppTest
+        from nba_forecast.seasons import current_season
+        root=Path(__file__).resolve().parents[1]; season=current_season()
+        original=json.loads((root/'data/seasons'/season/'live.json').read_text())
+        if len(original['upcoming'])<2:
+            self.skipTest('Two upcoming games required for this integration check')
+        chosen=original['upcoming'][1]
+        app=AppTest.from_file(str(root/'app.py'),default_timeout=20).run()
+        app.session_state[f'matchup_details_{season}']={'value':chosen['game_id']}
+        app.run(); self.assertFalse(app.exception)
+        self.assertTrue(any(chosen['home'] in value.value and chosen['away'] in value.value for value in app.markdown))
+        stages=[f.value for f in app.dataframe if 'Stage' in f.value.columns]
+        self.assertEqual(len(stages),1)
+        self.assertAlmostEqual(stages[0].iloc[-1]['Home win %'],chosen['home_probability']*100)
+        game_counts=[int(m.value) for m in app.metric if m.label=='Games scored']
+        issued=sum(r.get('kind')=='issued_live' and r.get('home_probability') is not None for r in original['result']['predictions'])
+        self.assertEqual(game_counts[0],3690)
+        self.assertEqual(game_counts[1],issued)
 
     def test_switching_seasons_updates_the_views(self):
         from streamlit.testing.v1 import AppTest

@@ -731,6 +731,47 @@ $\phi=2$ and $\lambda=0.25$. Full coefficients, scalers, numerical tree
 nodes, provenance and per-fold reports are stored in versioned JSON.
 Boundary estimates and changing feature weights remain empirical limitations.
 
+\section{Matched-sample comparisons and interpretation}
+All model comparisons use an exact shared sample. Before scoring, the
+comparison routine checks identical game-ID sets, unique records, outcomes,
+teams and start times, pregame cutoffs, eligibility flags, availability
+policy and any recorded source-snapshot identifiers. Missing variants,
+invalid probabilities or conflicting metadata fail evaluation; no implicit
+intersection discards a difficult game. A declared all-game or ten-prior-game
+window is then applied to the shared list. Ordered game identities and
+source fingerprints produce a SHA256 sample identifier, saved alongside
+metrics and baseline-relative differences. Inner validation records one
+shared validation game list for all candidates.
+
+An audit recomputes the three next-season comparisons above on the same
+3,690 games, verifies the saved scores within $10^{-12}$, and records raw-game
+and normalized-input archive fingerprints. The audit runs in continuous
+integration and before future probability-head comparisons are published.
+This enforces sample fairness, not freedom from fitting or model-selection
+bias. Training replays cannot substitute for earlier-season-fitted evidence.
+
+The dashboard separates historical chronological backtests, original
+issued forecasts for the selected season, and current-method replay scores.
+Favorite calibration summaries use $\max(p_i,1-p_i)$, with success defined
+as that favorite winning; exactly $0.5$ selects home. Five-percentage-point
+bins include their lower boundary and exclude their upper boundary, except
+the last includes one. Each bin displays sample size, mean forecast,
+observed win fraction and Wilson 95\% binomial intervals \cite{wilson}.
+These intervals describe binomial sampling uncertainty only, ignoring game
+dependence and fitting uncertainty. Training replays are excluded from the
+calibration evidence displayed in the dashboard.
+
+Matchup context includes both teams' current and prior-season Elo ranks,
+recent completed-game records, rating trajectories, captured injury statuses
+and explicit information gaps. Report completeness is distinct from model
+accuracy or team strength. The numerical explanation reconstructs the home
+probability sequentially: ratings only, then home court, rest/travel, and
+injury inputs plus fitted recalibration. Percentage-point differences depend
+on that order and are not causal effects of individual injuries. Returning
+observed minutes describes the latest completed rotation rather than a
+confirmed current roster. Prior-season ranks do not establish present-day
+strength after roster, coaching or player-development changes.
+
 \section{Current-method reconstruction in the dashboard}
 The past-game dashboard uses a separate reconstruction of the current
 specification. A model change therefore rebuilds past Elo states and win
@@ -1040,6 +1081,10 @@ T. Hastie, R. Tibshirani and J. Friedman (2009).
 \emph{The Elements of Statistical Learning}, second edition. Springer.
 Sections 4.4 and 5.5: logistic regression and regularization.
 \url{https://hastie.su.domains/ElemStatLearn/}.
+\bibitem{wilson}
+E. B. Wilson (1927). Probable inference, the law of succession, and statistical inference.
+\emph{Journal of the American Statistical Association}, 22(158), 209--212.
+\href{https://doi.org/10.1080/01621459.1927.10502953}{doi:10.1080/01621459.1927.10502953}.
 \bibitem{scoring}
 T. Gneiting and A. E. Raftery (2007).
 Strictly proper scoring rules, prediction, and estimation.

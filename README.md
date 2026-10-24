@@ -7,7 +7,8 @@ NBA team ratings and pregame win probabilities, with historical backtesting and 
 ## What it does
 
 - Ranks all NBA teams by Elo and estimates matchup win probabilities.
-- Displays upcoming forecasts and current-method replays of completed games, with a Correct/Incorrect result for each prediction.
+- Shows matchup probabilities with current/prior Elo ranks, recent records, plain-language injury availability, and selectable explanations.
+- Replays completed games with Correct/Incorrect results and separates historical backtests, original issued forecasts, and current-method replay scores.
 - Shows report coverage and falls back to Elo when a verified injury report does not cover the game.
 - Supports the current season and five historical seasons, with downloadable datasets.
 - Collects results every two hours; open pages refresh saved snapshots every minute.
@@ -200,3 +201,11 @@ The repository includes **6,150 games and 12,300 team-game records** across five
 ## License
 
 Original project code and documentation use the [MIT License](LICENSE). Provider records, raw-source test fixtures, datasets, and third-party materials retain their separate rights and attribution notices; see [data and sources](docs/DATA.md#sources-and-reuse).
+
+## Understanding forecasts and fair comparisons
+
+The matchup details show an exact sequential reconstruction: ratings only → home court → rest/travel → injury inputs and fitted recalibration. These percentage-point changes depend on that order and are not causal player-impact estimates. Recent form excludes games unfinished at the forecast cutoff. Prior-season ranks and returning observed minutes provide context; neither is a confirmed current roster or a confidence grade.
+
+The performance view separates historical chronological backtests, original issued predictions for the selected season, and current-method replays. Five-point favorite probability bins show sample counts, mean predictions, actual win rates and sampling intervals for chronological or issued forecasts only, excluding training replays.
+
+Run `python scripts/audit_comparisons.py` before comparing changes. The audit rejects unequal game sets, duplicates, altered outcomes, cutoffs, eligibility, source-snapshot IDs or invalid probabilities. A single declared warmup filter applies to every model, and the shared sample ID and game list are saved in `models/nba-v0.3/matched-evaluation.json`. The three current historical procedures retain their original scores on the same 3,690 games; no model is allowed to omit difficult or missing-report games from its comparison.

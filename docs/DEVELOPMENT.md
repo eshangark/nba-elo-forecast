@@ -98,3 +98,7 @@ Preserve the frozen v0.2 configuration and issued ledger. New formulas, constrai
 ## Rebuild the current-method dashboard views
 
 Run `python scripts/replay_current.py` after changing the active model. It rebuilds all five archived seasons from committed normalized pregame inputs and the current season from recorded pregame cutoffs, without changing original archives or issued forecasts. The live collector runs this step after successful collection, and the scheduled workflow commits the resulting `current-model.json` files. Regenerating inputs after changing player-history derivations requires the validated source player observations already included in the compressed replay inputs; provider corrections should be documented as a new input snapshot.
+
+## Test a model change on a shared sample
+
+Use `compare_samples` from `nba_forecast.evaluation` with baseline and candidate rows containing the same canonical IDs, outcomes, cutoff timestamps, eligibility and source-snapshot IDs. Pass `established=True` only when the same ten-prior-game window is intended for every model. Do not independently filter candidates or silently intersect their available games. Run `python scripts/audit_comparisons.py` and the full test suite before publishing; inspect accuracy, log-loss and Brier differences on the saved sample ID. The existing three-season audit preserves old chronological archives and does not refit on their outcomes.
