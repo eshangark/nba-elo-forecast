@@ -1457,6 +1457,6 @@
     "replay_policy": "current-method-v1"
   },
   "input_sha256": "54c01f04cb6d81dce0d59abb1ffde06ef0f2b1c8cd0da6386b68fe63dd7179cf",
-  "source_result_sha256": "2dcaee3d36d4994d939433a7c20734d756798fb35dd0e52a834f51783f6189c3",
+  "source_result_sha256": "ba8a38045761592cec56ff3f7e0b093466ec960981d57abeabbd765364bd93e0",
   "provenance": "Current-method retrospective reconstruction; original issued forecasts and chronological backtests remain separate."
 }
