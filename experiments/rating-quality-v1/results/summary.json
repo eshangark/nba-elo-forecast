@@ -1,0 +1,964 @@
+{
+  "status": "Retrospective exploratory; outcomes previously inspected; no production promotion",
+  "protocol": "experiments/rating-quality-v1/PROTOCOL.md",
+  "inputs": {
+    "source_sha256": {
+      "2021-22": "875d581de4ccc1551e44d846c958c8894a275ef58e19222a9dcfe7db8cd83e92",
+      "2022-23": "8e609aee113057314976da85cecf0a4c004d8eb2275db040a73ae28e46f8e0da",
+      "2023-24": "2a1b5188881fae3565ae2352181c858c3914c2c428802c3f2f0793e53fc6636f",
+      "2024-25": "2cc48fd0e4ab3c1b2a3dbd3cab20c8406e915e49030b7de369306efb402c2331",
+      "2025-26": "f467419276a51284791fbffea7bba29ef68111ac382dea474e400f84f2d916d0"
+    },
+    "carryover": 0.5,
+    "injuries": "off for both rating engines",
+    "fit_sha256": {
+      "original_2023.json": "182d20beee4aeae352ee595ff96d3aadcc7a087a4ca8c003448a4c2a2e3a957c",
+      "independent_lead_2023.json": "a0a183f8b056fb9761c263263ed83577a517713defee5631e9734f3f33675656",
+      "original_2024.json": "30a94a53ba453153cca05060c745bc572f121b751f3f083ed46c4bb6381844b0",
+      "independent_lead_2024.json": "e21514e0d2a1783938853a2c141fb50a48e62267602cd53d2c96ec76d1972ddb",
+      "original_2025.json": "1990eb155aa0956a8512bad3eceadc6a91ffad4d3320d9aeb6227028cffac2b0",
+      "independent_lead_2025.json": "cd310f33264ae7c6ca00dfc359019b55d69270dfc953305624249fdb4625ea3b"
+    },
+    "fit_origin": "Earlier-prefix common-objective fits from prior formula-structure study; preserved without refitting or outer-result selection."
+  },
+  "folds": [
+    {
+      "season": "2023-24",
+      "comparison": {
+        "games": 1230,
+        "sample_sha256": "86499fa99604f015d294d742cf1be4de9e0a04aedf05d97a86ac6e26e2779db4",
+        "baseline": "original_raw",
+        "window": "all_games_including_openers",
+        "metrics": {
+          "original_raw": {
+            "games": 1230,
+            "log_loss": 0.6086174445769875,
+            "brier_score": 0.21069404551946153,
+            "winner_accuracy": 0.6495934959349593,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "original_common_head": {
+            "games": 1230,
+            "log_loss": 0.6123169928954278,
+            "brier_score": 0.21262745471170227,
+            "winner_accuracy": 0.6430894308943089,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_raw": {
+            "games": 1230,
+            "log_loss": 0.6084550695956186,
+            "brier_score": 0.2106388476816187,
+            "winner_accuracy": 0.651219512195122,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_common_head": {
+            "games": 1230,
+            "log_loss": 0.6121886745894206,
+            "brier_score": 0.21257109231536853,
+            "winner_accuracy": 0.640650406504065,
+            "tie_policy": "pick home when probability equals 0.5"
+          }
+        },
+        "difference_from_baseline": {
+          "original_raw": {
+            "log_loss": 0.0,
+            "brier_score": 0.0,
+            "winner_accuracy": 0.0
+          },
+          "original_common_head": {
+            "log_loss": 0.0036995483184403266,
+            "brier_score": 0.0019334091922407481,
+            "winner_accuracy": -0.006504065040650375
+          },
+          "independent_lead_raw": {
+            "log_loss": -0.00016237498136895123,
+            "brier_score": -5.519783784282972e-05,
+            "winner_accuracy": 0.001626016260162677
+          },
+          "independent_lead_common_head": {
+            "log_loss": 0.003571230012433091,
+            "brier_score": 0.0018770467959070003,
+            "winner_accuracy": -0.00894308943089428
+          }
+        },
+        "policy": "Exact same game IDs, outcomes, pregame cutoffs and eligibility; no silent intersection."
+      },
+      "rating_scores": {
+        "original_raw": {
+          "margin_mae": 11.121594704892766,
+          "margin_rmse": 14.225493281941006,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4863930701706545,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "original_common_head": {
+          "margin_mae": 11.121594704892766,
+          "margin_rmse": 14.225493281941006,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4734203226389642,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_raw": {
+          "margin_mae": 11.112983415681882,
+          "margin_rmse": 14.214828058752571,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4892529545046955,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_common_head": {
+          "margin_mae": 11.112983415681882,
+          "margin_rmse": 14.214828058752571,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4763080987354857,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        }
+      }
+    },
+    {
+      "season": "2024-25",
+      "comparison": {
+        "games": 1230,
+        "sample_sha256": "5e67388c6c77378981cd68bb8212e67c4d7d12112f8a754a8974bd9fa2385f08",
+        "baseline": "original_raw",
+        "window": "all_games_including_openers",
+        "metrics": {
+          "original_raw": {
+            "games": 1230,
+            "log_loss": 0.606603687630218,
+            "brier_score": 0.2099165079569759,
+            "winner_accuracy": 0.6577235772357723,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "original_common_head": {
+            "games": 1230,
+            "log_loss": 0.6104671835407647,
+            "brier_score": 0.21161410458871152,
+            "winner_accuracy": 0.6642276422764227,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_raw": {
+            "games": 1230,
+            "log_loss": 0.605619406868914,
+            "brier_score": 0.20948109443344576,
+            "winner_accuracy": 0.6601626016260163,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_common_head": {
+            "games": 1230,
+            "log_loss": 0.6095718689751055,
+            "brier_score": 0.2112001992288814,
+            "winner_accuracy": 0.6601626016260163,
+            "tie_policy": "pick home when probability equals 0.5"
+          }
+        },
+        "difference_from_baseline": {
+          "original_raw": {
+            "log_loss": 0.0,
+            "brier_score": 0.0,
+            "winner_accuracy": 0.0
+          },
+          "original_common_head": {
+            "log_loss": 0.003863495910546688,
+            "brier_score": 0.0016975966317356317,
+            "winner_accuracy": 0.006504065040650375
+          },
+          "independent_lead_raw": {
+            "log_loss": -0.0009842807613039684,
+            "brier_score": -0.0004354135235301315,
+            "winner_accuracy": 0.0024390243902439046
+          },
+          "independent_lead_common_head": {
+            "log_loss": 0.0029681813448875216,
+            "brier_score": 0.0012836912719055016,
+            "winner_accuracy": 0.0024390243902439046
+          }
+        },
+        "policy": "Exact same game IDs, outcomes, pregame cutoffs and eligibility; no silent intersection."
+      },
+      "rating_scores": {
+        "original_raw": {
+          "margin_mae": 11.044804653083041,
+          "margin_rmse": 14.139563060239961,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.5451010126679574,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "original_common_head": {
+          "margin_mae": 11.044804653083041,
+          "margin_rmse": 14.139563060239961,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.550681975288008,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_raw": {
+          "margin_mae": 11.02914656403754,
+          "margin_rmse": 14.118119746876312,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.5418484008206264,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_common_head": {
+          "margin_mae": 11.02914656403754,
+          "margin_rmse": 14.118119746876312,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.5485564379959742,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        }
+      }
+    },
+    {
+      "season": "2025-26",
+      "comparison": {
+        "games": 1230,
+        "sample_sha256": "93fd392e06a2cb5809291edeac3214117bb2fe6a1e4f8f67a682c0d5d4d3062d",
+        "baseline": "original_raw",
+        "window": "all_games_including_openers",
+        "metrics": {
+          "original_raw": {
+            "games": 1230,
+            "log_loss": 0.5960632176826999,
+            "brier_score": 0.20495119429112482,
+            "winner_accuracy": 0.6878048780487804,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "original_common_head": {
+            "games": 1230,
+            "log_loss": 0.5984786426685,
+            "brier_score": 0.2058270368554403,
+            "winner_accuracy": 0.683739837398374,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_raw": {
+            "games": 1230,
+            "log_loss": 0.5940765784282712,
+            "brier_score": 0.20404136498848524,
+            "winner_accuracy": 0.6886178861788618,
+            "tie_policy": "pick home when probability equals 0.5"
+          },
+          "independent_lead_common_head": {
+            "games": 1230,
+            "log_loss": 0.5967449826465284,
+            "brier_score": 0.20503267282820403,
+            "winner_accuracy": 0.6886178861788618,
+            "tie_policy": "pick home when probability equals 0.5"
+          }
+        },
+        "difference_from_baseline": {
+          "original_raw": {
+            "log_loss": 0.0,
+            "brier_score": 0.0,
+            "winner_accuracy": 0.0
+          },
+          "original_common_head": {
+            "log_loss": 0.002415424985800163,
+            "brier_score": 0.000875842564315471,
+            "winner_accuracy": -0.004065040650406471
+          },
+          "independent_lead_raw": {
+            "log_loss": -0.001986639254428657,
+            "brier_score": -0.000909829302639581,
+            "winner_accuracy": 0.0008130081300813385
+          },
+          "independent_lead_common_head": {
+            "log_loss": 0.0006817649638285461,
+            "brier_score": 8.147853707921038e-05,
+            "winner_accuracy": 0.0008130081300813385
+          }
+        },
+        "policy": "Exact same game IDs, outcomes, pregame cutoffs and eligibility; no silent intersection."
+      },
+      "rating_scores": {
+        "original_raw": {
+          "margin_mae": 11.406629082307106,
+          "margin_rmse": 14.64943736821798,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.482828068632113,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "original_common_head": {
+          "margin_mae": 11.406629082307106,
+          "margin_rmse": 14.64943736821798,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4855432222560452,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_raw": {
+          "margin_mae": 11.380737808434752,
+          "margin_rmse": 14.617885632238723,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4817097781924131,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        },
+        "independent_lead_common_head": {
+          "margin_mae": 11.380737808434752,
+          "margin_rmse": 14.617885632238723,
+          "team_ten_game_blocks": 240,
+          "team_ten_game_wins_rmse": 1.4872088033412305,
+          "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+        }
+      }
+    }
+  ],
+  "comparison": {
+    "games": 3690,
+    "sample_sha256": "41c6c35df77826319057357d8d3d831458a175cf71f2fd5ef79e3db9f4775302",
+    "baseline": "original_raw",
+    "window": "all_games_including_openers",
+    "metrics": {
+      "original_raw": {
+        "games": 3690,
+        "log_loss": 0.6037614499633018,
+        "brier_score": 0.20852058258918743,
+        "winner_accuracy": 0.6650406504065041,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "independent_lead_raw": {
+        "games": 3690,
+        "log_loss": 0.6027170182976013,
+        "brier_score": 0.20805376903451656,
+        "winner_accuracy": 0.6666666666666666,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "original_common_head": {
+        "games": 3690,
+        "log_loss": 0.6070876063682308,
+        "brier_score": 0.2100228653852847,
+        "winner_accuracy": 0.6636856368563686,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "independent_lead_common_head": {
+        "games": 3690,
+        "log_loss": 0.6061685087370182,
+        "brier_score": 0.20960132145748464,
+        "winner_accuracy": 0.6631436314363144,
+        "tie_policy": "pick home when probability equals 0.5"
+      }
+    },
+    "difference_from_baseline": {
+      "original_raw": {
+        "log_loss": 0.0,
+        "brier_score": 0.0,
+        "winner_accuracy": 0.0
+      },
+      "independent_lead_raw": {
+        "log_loss": -0.0010444316657005626,
+        "brier_score": -0.00046681355467087515,
+        "winner_accuracy": 0.001626016260162566
+      },
+      "original_common_head": {
+        "log_loss": 0.0033261564049289483,
+        "brier_score": 0.0015022827960972651,
+        "winner_accuracy": -0.0013550135501354532
+      },
+      "independent_lead_common_head": {
+        "log_loss": 0.002407058773716386,
+        "brier_score": 0.0010807388682972097,
+        "winner_accuracy": -0.001897018970189679
+      }
+    },
+    "policy": "Exact same game IDs, outcomes, pregame cutoffs and eligibility; no silent intersection."
+  },
+  "established_comparison": {
+    "games": 3224,
+    "sample_sha256": "a3e5e8c73434dfb41230d70f17c3f5dd076284986bd2aa8d9236eb175c619600",
+    "baseline": "original_raw",
+    "window": "ten_prior_games_each",
+    "metrics": {
+      "original_raw": {
+        "games": 3224,
+        "log_loss": 0.6002334173463414,
+        "brier_score": 0.20697638855465197,
+        "winner_accuracy": 0.6712158808933002,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "independent_lead_raw": {
+        "games": 3224,
+        "log_loss": 0.5993324806578517,
+        "brier_score": 0.2065685492701077,
+        "winner_accuracy": 0.6727667493796526,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "original_common_head": {
+        "games": 3224,
+        "log_loss": 0.604111362870138,
+        "brier_score": 0.2087224077167908,
+        "winner_accuracy": 0.667803970223325,
+        "tie_policy": "pick home when probability equals 0.5"
+      },
+      "independent_lead_common_head": {
+        "games": 3224,
+        "log_loss": 0.603301145656305,
+        "brier_score": 0.20834436246640758,
+        "winner_accuracy": 0.6674937965260546,
+        "tie_policy": "pick home when probability equals 0.5"
+      }
+    },
+    "difference_from_baseline": {
+      "original_raw": {
+        "log_loss": 0.0,
+        "brier_score": 0.0,
+        "winner_accuracy": 0.0
+      },
+      "independent_lead_raw": {
+        "log_loss": -0.000900936688489673,
+        "brier_score": -0.0004078392845442702,
+        "winner_accuracy": 0.0015508684863524413
+      },
+      "original_common_head": {
+        "log_loss": 0.003877945523796611,
+        "brier_score": 0.0017460191621388177,
+        "winner_accuracy": -0.003411910669975149
+      },
+      "independent_lead_common_head": {
+        "log_loss": 0.003067728309963602,
+        "brier_score": 0.00136797391175561,
+        "winner_accuracy": -0.003722084367245637
+      }
+    },
+    "policy": "Exact same game IDs, outcomes, pregame cutoffs and eligibility; no silent intersection."
+  },
+  "rating_scores": {
+    "original_raw": {
+      "margin_mae": 11.191009480094305,
+      "margin_rmse": 14.339896766880766,
+      "team_ten_game_blocks": 720,
+      "team_ten_game_wins_rmse": 1.5050449140055737,
+      "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+    },
+    "independent_lead_raw": {
+      "margin_mae": 11.174289262718057,
+      "margin_rmse": 14.318580263469437,
+      "team_ten_game_blocks": 720,
+      "team_ten_game_wins_rmse": 1.5045081943285317,
+      "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+    },
+    "original_common_head": {
+      "margin_mae": 11.191009480094305,
+      "margin_rmse": 14.339896766880766,
+      "team_ten_game_blocks": 720,
+      "team_ten_game_wins_rmse": 1.503597984928097,
+      "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+    },
+    "independent_lead_common_head": {
+      "margin_mae": 11.174289262718057,
+      "margin_rmse": 14.318580263469437,
+      "team_ten_game_blocks": 720,
+      "team_ten_game_wins_rmse": 1.5043606248488004,
+      "team_block_policy": "Rolling pregame forecasts summed over nonoverlapping ten-game blocks; incomplete tails omitted. Not a frozen ten-game-ahead forecast."
+    }
+  },
+  "favorite_calibration": {
+    "original_raw": [
+      {
+        "band": "50\u201355%",
+        "games": 711,
+        "wins": 362,
+        "mean_forecast": 0.5262357394374418,
+        "observed_win_rate": 0.509142053445851,
+        "lower_95": 0.47244570719887746,
+        "upper_95": 0.5457401434391742
+      },
+      {
+        "band": "55\u201360%",
+        "games": 611,
+        "wins": 351,
+        "mean_forecast": 0.5743154257109926,
+        "observed_win_rate": 0.574468085106383,
+        "lower_95": 0.534919059032173,
+        "upper_95": 0.6130865750942959
+      },
+      {
+        "band": "60\u201365%",
+        "games": 585,
+        "wins": 372,
+        "mean_forecast": 0.6253318994099921,
+        "observed_win_rate": 0.6358974358974359,
+        "lower_95": 0.5961361540456969,
+        "upper_95": 0.6738855939447355
+      },
+      {
+        "band": "65\u201370%",
+        "games": 522,
+        "wins": 354,
+        "mean_forecast": 0.6744370856642471,
+        "observed_win_rate": 0.6781609195402298,
+        "lower_95": 0.6369075285631774,
+        "upper_95": 0.716811252791839
+      },
+      {
+        "band": "70\u201375%",
+        "games": 412,
+        "wins": 302,
+        "mean_forecast": 0.724007315693652,
+        "observed_win_rate": 0.7330097087378641,
+        "lower_95": 0.6882833958558776,
+        "upper_95": 0.7734310290225426
+      },
+      {
+        "band": "75\u201380%",
+        "games": 357,
+        "wins": 283,
+        "mean_forecast": 0.7743660114335053,
+        "observed_win_rate": 0.7927170868347339,
+        "lower_95": 0.7476604414592233,
+        "upper_95": 0.8315412962874759
+      },
+      {
+        "band": "80\u201385%",
+        "games": 265,
+        "wins": 231,
+        "mean_forecast": 0.823759348765616,
+        "observed_win_rate": 0.8716981132075472,
+        "lower_95": 0.826059648073031,
+        "upper_95": 0.9067142360747659
+      },
+      {
+        "band": "85\u201390%",
+        "games": 150,
+        "wins": 129,
+        "mean_forecast": 0.8721898596897186,
+        "observed_win_rate": 0.86,
+        "lower_95": 0.7954479122405028,
+        "upper_95": 0.9065735118144821
+      },
+      {
+        "band": "90\u201395%",
+        "games": 70,
+        "wins": 64,
+        "mean_forecast": 0.9198987328365149,
+        "observed_win_rate": 0.9142857142857143,
+        "lower_95": 0.8253432750766051,
+        "upper_95": 0.9601233303548878
+      },
+      {
+        "band": "95\u2013100%",
+        "games": 7,
+        "wins": 6,
+        "mean_forecast": 0.9536120320662835,
+        "observed_win_rate": 0.8571428571428571,
+        "lower_95": 0.4868721707256811,
+        "upper_95": 0.9743203756552565
+      }
+    ],
+    "independent_lead_raw": [
+      {
+        "band": "50\u201355%",
+        "games": 695,
+        "wins": 355,
+        "mean_forecast": 0.5257804650038271,
+        "observed_win_rate": 0.5107913669064749,
+        "lower_95": 0.47367010803006027,
+        "upper_95": 0.5477939877396909
+      },
+      {
+        "band": "55\u201360%",
+        "games": 602,
+        "wins": 343,
+        "mean_forecast": 0.5733609665738031,
+        "observed_win_rate": 0.5697674418604651,
+        "lower_95": 0.52989782666752,
+        "upper_95": 0.6087523082432056
+      },
+      {
+        "band": "60\u201365%",
+        "games": 582,
+        "wins": 373,
+        "mean_forecast": 0.6248629667439554,
+        "observed_win_rate": 0.6408934707903781,
+        "lower_95": 0.601111166405252,
+        "upper_95": 0.6788280518435452
+      },
+      {
+        "band": "65\u201370%",
+        "games": 522,
+        "wins": 355,
+        "mean_forecast": 0.674041748168501,
+        "observed_win_rate": 0.6800766283524904,
+        "lower_95": 0.6388715770950364,
+        "upper_95": 0.7186506320164856
+      },
+      {
+        "band": "70\u201375%",
+        "games": 418,
+        "wins": 301,
+        "mean_forecast": 0.7237060391993946,
+        "observed_win_rate": 0.7200956937799043,
+        "lower_95": 0.6752021990582456,
+        "upper_95": 0.7609806278132359
+      },
+      {
+        "band": "75\u201380%",
+        "games": 357,
+        "wins": 284,
+        "mean_forecast": 0.7741779454168012,
+        "observed_win_rate": 0.7955182072829131,
+        "lower_95": 0.7506391502323044,
+        "upper_95": 0.834105187875607
+      },
+      {
+        "band": "80\u201385%",
+        "games": 277,
+        "wins": 242,
+        "mean_forecast": 0.8240739436744003,
+        "observed_win_rate": 0.8736462093862816,
+        "lower_95": 0.829342753946365,
+        "upper_95": 0.9077279081604043
+      },
+      {
+        "band": "85\u201390%",
+        "games": 160,
+        "wins": 137,
+        "mean_forecast": 0.8731813461552441,
+        "observed_win_rate": 0.85625,
+        "lower_95": 0.7935312683939587,
+        "upper_95": 0.9022633175463438
+      },
+      {
+        "band": "90\u201395%",
+        "games": 71,
+        "wins": 64,
+        "mean_forecast": 0.9217755455489787,
+        "observed_win_rate": 0.9014084507042254,
+        "lower_95": 0.8101927775940715,
+        "upper_95": 0.9514171762760307
+      },
+      {
+        "band": "95\u2013100%",
+        "games": 6,
+        "wins": 6,
+        "mean_forecast": 0.9556563305527246,
+        "observed_win_rate": 1.0,
+        "lower_95": 0.6096657120978346,
+        "upper_95": 1.0
+      }
+    ],
+    "original_common_head": [
+      {
+        "band": "50\u201355%",
+        "games": 672,
+        "wins": 354,
+        "mean_forecast": 0.5252671896503838,
+        "observed_win_rate": 0.5267857142857143,
+        "lower_95": 0.488991252352806,
+        "upper_95": 0.5642756781234894
+      },
+      {
+        "band": "55\u201360%",
+        "games": 675,
+        "wins": 388,
+        "mean_forecast": 0.5748336494056171,
+        "observed_win_rate": 0.5748148148148148,
+        "lower_95": 0.5371998298293256,
+        "upper_95": 0.6115830688690841
+      },
+      {
+        "band": "60\u201365%",
+        "games": 588,
+        "wins": 363,
+        "mean_forecast": 0.6251945311960272,
+        "observed_win_rate": 0.6173469387755102,
+        "lower_95": 0.5774205777975552,
+        "upper_95": 0.6557499747943152
+      },
+      {
+        "band": "65\u201370%",
+        "games": 503,
+        "wins": 338,
+        "mean_forecast": 0.6751945408114508,
+        "observed_win_rate": 0.6719681908548708,
+        "lower_95": 0.6297702931069128,
+        "upper_95": 0.7115593218826187
+      },
+      {
+        "band": "70\u201375%",
+        "games": 416,
+        "wins": 298,
+        "mean_forecast": 0.7234544390651424,
+        "observed_win_rate": 0.7163461538461539,
+        "lower_95": 0.6712029573091751,
+        "upper_95": 0.7575303090662029
+      },
+      {
+        "band": "75\u201380%",
+        "games": 370,
+        "wins": 300,
+        "mean_forecast": 0.7730409962871945,
+        "observed_win_rate": 0.8108108108108109,
+        "lower_95": 0.7677867886372071,
+        "upper_95": 0.8474472753575922
+      },
+      {
+        "band": "80\u201385%",
+        "games": 250,
+        "wins": 220,
+        "mean_forecast": 0.8240862765085031,
+        "observed_win_rate": 0.88,
+        "lower_95": 0.8338618921256289,
+        "upper_95": 0.9146368002578331
+      },
+      {
+        "band": "85\u201390%",
+        "games": 153,
+        "wins": 132,
+        "mean_forecast": 0.8728285078615735,
+        "observed_win_rate": 0.8627450980392157,
+        "lower_95": 0.7992779748182122,
+        "upper_95": 0.9084430629394038
+      },
+      {
+        "band": "90\u201395%",
+        "games": 62,
+        "wins": 55,
+        "mean_forecast": 0.9207873627080351,
+        "observed_win_rate": 0.8870967741935484,
+        "lower_95": 0.7848025794735822,
+        "upper_95": 0.9442213647060003
+      },
+      {
+        "band": "95\u2013100%",
+        "games": 1,
+        "wins": 1,
+        "mean_forecast": 0.9532920496978783,
+        "observed_win_rate": 1.0,
+        "lower_95": 0.20654931437723745,
+        "upper_95": 1.0
+      }
+    ],
+    "independent_lead_common_head": [
+      {
+        "band": "50\u201355%",
+        "games": 664,
+        "wins": 340,
+        "mean_forecast": 0.5252319514623656,
+        "observed_win_rate": 0.5120481927710844,
+        "lower_95": 0.47406869641233684,
+        "upper_95": 0.5498890854663947
+      },
+      {
+        "band": "55\u201360%",
+        "games": 663,
+        "wins": 387,
+        "mean_forecast": 0.574501748275006,
+        "observed_win_rate": 0.583710407239819,
+        "lower_95": 0.5458111443705379,
+        "upper_95": 0.6206452127316481
+      },
+      {
+        "band": "60\u201365%",
+        "games": 587,
+        "wins": 361,
+        "mean_forecast": 0.6247950495071815,
+        "observed_win_rate": 0.6149914821124361,
+        "lower_95": 0.5750009389746131,
+        "upper_95": 0.6534867508863131
+      },
+      {
+        "band": "65\u201370%",
+        "games": 508,
+        "wins": 341,
+        "mean_forecast": 0.6743876544091518,
+        "observed_win_rate": 0.6712598425196851,
+        "lower_95": 0.6292581822271224,
+        "upper_95": 0.7106908332373614
+      },
+      {
+        "band": "70\u201375%",
+        "games": 420,
+        "wins": 296,
+        "mean_forecast": 0.7240719735296874,
+        "observed_win_rate": 0.7047619047619048,
+        "lower_95": 0.6594400265276051,
+        "upper_95": 0.7463720912359016
+      },
+      {
+        "band": "75\u201380%",
+        "games": 370,
+        "wins": 304,
+        "mean_forecast": 0.7731393706044372,
+        "observed_win_rate": 0.8216216216216217,
+        "lower_95": 0.7793691672547055,
+        "upper_95": 0.8572643424442606
+      },
+      {
+        "band": "80\u201385%",
+        "games": 251,
+        "wins": 220,
+        "mean_forecast": 0.8236227246093707,
+        "observed_win_rate": 0.8764940239043825,
+        "lower_95": 0.8300267056382721,
+        "upper_95": 0.9116108633609697
+      },
+      {
+        "band": "85\u201390%",
+        "games": 163,
+        "wins": 140,
+        "mean_forecast": 0.8721142325507318,
+        "observed_win_rate": 0.8588957055214724,
+        "lower_95": 0.797165223225571,
+        "upper_95": 0.9040993235304056
+      },
+      {
+        "band": "90\u201395%",
+        "games": 61,
+        "wins": 55,
+        "mean_forecast": 0.9200883328542724,
+        "observed_win_rate": 0.9016393442622951,
+        "lower_95": 0.8015539278317405,
+        "upper_95": 0.9541354241845295
+      },
+      {
+        "band": "95\u2013100%",
+        "games": 3,
+        "wins": 3,
+        "mean_forecast": 0.952074878720706,
+        "observed_win_rate": 1.0,
+        "lower_95": 0.4385029682449546,
+        "upper_95": 1.0
+      }
+    ]
+  },
+  "paired_intervals": {
+    "raw_independent_minus_original": {
+      "log_loss": {
+        "difference": -0.0010444316657005207,
+        "lower_95": -0.0016032420149976949,
+        "upper_95": -0.0004680713302899371
+      },
+      "brier_score": {
+        "difference": -0.00046681355467085195,
+        "lower_95": -0.0007110504581008526,
+        "upper_95": -0.0002095884818364106
+      },
+      "winner_accuracy": {
+        "difference": 0.0016260162601626016,
+        "lower_95": -0.0021622060253382947,
+        "upper_95": 0.005454631098410598
+      },
+      "margin_mae": {
+        "difference": -0.016720217376247015,
+        "lower_95": -0.02611845583708353,
+        "upper_95": -0.007099559333653542
+      }
+    },
+    "common_head_independent_minus_original": {
+      "log_loss": {
+        "difference": -0.0009190976312126261,
+        "lower_95": -0.0014393818475077719,
+        "upper_95": -0.00038203177537057874
+      },
+      "brier_score": {
+        "difference": -0.00042154392780004477,
+        "lower_95": -0.000660918149841546,
+        "upper_95": -0.00017398973862095036
+      },
+      "winner_accuracy": {
+        "difference": -0.0005420054200542005,
+        "lower_95": -0.0037387187565005777,
+        "upper_95": 0.002465426370557223
+      },
+      "margin_mae": {
+        "difference": -0.016720217376247015,
+        "lower_95": -0.02611845583708353,
+        "upper_95": -0.007099559333653542
+      }
+    }
+  },
+  "heads": {
+    "2023-24/original": {
+      "probability_coefficients": [
+        -0.010571211693550636,
+        0.4639901907948611,
+        0.28683011545093556
+      ],
+      "margin_coefficients": [
+        -10.957681676152884,
+        3.6295877043234746,
+        13.109492295050813
+      ],
+      "training_games": 2460,
+      "l2_penalty": 1.0,
+      "training_last_start": "2023-04-09T19:30Z"
+    },
+    "2023-24/independent_lead": {
+      "probability_coefficients": [
+        -0.010077932367916674,
+        0.4636374898183982,
+        0.2865352058230556
+      ],
+      "margin_coefficients": [
+        -10.920956350439207,
+        3.6379212449877447,
+        13.073654337556427
+      ],
+      "training_games": 2460,
+      "l2_penalty": 1.0,
+      "training_last_start": "2023-04-09T19:30Z"
+    },
+    "2024-25/original": {
+      "probability_coefficients": [
+        -0.06824419760964254,
+        0.457878413183547,
+        0.3228604105955997
+      ],
+      "margin_coefficients": [
+        -1.906812641577642,
+        3.4603897496353775,
+        4.071314119313448
+      ],
+      "training_games": 3690,
+      "l2_penalty": 1.0,
+      "training_last_start": "2024-04-14T19:30Z"
+    },
+    "2024-25/independent_lead": {
+      "probability_coefficients": [
+        -0.06031211046017291,
+        0.4553515869925656,
+        0.31564479132793194
+      ],
+      "margin_coefficients": [
+        -1.7610060653716038,
+        3.4559936666822817,
+        3.9298129069082544
+      ],
+      "training_games": 3690,
+      "l2_penalty": 1.0,
+      "training_last_start": "2024-04-14T19:30Z"
+    },
+    "2025-26/original": {
+      "probability_coefficients": [
+        -0.22423817524893158,
+        0.46080063544213856,
+        0.4673223972744728
+      ],
+      "margin_coefficients": [
+        -8.846772169562708,
+        3.566469501909369,
+        10.887761337112837
+      ],
+      "training_games": 4920,
+      "l2_penalty": 1.0,
+      "training_last_start": "2025-04-13T19:30Z"
+    },
+    "2025-26/independent_lead": {
+      "probability_coefficients": [
+        -0.22601248843098234,
+        0.45532923814490495,
+        0.4698723351134784
+      ],
+      "margin_coefficients": [
+        -8.856241230273097,
+        3.535903867767173,
+        10.900876593196239
+      ],
+      "training_games": 4920,
+      "l2_penalty": 1.0,
+      "training_last_start": "2025-04-13T19:30Z"
+    }
+  },
+  "code_sha256": {
+    "scripts/run_rating_experiment.py": "d3805a1c357a3555f4dd0dfb65f9b13129a64b3ad4fef451973676877b362505",
+    "experiments/rating_quality.py": "7092a827228a9a52ae3afc6a9a50cce734f0d93b4e44513a123860a39cd23ba6",
+    "experiments/rating-quality-v1/PROTOCOL.md": "18970ebe549e980f6c45498d8b6a4e0dc07c6c29f322da2777075db11c41c3f5"
+  },
+  "market_evaluation": "Not performed: no timestamped executable odds supplied; no ROI claim."
+}

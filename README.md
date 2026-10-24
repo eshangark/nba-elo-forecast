@@ -209,3 +209,7 @@ The matchup details show an exact sequential reconstruction: ratings only → ho
 The performance view separates historical chronological backtests, original issued predictions for the selected season, and current-method replays. Five-point favorite probability bins show sample counts, mean predictions, actual win rates and sampling intervals for chronological or issued forecasts only, excluding training replays.
 
 Run `python scripts/audit_comparisons.py` before comparing changes. The audit rejects unequal game sets, duplicates, altered outcomes, cutoffs, eligibility, source-snapshot IDs or invalid probabilities. A single declared warmup filter applies to every model, and the shared sample ID and game list are saved in `models/nba-v0.3/matched-evaluation.json`. The three current historical procedures retain their original scores on the same 3,690 games; no model is allowed to omit difficult or missing-report games from its comparison.
+
+## Accuracy experiments
+
+Research workflow and invariants are in [AGENTS.md](AGENTS.md) and the repository [NBA experiments skill](.agents/skills/nba-experiments/SKILL.md). The first [rating quality experiment](experiments/rating-quality-v1/REPORT.md) separates rating updates from probability calibration and evaluates future margins on matched samples. Reproduce it with `python scripts/run_rating_experiment.py` after installing `requirements-fit.txt`. Research outputs do not update the deployed model.

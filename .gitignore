@@ -23,3 +23,7 @@ htmlcov/
 paper/*.synctex.gz
 paper/*.fls
 paper/*.fdb_latexmk
+
+# Reproducible per-game research output; retain the compact results and report.
+experiments/rating-quality-v1/results/predictions.csv
+experiments/rating-quality-v1/results/results.json

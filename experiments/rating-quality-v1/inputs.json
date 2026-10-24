@@ -1,0 +1,20 @@
+{
+  "source_sha256": {
+    "2021-22": "875d581de4ccc1551e44d846c958c8894a275ef58e19222a9dcfe7db8cd83e92",
+    "2022-23": "8e609aee113057314976da85cecf0a4c004d8eb2275db040a73ae28e46f8e0da",
+    "2023-24": "2a1b5188881fae3565ae2352181c858c3914c2c428802c3f2f0793e53fc6636f",
+    "2024-25": "2cc48fd0e4ab3c1b2a3dbd3cab20c8406e915e49030b7de369306efb402c2331",
+    "2025-26": "f467419276a51284791fbffea7bba29ef68111ac382dea474e400f84f2d916d0"
+  },
+  "carryover": 0.5,
+  "injuries": "off for both rating engines",
+  "fit_sha256": {
+    "original_2023.json": "182d20beee4aeae352ee595ff96d3aadcc7a087a4ca8c003448a4c2a2e3a957c",
+    "independent_lead_2023.json": "a0a183f8b056fb9761c263263ed83577a517713defee5631e9734f3f33675656",
+    "original_2024.json": "30a94a53ba453153cca05060c745bc572f121b751f3f083ed46c4bb6381844b0",
+    "independent_lead_2024.json": "e21514e0d2a1783938853a2c141fb50a48e62267602cd53d2c96ec76d1972ddb",
+    "original_2025.json": "1990eb155aa0956a8512bad3eceadc6a91ffad4d3320d9aeb6227028cffac2b0",
+    "independent_lead_2025.json": "cd310f33264ae7c6ca00dfc359019b55d69270dfc953305624249fdb4625ea3b"
+  },
+  "fit_origin": "Earlier-prefix common-objective fits from prior formula-structure study; preserved without refitting or outer-result selection."
+}

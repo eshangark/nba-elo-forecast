@@ -1,0 +1,10 @@
+{
+  "original_raw": {
+    "games": 3690,
+    "max_probability_error_vs_prior_independent_simulator": 6.106226635438361e-16
+  },
+  "independent_lead_raw": {
+    "games": 3690,
+    "max_probability_error_vs_prior_independent_simulator": 7.771561172376096e-16
+  }
+}
