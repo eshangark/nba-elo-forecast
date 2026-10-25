@@ -1,3 +1,3 @@
-"""NBA forecasting research pipeline."""
+"""Application/package release; stored forecast versions are independent."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

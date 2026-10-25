@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import streamlit as st
 
+from nba_forecast import __version__
 from nba_forecast.seasons import load_index, load_season
 from nba_forecast.ui import native_select
 from nba_forecast.forecasting import Forecaster
@@ -35,7 +36,7 @@ def model_frame(records):
 st.set_page_config(page_title="NBA Elo Forecast", page_icon="🏀", layout="wide",
                    menu_items={"About": "NBA Elo Forecast — team ratings and pregame probabilities."})
 st.title("NBA Elo Forecast")
-st.caption("Team strength, matchup probabilities, and the record behind each forecast.")
+st.caption(f"Team strength, matchup probabilities, and the record behind each forecast. · App v{__version__}")
 
 @st.fragment(run_every="60s")
 def render_dashboard():

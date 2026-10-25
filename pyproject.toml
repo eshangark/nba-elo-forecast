@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nba-elo-forecast"
-version = "0.3.0"
+dynamic = ["version"]
 description = "Reproducible NBA team ratings and pregame probability research"
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
@@ -12,3 +12,6 @@ dependencies = ["tzdata>=2024.1"]
 
 [tool.setuptools.packages.find]
 include = ["nba_forecast*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "nba_forecast.__version__"}
