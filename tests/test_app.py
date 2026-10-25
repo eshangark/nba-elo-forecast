@@ -77,6 +77,8 @@ class AppTests(unittest.TestCase):
         from streamlit.testing.v1 import AppTest
         root=Path(__file__).resolve().parents[1]
         app=AppTest.from_file(str(root/'app.py'),default_timeout=30).run()
+        # New collector results can change the default date; select the fixture's date explicitly.
+        app.session_state['game_date_2026-27']={'value':'2026-10-23'}
         app.session_state['past_matchup_2026-27_2026-10-23']={'value':'401909849'}
         app.session_state['past_basis_2026-27']={'value':'stored'}
         app.run();self.assertFalse(app.exception)
