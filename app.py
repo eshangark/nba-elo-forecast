@@ -13,6 +13,7 @@ from nba_forecast.ui import native_select
 from nba_forecast.forecasting import Forecaster
 from nba_forecast.live import digest
 from nba_forecast.dashboard_views import matchup_overview, performance_view, past_game_details
+from nba_forecast.decision_views import matchup_lookup, accuracy_lookup
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -59,7 +60,7 @@ def render_dashboard():
         else:
             stale_replay = True
     version_three = bool(archive and archive.get('result', {}).get('model_version') == '0.3.0')
-    teams_tab, games_tab, method_tab = st.tabs(["Teams", "Games", "Methodology"])
+    teams_tab, games_tab, matchup_tab, accuracy_tab, method_tab = st.tabs(["Teams", "Games", "Matchup", "Accuracy", "Methodology"])
 
     with teams_tab:
         st.caption("Compare team strength for the selected season. Teams are ordered by Elo, with higher ratings indicating stronger teams; ratings change as completed games are processed.")
@@ -250,6 +251,11 @@ def render_dashboard():
                 path = ARCHIVES / selected / filename
                 if path.exists():
                     st.download_button(label, path.read_bytes(), file_name=f"{selected}-{filename}", mime="text/csv")
+
+    with matchup_tab:
+        matchup_lookup(archive, original_archive, ARCHIVES, entries, selected)
+    with accuracy_tab:
+        accuracy_lookup(ROOT, entries, original_archive, selected)
 
     with method_tab:
         st.write("Each season has its own stored history. Model versions and data coverage are preserved so archived results remain interpretable.")

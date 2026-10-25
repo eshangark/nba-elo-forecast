@@ -825,6 +825,34 @@ player-availability uncertainty range. These panels describe evidence
 without changing probabilities, fitting a new model, or claiming improved
 accuracy or profitability.
 
+\subsection{Team and season accuracy lookup}
+A focused Matchup tab reuses the Games forecast and evidence calculations.
+A separate Accuracy tab allows lookup by evidence source, season and team.
+Chronological backtests, original issued forecasts and current-method
+replays are never pooled into a single score. Replay roles remain visible;
+replay rows are excluded from calibration reliability tables. For a team
+with $n$ evaluated appearances, expected wins are $\sum_{j=1}^n p_j$,
+actual wins are $\sum_{j=1}^n y_j$, and the calibration gap in percentage
+points is $100\sum_j(y_j-p_j)/n$. This difference is not an accuracy
+percentage. Team lookup also exposes ten-point calibration bands, including
+empty bands, alongside sample counts and the existing Wilson intervals.
+Season-wide winner accuracy and probability scores count each game once;
+team tables contain two appearances per game. Averaging the two teams'
+predicted and observed win rates league-wide would force both to $50\%$,
+so overall calibration instead uses one favorite per game.
+
+An optional matchup cutoff restricts lookup evidence to earlier completed
+games and, for issued evidence, the same frozen model fingerprint used by
+Games. Without this restriction, Accuracy includes all completed records
+in its explicitly selected source and season scope. Every scored forecast
+is checked against the stored game ID, teams, outcome, retained scores and
+pregame cutoff. Stale current-method replays are excluded using the same
+source-result and model hashes as Games. If a captured scheduled tip-off
+differs from the later completed-game record, both timestamps are retained
+and the cutoff must precede both. Conflicting results or missing game IDs
+withhold scores rather than silently intersect samples. Lookup never
+rewrites the issued ledger, fits parameters or changes probabilities.
+
 \section{Current-method reconstruction in the dashboard}
 The past-game dashboard uses a separate reconstruction of the current
 specification. A model change therefore rebuilds past Elo states and win
