@@ -41,6 +41,8 @@ The base probability is a covariate-adjusted [Bradley–Terry](https://doi.org/1
 
 The past-game **Prediction** column marks the higher-probability team Correct or Incorrect; exactly 50% picks home. Dashboard replay scores evaluate the latest specification, while the chronological backtests below the methodology retain earlier-season fitting and the original issued ledger measures what was actually published. Training replay scores are not an estimate of unseen-game accuracy.
 
+Under **Games → Past games**, choose a date and select a table row or use **Choose past matchup** to inspect the same evidence shown for upcoming games. **Forecast record** switches between the current-method replay and the original issued forecast (or stored historical replay). The final score is separate from the pregame evidence. Team strength, player history and calibration evidence use only information available before that forecast's cutoff; context that cannot be recovered and verified is marked unavailable.
+
 ## Symbol dictionary
 
 The paper builds the model in order: season carryover → base forecast → published probability corrections → completed-game features → performance factor → Elo update. Constants below refer to v0.3 and are rounded; the [model bundle](models/nba-v0.3/bundle.json) retains full precision. Game-dependent quantities have no single value. Original v0.2 configurations remain preserved.
@@ -209,3 +211,11 @@ The matchup details show an exact sequential reconstruction: ratings only → ho
 The performance view separates historical chronological backtests, original issued predictions for the selected season, and current-method replays. Five-point favorite probability bins show sample counts, mean predictions, actual win rates and sampling intervals for chronological or issued forecasts only, excluding training replays.
 
 Run `python scripts/audit_comparisons.py` before comparing changes. The audit rejects unequal game sets, duplicates, altered outcomes, cutoffs, eligibility, source-snapshot IDs or invalid probabilities. A single declared warmup filter applies to every model, and the shared sample ID and game list are saved in `models/nba-v0.3/matched-evaluation.json`. The three current historical procedures retain their original scores on the same 3,690 games; no model is allowed to omit difficult or missing-report games from its comparison.
+
+## Forecast reliability indicators
+
+Upcoming matchups summarize captured input status, league-wide team strength and current-season evidence. Past-game details provide the same panels at the selected forecast's pregame cutoff. Expand **Inspect forecast reliability** for report coverage, unmatched-player/missing-history counts, unresolved availability, captured timestamps, prior completed-game counts and calibration by favorite-probability band. Historical chronological evidence is separated from same-bundle original issued forecasts; training replays are excluded. Counts and sampling intervals accompany observed rates. Snapshot freshness appears only in upcoming forecast details.
+
+These are observable input checks, not a numerical confidence grade. The early-season flag uses the existing ten-game evaluation warmup; freshness uses the two-hour collection interval. The captured injury/recalibration adjustment is shown against base Elo; player-availability scenario ranges are not available. The page does not change probabilities or collect new inputs.
+
+The evidence view also separates league-wide strength from matchup favoritism, shows the favored team’s base-to-published probability change, and provides team-specific calibration bands with counts, expected/actual rates and observed-rate sampling intervals. A displayed pooled historical error uses 80 league-reference team appearances and does not revise the forecast. Earlier chronological evidence and same-bundle original issued evidence remain separate. Reported-player minutes/value proxies are displayed only when their saved history state matches the forecast; unknown values stay blank. Freshness remains in details rather than the main evidence summary.

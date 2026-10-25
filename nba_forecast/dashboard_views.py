@@ -1,5 +1,6 @@
 """Readable matchup and performance views over saved, versioned outputs."""
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -9,15 +10,21 @@ from .dashboard_data import (elo_ranks, previous_seasons, recent_record, injury_
                              probability_steps, data_gaps, issued_rows)
 from .evaluation import favorite_bands, compare_variants
 from .replay import metrics
+from .model import timestamp
 from .ui import native_select
+from .past_games import past_game_evidence
+from .reliability import (forecast_reliability, calibration_context, captured_adjustment,
+                          forecast_dependence, team_calibration_evidence, player_impact_evidence)
 
 
-def matchup_overview(upcoming, archive, result, archives, entries, season, fingerprint):
+def matchup_overview(upcoming, archive, result, archives, entries, season, fingerprint, original_archive=None):
     ranks = elo_ranks(result['rankings'])
     history = previous_seasons(archives,entries,season,fingerprint)
     previous = history[0]['ranks'] if history else {}
     completions = {g['game_id']:g['last_play_at'] for g in archive.get('_internal',{}).get('games',[])}
     records = []
+    now = datetime.now(timezone.utc).isoformat()
+    checks = {r['game_id']: forecast_reliability(r, result['predictions'], completions, archive.get('published_at'), now) for r in upcoming}
     for row in upcoming:
         before = row.get('issued_at',row['start'])
         forms = [recent_record(row[s],result['predictions'],before,completions) for s in ['home','away']]
@@ -26,9 +33,12 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
                         'Away win %':row['away_probability']*100,
                         'Elo rank · H / A':f"#{ranks.get(row['home'],'?')} / #{ranks.get(row['away'],'?')}",
                         'Prior final rank · H / A':f"#{previous.get(row['home'],'?')} / #{previous.get(row['away'],'?')}",
-                        'Last 10 · H / A':f"{forms[0]['wins']}–{forms[0]['losses']} / {forms[1]['wins']}–{forms[1]['losses']}", 'Injury data':injury_label(row)})
+                        'Last 10 · H / A':f"{forms[0]['wins']}–{forms[0]['losses']} / {forms[1]['wins']}–{forms[1]['losses']}", 'Injury data':injury_label(row),
+                        'Input status':checks[row['game_id']]['injury']['label'],
+                        'Team-strength context':forecast_dependence(row,result['rankings'])['strength_label'],
+                        'Season evidence':checks[row['game_id']]['maturity']})
     st.markdown('**Upcoming**')
-    table = st.dataframe(pd.DataFrame(records),hide_index=True,width='stretch',on_select='rerun',selection_mode='single-row',
+    table = st.dataframe(pd.DataFrame(records)[['Tip-off','Home','Away','Home win %','Away win %','Input status','Team-strength context','Season evidence','Elo rank · H / A','Prior final rank · H / A','Last 10 · H / A','Injury data']],hide_index=True,width='stretch',on_select='rerun',selection_mode='single-row',
                         key=f'matchup_table_{season}',column_config={
                             'Home win %':st.column_config.NumberColumn(format='%.1f%%',width=75),
                             'Away win %':st.column_config.NumberColumn(format='%.1f%%',width=75),
@@ -37,7 +47,10 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
                             'Elo rank · H / A':st.column_config.TextColumn(width=90),
                             'Prior final rank · H / A':st.column_config.TextColumn(width=90),
                             'Last 10 · H / A':st.column_config.TextColumn(width=100),
-                            'Injury data':st.column_config.TextColumn(width=180)})
+                            'Injury data':st.column_config.TextColumn(width=180),
+                            'Input status':st.column_config.TextColumn(width=180,help='Observable report and player-data limitations, not a confidence score.'),
+                            'Team-strength context':st.column_config.TextColumn(width=160),
+                            'Season evidence':st.column_config.TextColumn(width=160)})
     st.caption(('Prior final ranks: '+history[0]['season']+'. ' if history else 'No previous-season archive. ')+'H / A means home / away. Ranks are model Elo ranks, not standings. Recent records use up to ten completed games. Select a row or choose a matchup below for details.')
     ids = [r['game_id'] for r in upcoming]; by_id = {r['game_id']:r for r in upcoming}
     selected_rows = table.selection.rows
@@ -50,8 +63,14 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
     chosen = native_select('Choose matchup',ids,key=f'matchup_details_{season}',
                            format_func=lambda key:f"{by_id[key]['away']} at {by_id[key]['home']} · {pd.to_datetime(by_id[key]['start']).strftime('%b %d')}")
     row = by_id[chosen]
+    matchup_details(row,archive,result,archives,season,original_archive or archive,history,completions,checks[row['game_id']],now)
+
+
+def matchup_details(row,archive,result,archives,season,original_archive,history,completions,check,now):
+    ranks=elo_ranks(result['rankings'])
     st.write(f"**{row['home']} {row['home_probability']:.1%} · {row['away']} {row['away_probability']:.1%}**")
     st.caption('Model estimate, not a guaranteed outcome. Team strength, information completeness and probability accuracy are different things.')
+    reliability_view(row, check, archive, original_archive, archives, completions, now)
     tabs = st.tabs(['Why this forecast?','Team history & form','Information gaps'])
     with tabs[0]:
         params = archive.get('_internal',{}).get('parameter_registry',{}).get(row.get('parameter_hash'),{}).get('parameters',result['parameters'])
@@ -85,7 +104,7 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
             source = row['injury_source']; when=pd.to_datetime(source['published_at']).tz_convert('America/New_York')
             st.caption(f'Injury report published {when:%b %d, %I:%M %p %Z}. Forecast issued '+str(row.get('issued_at','not recorded'))+'.')
     with tabs[1]:
-        data = [{'Season':season,'Team':name,'Model Elo rank':ranks.get(name),'Recent record':recent_record(name,result['predictions'],row.get('issued_at',row['start']),completions)['label']}
+        data = [{'Season':season,'Team':name,'Model Elo rank':ranks.get(name),'Recent record':recent_record(name,result['predictions'],row.get('issued_at') or row.get('forecast_cutoff') or row['start'],completions)['label']}
                 for name in [row['home'],row['away']]]
         for item in history:
             for name in [row['home'],row['away']]:
@@ -95,7 +114,7 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
         for name in [row['home'],row['away']]:
             for past in result['predictions']:
                 side='home' if past['home']==name else 'away' if past['away']==name else None
-                if side and pd.to_datetime(past['start']) < pd.to_datetime(row.get('issued_at',row['start'])):
+                if side and pd.to_datetime(completions.get(past['game_id'],past['start'])) < pd.to_datetime(row.get('issued_at') or row.get('forecast_cutoff') or row['start']):
                     trajectories.append({'Date':pd.to_datetime(past['start']),'Team':name,'Elo':past[side+'_rating_after']})
         if trajectories:
             st.line_chart(pd.DataFrame(trajectories),x='Date',y='Elo',color='Team')
@@ -113,6 +132,160 @@ def matchup_overview(upcoming, archive, result, archives, entries, season, finge
         for message in data_gaps(row,result['rankings']):
             st.markdown('- '+message)
         st.caption('These are observable limitations, not an invented confidence score. Report submission does not mean every player is matched or every injury effect is known.')
+
+
+def past_game_details(daily_rows,original_archive,current_result,has_current_replay,archives,entries,season,root,selected_rows=None):
+    st.subheader('Past-game details')
+    ids=[r['game_id'] for r in daily_rows]
+    if not ids:return
+    by_id={r['game_id']:r for r in daily_rows};date_key=str(pd.to_datetime(daily_rows[0]['start']).tz_convert('America/New_York').date())
+    key=f'past_matchup_{season}_{date_key}'
+    if selected_rows:
+        clicked=ids[selected_rows[0]]
+        if st.session_state.get(key+'_last_click')!=clicked:
+            st.session_state[key]={'value':clicked};st.session_state[key+'_last_click']=clicked
+    chosen=native_select('Choose past matchup',ids,key=key,
+                         format_func=lambda identifier:f"{by_id[identifier]['away']} at {by_id[identifier]['home']}")
+    live=original_archive.get('status')=='live'
+    options=['current','stored'] if has_current_replay else ['stored']
+    basis=native_select('Forecast record',options,key=f'past_basis_{season}',format_func=lambda value:
+                        'Current-method replay' if value=='current' else 'Original issued forecast' if live else 'Stored historical replay')
+    result=current_result if basis=='current' else original_archive['result']
+    stored=next((r for r in result['predictions'] if r['game_id']==chosen),None)
+    final=by_id[chosen]
+    with st.expander('Final result',expanded=True):
+        st.write(f"{final['home']} {final['home_score']} – {final['away_score']} {final['away']}")
+        st.caption('The result is shown separately and is excluded from the pregame evidence below.')
+    if not stored or stored.get('home_probability') is None or (live and basis=='stored' and stored.get('kind')!='issued_live'):
+        st.info('No original pregame forecast was issued for this game. A reconstructed forecast is available only when explicitly selecting Current-method replay.')
+        return
+    if basis=='current':
+        st.info('Current-method training replay: this season helped fit the active model. This reconstructs pregame inputs and is not the original issued forecast or an unseen test.' if result.get('evaluation_role')=='training_replay' else
+                'Current-method retrospective replay using the saved pregame cutoff. This is separate from the original issued forecast.')
+    elif live:
+        st.caption('Original issued forecast · the recorded probability and model version are preserved. Recovered context is labeled separately.')
+    else:
+        st.caption('Stored historical replay · reconstructed, not issued live. Its fitting/evaluation role is documented in the season archive.')
+    recovered=past_game_evidence(stored,original_archive,result,archives,root)
+    row=recovered['row'];view=recovered['archive'];cutoff=row.get('issued_at') or row.get('forecast_cutoff')
+    for note in recovered['notes']:st.caption(note)
+    if not cutoff:
+        st.info('The pregame cutoff was not retained, so a historical evidence panel cannot be shown safely.')
+        return
+    st.caption('Pregame information cutoff: '+pd.to_datetime(cutoff).tz_convert('America/New_York').strftime('%b %d, %Y at %I:%M %p %Z'))
+    check=forecast_reliability(row,result['predictions'],recovered['completions'],None,cutoff)
+    fingerprint=row.get('forecast_model_sha256')
+    history=previous_seasons(archives,entries,season,fingerprint)
+    matchup_details(row,view,view['result'],archives,season,original_archive,history,recovered['completions'],check,cutoff)
+
+
+def reliability_view(row, checks, archive, original_archive, archives, completions, now):
+    evidence_cutoff=row.get('issued_at') or row.get('forecast_cutoff')
+    st.markdown('**Evidence supporting this forecast**')
+    st.caption('Input checks describe what supports this estimate. They are not a probability of being correct, a betting recommendation, or a validated confidence grade.')
+    columns = st.columns(3)
+    columns[0].markdown('**Input status**\n\n'+checks['injury']['label'])
+    strength=forecast_dependence(row,archive['result']['rankings'])
+    columns[1].markdown('**Team-strength context**\n\n'+strength['strength_label'])
+    columns[2].markdown('**Season evidence**\n\n'+checks['maturity'])
+    if strength['rank'] is not None:
+        st.write(f"{strength['favorite']} is favored here and ranks #{strength['rank']} of {len(archive['result']['rankings'])}; {strength['opponent']} ranks #{strength['opponent_rank']}. A league rank describes team strength, not certainty of winning this matchup.")
+    if strength['base_probability'] is not None:
+        st.write(f"{strength['favorite']}: base Elo {strength['base_probability']:.1%} → injury and probability correction {strength['adjustment_pp']:+.1f} points → published {strength['favorite_probability']:.1%}.")
+    with st.expander('Inspect forecast reliability', expanded=True):
+        evidence_tabs=st.tabs(['Calibration evidence','Player coverage','Forecast inputs'])
+        with evidence_tabs[0]:
+            st.markdown('**Historical calibration for this probability range**')
+            audit_path = Path(archives).parents[1]/'models/nba-v0.3/matched-evaluation.json'
+            if audit_path.exists():
+                historical_rows=json.loads(audit_path.read_text())['published_rows']
+                historical_completions={}
+                for prior_season in ['2023-24','2024-25','2025-26']:
+                    games_path=Path(archives)/prior_season/'games.json'
+                    if games_path.exists():
+                        historical_completions.update({g['game_id']:g['last_play_at'] for g in json.loads(games_path.read_text())})
+                evidence = [{**r, 'kind':'chronological_backtest','last_play_at':historical_completions.get(r['game_id'])} for r in historical_rows]
+                evidence=[r for r in evidence if r.get('last_play_at') and timestamp(r['last_play_at'])<timestamp(evidence_cutoff or now)]
+                band = calibration_context(row, evidence)
+                _reliability_band('Retrospective chronological benchmark · 2023–24 through 2025–26', band)
+                st.caption('Grouped by favorite probability, not similar rosters, injury coverage or season stage. Earlier-prefix fitted models differ from the current frozen bundle; these outcomes were previously studied. Training replays are excluded.')
+                team_evidence_view(row,evidence,min(now,evidence_cutoff or now,key=timestamp),'Team calibration · historical chronological forecasts')
+            else:
+                st.info('Historical calibration benchmark unavailable.')
+            evidence = [{**r, 'last_play_at':completions.get(r['game_id'])} for r in issued_rows(original_archive)]
+            cutoff = evidence_cutoff
+            band = calibration_context(row, evidence, before=min(now, cutoff, key=timestamp), exact_model=True) if cutoff else None
+            _reliability_band('Original issued forecasts · same frozen model · completed before this forecast', band)
+            if cutoff:
+                team_evidence_view(row,evidence,min(now,cutoff,key=timestamp),'Team calibration · same-model issued forecasts',exact_model=True)
+            st.caption('Intervals describe binomial sampling uncertainty, not model uncertainty, and ignore dependence between games. Counts are shown without assigning a confidence score.')
+        with evidence_tabs[1]:
+            st.markdown('**Injury coverage and unresolved availability**')
+            st.dataframe(pd.DataFrame(checks['injury']['teams']), hide_index=True, width='stretch')
+            st.caption('Unknown counts mean saved player coverage cannot be verified. Unmatched names and missing histories can overlap. Submitted reports are not confirmed lineups; Probable remains an unresolved designation.')
+            impacts=player_impact_evidence(row,archive.get('_internal',{}))
+            if impacts:
+                st.markdown('**Reported players: minutes and value coverage**')
+                st.dataframe(pd.DataFrame(impacts),hide_index=True,width='stretch',column_config={
+                    'Expected minutes':st.column_config.NumberColumn(format='%.1f'),
+                    'Game Score / minute':st.column_config.NumberColumn(format='%.2f'),
+                    'Prior contribution proxy':st.column_config.NumberColumn(format='%.1f')})
+                st.caption('Minutes and Game Score are prior-history proxies, not points lost, replacement quality or a causal player-impact estimate. Blank values mean history at this forecast cutoff is unavailable; later player data are never substituted.')
+        with evidence_tabs[2]:
+            st.markdown('**Captured timestamps**')
+            if archive.get('_historical_evidence'):
+                st.write(f"Pregame information cutoff: {evidence_cutoff or 'Unavailable'}. Captured injury report age at cutoff: {checks['report_age']}.")
+                st.caption('Past-game evidence is evaluated at the pregame cutoff, not at the time this page is opened. A replay cutoff is not proof a forecast was issued live.')
+            else:
+                st.write(f"{checks['freshness']}. Snapshot published {checks['snapshot_age']}; forecast issued {checks['forecast_age']}; captured injury report published {checks['report_age']}.")
+            st.caption('A forecast can retain its original issue time when a later collection finds unchanged inputs. Snapshot freshness uses the two-hour collection interval; it does not confirm that no newer injury news exists.')
+            if checks['report_outdated']:
+                st.warning('The captured injury report is now more than 16 hours old. The saved probability has not been recomputed by this page.')
+            st.markdown('**Current-season evidence at issuance**')
+            st.write(' · '.join(f"{team}: {count if count is not None else 'unknown'} prior completed games" for team, count in checks['counts'].items()))
+            st.caption('Fewer than ten prior games is an early-season flag, matching the existing evaluation warmup; it is not a validated reliability threshold. Ratings retain prior-season carryover.')
+            st.markdown('**Injury sensitivity**')
+            adjustment = captured_adjustment(row)
+            if adjustment is not None:
+                st.write(f"Captured injury inputs + fitted recalibration changed the home team's probability ({row['home']}) by {adjustment:+.1f} percentage points versus base Elo.")
+            else:
+                st.write('The captured injury/recalibration adjustment is unavailable.')
+            st.caption('Player-availability scenario sensitivity is unavailable. The captured adjustment is not an uncertainty range or a player-in/player-out forecast; no scenarios are generated here.')
+
+
+def team_evidence_view(row,evidence,before,label,exact_model=False):
+    st.markdown('**'+label+'**')
+    records=[];details=[]
+    for team in [row['home'],row['away']]:
+        item=team_calibration_evidence(row,evidence,team,before,exact_model=exact_model)
+        records.append({'Team':team,'Probability range':item['band'],'Games':item['games'],
+                        'Mean forecast':item['mean_forecast'],'Actual win rate':item['observed_win_rate'],
+                        'Observed-rate 95% interval':item['observed_rate_interval_95'],
+                        'Evidence':item['sample_label'] if item['games']<30 else 'Historical sample'})
+        details.append({'Team':team,'Actual − predicted (pp)':item['raw_error_pp'],
+                        'Pooled historical error (pp)':item['pooled_error_pp'],
+                        'League-reference appearances':item['reference_appearances']})
+    st.dataframe(pd.DataFrame(records),hide_index=True,width='stretch',column_config={
+        'Team':st.column_config.TextColumn(width=190),
+        'Mean forecast':st.column_config.NumberColumn(format='percent'),
+        'Actual win rate':st.column_config.NumberColumn(format='percent')})
+    st.caption('Each team uses its own ten-point probability range. The Wilson interval describes uncertainty in its historical win rate, not this game’s chance. It ignores dependence and model uncertainty; roster changes also limit relevance. Fewer than 30 games is marked a small sample.')
+    with st.expander('Historical error and pooling details'):
+        st.dataframe(pd.DataFrame(details),hide_index=True,width='stretch',column_config={
+            'Team':st.column_config.TextColumn(width=190),
+            'Actual − predicted (pp)':st.column_config.NumberColumn(format='%+.1f'),
+            'Pooled historical error (pp)':st.column_config.NumberColumn(format='%+.1f')})
+        st.caption('Negative historical error means this team won less often than forecast. Pooling blends its residual with 80 league-reference team appearances in that range. This is descriptive, not a new forecast or confidence score. Both sides of a game can enter league evidence. The pooling strength and small-sample label are display conventions, not validated reliability thresholds.')
+
+
+def _reliability_band(label, band):
+    st.write(label)
+    if band is None:
+        st.caption('No completed forecasts in this probability range. Reliability has not been established for this group.')
+        return
+    st.write(f"Favorites forecast at {band['band']}: {band['wins']} won out of {band['games']}. "
+             f"Mean forecast {band['mean_forecast']:.1%}; observed win rate {band['observed_win_rate']:.1%}. "
+             f"95% sampling interval {band['lower_95']:.1%}–{band['upper_95']:.1%}.")
 
 
 def scorecard(rows, empty):

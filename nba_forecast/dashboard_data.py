@@ -71,8 +71,10 @@ def probability_steps(row, parameters):
 def data_gaps(row, rankings):
     by_name = {r['team']:r for r in rankings}; messages = []
     for name in [row['home'],row['away']]:
-        played = by_name.get(name,{}).get('games',0)
-        if played < 10:
+        played = by_name.get(name,{}).get('games')
+        if played is None:
+            messages.append(f'{name}: current-season game count at the forecast cutoff is unavailable.')
+        elif played < 10:
             messages.append(f'{name}: only {played} current-season games; ratings still depend substantially on prior-season carryover.')
     if row.get('injury_status') != 'complete':
         messages.append(injury_label(row)+'. Missing reports do not mean healthy players.')

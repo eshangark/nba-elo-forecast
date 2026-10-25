@@ -12,7 +12,7 @@ from nba_forecast.seasons import load_index, load_season
 from nba_forecast.ui import native_select
 from nba_forecast.forecasting import Forecaster
 from nba_forecast.live import digest
-from nba_forecast.dashboard_views import matchup_overview, performance_view
+from nba_forecast.dashboard_views import matchup_overview, performance_view, past_game_details
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -65,7 +65,7 @@ def render_dashboard():
         st.caption("Compare team strength for the selected season. Teams are ordered by Elo, with higher ratings indicating stronger teams; ratings change as completed games are processed.")
     with games_tab:
         st.caption("Explore win probabilities and completed-game outcomes. " +
-                   ("Past games replay the current methodology with pregame inputs. Original issued forecasts remain downloadable." if current_replay else
+                   ("Past-game tables replay the current methodology with pregame inputs. Select a matchup to inspect its evidence or original issued forecast where available." if current_replay else
                     "Past games show original stored forecasts while the current-method replay is unavailable."))
         if stale_replay:
             st.info("The current-method replay is being rebuilt for this model or data snapshot. Showing original stored forecasts in the meantime.")
@@ -191,7 +191,7 @@ def render_dashboard():
                 st.caption('Injury data describes report availability. Submitted reports can still contain unmatched players or missing histories.')
             upcoming = archive.get("upcoming", [])
             if upcoming:
-                matchup_overview(upcoming,archive,result,ARCHIVES,entries,selected,result.get('forecast_model_sha256',archive.get('_internal',{}).get('forecast_model_sha256')))
+                matchup_overview(upcoming,archive,result,ARCHIVES,entries,selected,result.get('forecast_model_sha256',archive.get('_internal',{}).get('forecast_model_sha256')), original_archive=original_archive)
             if is_live:
                 st.caption("Upcoming probabilities use current ratings and announced rest/travel schedules, and are revised when new results or schedule changes arrive.")
             if archive.get("awaiting_final"):
@@ -210,8 +210,9 @@ def render_dashboard():
                 daily["Prediction"] = daily.apply(lambda g: 'Unavailable' if pd.isna(g['home_probability']) else
                                                    'Correct' if int(g['home_probability'] >= 0.5) == g['home_win'] else 'Incorrect', axis=1)
                 columns = ["home", "away", "Home win %", "Away win %", "Final score", "Winner", "Prediction"]
-                st.dataframe(daily[columns].rename(
+                past_table=st.dataframe(daily[columns].rename(
                     columns={"home": "Home", "away": "Away"}), hide_index=True, width="stretch",
+                    on_select='rerun',selection_mode='single-row',key=f'past_table_{selected}_{picked_date}',
                     column_config={"Home win %": st.column_config.NumberColumn(format="%.1f%%"),
                                    "Away win %": st.column_config.NumberColumn(format="%.1f%%")})
                 if current_replay:
@@ -220,6 +221,10 @@ def render_dashboard():
                     st.caption("Original issued forecasts. A blank probability means no pregame forecast was recorded.")
                 else:
                     st.caption("Historical reconstructed forecasts; not issued live.")
+                st.caption('Select a past-game row or choose a matchup below to inspect its pregame evidence.')
+                daily_ids=set(daily['game_id'])
+                past_game_details([r for r in result['predictions'] if r['game_id'] in daily_ids],original_archive,result,
+                                  bool(current_replay),ARCHIVES,entries,selected,ROOT,past_table.selection.rows)
             else:
                 st.info("No completed regular-season games are stored for this season yet.")
         with method_tab:

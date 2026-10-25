@@ -34,9 +34,14 @@ class AppTests(unittest.TestCase):
             expected = payload['upcoming'][0]['probability_models']
             self.assertAlmostEqual(app.dataframe[1].value['Home win %'][0], expected['injury']['home_probability']*100)
             self.assertNotIn('Forecast model', [element.label for element in app.selectbox])
-            for label in ['Elo rank · H / A','Prior final rank · H / A','Last 10 · H / A','Injury data']:
+            for label in ['Elo rank · H / A','Prior final rank · H / A','Last 10 · H / A','Injury data','Input status','Team-strength context','Season evidence']:
                 self.assertIn(label,app.dataframe[1].value.columns)
             self.assertTrue(any(tab.label == 'Information gaps' for tab in app.tabs))
+            self.assertTrue(any('**Input status**' in m.value and 'Reports incomplete' in m.value for m in app.markdown))
+            self.assertTrue(any('Player-availability scenario sensitivity is unavailable' in c.value for c in app.caption))
+            self.assertTrue(any('Training replays are excluded' in c.value for c in app.caption))
+            self.assertTrue(any('Team calibration · historical chronological forecasts' in m.value for m in app.markdown))
+            self.assertFalse(any('moneyline' in str(f.value.columns).lower() for f in app.dataframe))
             self.assertTrue(any(tab.label == 'Original forecasts this season' for tab in app.tabs))
             self.assertTrue(any(tab.label == 'Historical chronological backtests' for tab in app.tabs))
             self.assertNotIn('Boosted comparison', '\n'.join(element.value for element in app.caption))
@@ -61,12 +66,28 @@ class AppTests(unittest.TestCase):
         app.run(); self.assertFalse(app.exception)
         self.assertTrue(any(chosen['home'] in value.value and chosen['away'] in value.value for value in app.markdown))
         stages=[f.value for f in app.dataframe if 'Stage' in f.value.columns]
-        self.assertEqual(len(stages),1)
+        self.assertGreaterEqual(len(stages),1)
         self.assertAlmostEqual(stages[0].iloc[-1]['Home win %'],chosen['home_probability']*100)
         game_counts=[int(m.value) for m in app.metric if m.label=='Games scored']
         issued=sum(r.get('kind')=='issued_live' and r.get('home_probability') is not None for r in original['result']['predictions'])
         self.assertEqual(game_counts[0],3690)
         self.assertEqual(game_counts[1],issued)
+
+    def test_past_matchup_selection_and_original_issued_basis(self):
+        from streamlit.testing.v1 import AppTest
+        root=Path(__file__).resolve().parents[1]
+        app=AppTest.from_file(str(root/'app.py'),default_timeout=30).run()
+        app.session_state['past_matchup_2026-27_2026-10-23']={'value':'401909849'}
+        app.session_state['past_basis_2026-27']={'value':'stored'}
+        app.run();self.assertFalse(app.exception)
+        self.assertTrue(any('New Orleans Pelicans: base Elo 54.3%' in m.value for m in app.markdown))
+        self.assertTrue(any('New Orleans Pelicans is favored here and ranks #22' in m.value for m in app.markdown))
+        self.assertTrue(any('Original issued forecast ·' in c.value for c in app.caption))
+        app.session_state['past_basis_2026-27']={'value':'current'}
+        app.run();self.assertFalse(app.exception)
+        self.assertTrue(any('Current-method retrospective replay' in i.value for i in app.info))
+        app.session_state['game_date_2026-27']={'value':'2026-10-22'}
+        app.run();self.assertFalse(app.exception)
 
     def test_switching_seasons_updates_the_views(self):
         from streamlit.testing.v1 import AppTest
