@@ -186,6 +186,19 @@ def render_dashboard():
                 st.line_chart(pd.DataFrame(history).set_index("Date"), y="Elo")
         with games_tab:
             st.subheader("Games")
+            st.markdown(
+                "**How to read these forecasts.** Start with win probability, then select a matchup and inspect "
+                "**forecast reliability** before deciding. A 70% estimate means a team is favored, but losses are "
+                "still expected. Under **Calibration evidence**, compare the mean forecast with the actual win rate: "
+                "the league summary pools favorites in a similar probability range; the team table shows how often "
+                "each specific team won in its own displayed range. Check the game count and interval together: "
+                "small samples give weaker evidence, and the interval describes the historical win rate, not this "
+                "game's probability. Check **team strength**, **season evidence** and **Player coverage** too: a "
+                "weak team can be favored against a weaker opponent, and incomplete reports or missing player "
+                "histories leave uncertainty. Historical results reflect older rosters and models. For past games, "
+                "check whether you are viewing an original issued forecast or a replay. Win probability alone "
+                "does not establish that a bet is worth its price."
+            )
             if version_three:
                 st.caption('Elo + injuries is the published model, selected for the lowest retrospective log loss and Brier score.')
                 st.caption('Injury data describes report availability. Submitted reports can still contain unmatched players or missing histories.')
