@@ -15,7 +15,7 @@ from .replay import metrics
 
 def matchup_lookup(archive, original_archive, archives, entries, season):
     st.subheader('Matchup lookup')
-    st.caption('Search for an upcoming game to see the same forecast, calibration evidence and player coverage as Games. All values come from the same saved snapshot.')
+    st.write('Use Matchup for a focused review of one upcoming game. Search for a matchup, then read its win probabilities alongside team strength, season evidence and forecast reliability. Calibration evidence shows how similar forecasts performed; Player coverage exposes missing histories and unresolved availability, and Why this forecast? explains the probability breakdown. This view uses the same saved forecasts and calculations as Games. Select the current season for upcoming games.')
     upcoming = (archive or {}).get('upcoming', [])
     if not upcoming:
         st.info('No upcoming forecasts are stored for this season. Select the current season to look up an upcoming matchup.')
@@ -47,7 +47,7 @@ def _table(records, *, percentages=()):
 
 def accuracy_lookup(root, entries, original_archive, selected):
     st.subheader('Accuracy explorer')
-    st.write('Winner accuracy measures how often the favored team won. Calibration compares mean forecast with actual win rate across games; a small calibration gap is not an accuracy percentage. Use the selectors to look up a team, season and evidence source.')
+    st.write('Use Accuracy to explore the model’s track record by evidence source, season and team. Start with the selectors, then use Season overview, Team overview or Probability ranges for the comparison you need. Winner accuracy measures how often the favored team won; calibration compares mean forecast with actual win rate across games, and a small calibration gap is not an accuracy percentage. Select an upcoming matchup under Accuracy evidence cutoff to restrict evidence to what was available before that forecast. Keep original issued forecasts, chronological backtests and replays separate, and read sample sizes and intervals alongside the rates.')
     try:
         catalog, notices = accuracy_catalog(root, entries, original_archive)
     except (ValueError, KeyError, OSError) as error:

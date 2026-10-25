@@ -10,6 +10,8 @@ The application displays its release version beside the introduction. Package me
 
 ## What it does
 
+The dashboard opens on **Home**, with an overview, a suggested workflow and a guide to every tab. Each page includes an explanation of its controls and how to interpret its information. A labeled section on Home is reserved for a future narrated video walkthrough; no video is currently included.
+
 - Ranks all NBA teams by Elo and estimates matchup win probabilities.
 - Shows matchup probabilities with current/prior Elo ranks, recent records, plain-language injury availability, and selectable explanations.
 - Replays completed games with Correct/Incorrect results and separates historical backtests, original issued forecasts, and current-method replay scores.

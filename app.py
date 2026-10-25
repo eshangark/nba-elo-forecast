@@ -15,6 +15,7 @@ from nba_forecast.forecasting import Forecaster
 from nba_forecast.live import digest
 from nba_forecast.dashboard_views import matchup_overview, performance_view, past_game_details
 from nba_forecast.decision_views import matchup_lookup, accuracy_lookup
+from nba_forecast.site_guide import home_view
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -61,18 +62,21 @@ def render_dashboard():
         else:
             stale_replay = True
     version_three = bool(archive and archive.get('result', {}).get('model_version') == '0.3.0')
-    teams_tab, games_tab, matchup_tab, accuracy_tab, method_tab = st.tabs(["Teams", "Games", "Matchup", "Accuracy", "Methodology"])
+    home_tab, teams_tab, games_tab, matchup_tab, accuracy_tab, method_tab = st.tabs(["Home", "Teams", "Games", "Matchup", "Accuracy", "Methodology"])
+
+    with home_tab:
+        home_view()
 
     with teams_tab:
-        st.caption("Compare team strength for the selected season. Teams are ordered by Elo, with higher ratings indicating stronger teams; ratings change as completed games are processed.")
+        st.write("Use Teams to compare league-wide strength for the selected season. The table is ordered by Elo, with higher ratings indicating stronger teams, alongside each team's record and game count. Choose a team under Team history to see its rating trajectory. Ratings change after completed games; a rank describes relative strength, not certainty of winning a particular matchup.")
     with games_tab:
-        st.caption("Explore win probabilities and completed-game outcomes. " +
-                   ("Past-game tables replay the current methodology with pregame inputs. Select a matchup to inspect its evidence or original issued forecast where available." if current_replay else
+        st.write("Use Games to browse upcoming forecasts and completed results for the selected season. Select a row or matchup to inspect its explanation and reliability evidence; for past games, choose a date and then a forecast record. " +
+                   ("Past-game tables use current-method replays; original issued forecasts remain available in the forecast-record selector where recorded." if current_replay else
                     "Past games show original stored forecasts while the current-method replay is unavailable."))
         if stale_replay:
             st.info("The current-method replay is being rebuilt for this model or data snapshot. Showing original stored forecasts in the meantime.")
     with method_tab:
-        st.caption("See how matchup probabilities and Elo updates are calculated, explore the fitted constants, and review how accurately the model's probabilities match game outcomes.")
+        st.write("Use Methodology to understand how the model turns ratings, home court, rest, travel and injury inputs into pregame probabilities, then updates Elo after results arrive. Read the equations and input definitions below, expand the detailed explanations, and review Model performance for the evaluation record. The bottom of this page contains season downloads, fitted constants and links to the technical paper and its source.")
         st.html("""<style>
             [data-testid="stLatex"] .katex-display {
                 overflow-x: auto;
