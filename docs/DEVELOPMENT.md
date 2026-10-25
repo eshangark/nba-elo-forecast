@@ -4,6 +4,12 @@ Run commands from the repository root using Python 3.12. `requirements.txt` inst
 
 ## Tests
 
+The dashboard uses Streamlit's polling file watcher to avoid Linux inotify
+instance limits leaving imported modules stale after a deployment. If a
+deployment reports an import name that exists in the published source, check
+the cloud logs for watcher failures and reboot the app from **Manage app**.
+A passing clean-start test does not verify an already-running cloud process.
+
 ```sh
 python -m pip install -r requirements-fit.txt
 python -m unittest discover -s tests -v

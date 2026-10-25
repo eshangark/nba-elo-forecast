@@ -772,6 +772,59 @@ observed minutes describes the latest completed rotation rather than a
 confirmed current roster. Prior-season ranks do not establish present-day
 strength after roster, coaching or player-development changes.
 
+\subsection{Forecast evidence rather than a confidence grade}
+The matchup summary separates three observable properties: captured input
+coverage, league-wide team strength, and the amount of current-season
+evidence. A favorite ranked in the lower half of the league is labeled a
+low-rated favorite: being favored against a particular opponent does not
+establish strong absolute team quality. Ranks are shown only when the
+recovered ratings agree with the selected forecast. Fewer than ten prior
+completed games per team is a limited-season-evidence flag, consistent with
+the evaluation warmup; it is not a validated confidence threshold. Report
+submission alone does not establish player identity coverage, usable player
+history, or resolved participation. Unknown coverage remains explicitly
+unknown. Collection, forecast and report timestamps appear separately in
+the detailed view; a recent collection need not imply a newly issued
+forecast or newer injury information.
+
+Team-specific calibration uses each team's own probability in ten-point
+bands, separately for chronological backtests and same-bundle original
+issued forecasts. Only games completed strictly before the inspected
+forecast cutoff contribute. Each panel reports the number of appearances,
+mean forecast, observed win rate and a Wilson interval for that observed
+rate. Fewer than 30 appearances is labeled a small sample, a display
+convention rather than a validated threshold. Roster changes, game
+dependence and previously studied historical outcomes limit interpretation.
+
+For team $t$ and probability band $B$, let $n_{tB}$ be the number of
+eligible team appearances and $r_j=y_j-p_j$ their forecast residuals.
+An optional descriptive pooling view shows
+\[
+  \bar r_{tB}=\frac{1}{n_{tB}}\sum_{j\in(t,B)}r_j,
+  \qquad
+  \widetilde r_{tB}=
+  \frac{\sum_{j\in(t,B)}r_j+80\bar r_B}{n_{tB}+80},
+\]
+where $\bar r_B$ is the mean residual over all eligible league team
+appearances in that band. The raw residual is unavailable when
+$n_{tB}=0$; the pooled value requires league evidence. Both sides of a game
+can contribute to the league reference. The reference strength of 80
+appearances is a display convention, not an estimated optimal prior.
+Residuals are displayed in percentage points and never modify the selected
+forecast. Neither this pooling nor the sampling intervals constitute a
+validated probability of forecast correctness or evidence of betting value.
+
+Reported-player details expose prior-history expected minutes and the
+shrunk Game Score per minute proxy already defined for the injury features.
+Their product is a prior contribution proxy, not points lost, replacement
+quality or a causal injury effect. Values require a matching saved state
+or verified pre-cutoff history reconstruction; missing histories remain
+blank. The base-to-published probability difference includes both injury
+covariates and fitted recalibration, and is not an injury-only effect or a
+player-availability uncertainty range. These panels describe evidence
+without changing probabilities, fitting a new model, or claiming improved
+accuracy or profitability.
+
 \section{Current-method reconstruction in the dashboard}
 The past-game dashboard uses a separate reconstruction of the current
 specification. A model change therefore rebuilds past Elo states and win
@@ -812,6 +865,22 @@ an untouched test or the original live track record. The chronological
 backtests reported earlier answer a different question: performance of an
 earlier-season-fitted procedure on the next season. This distinction is
 necessary when comparing updated methodologies after observing outcomes.
+
+Past-game details allow selection of either the current-method replay or
+the original issued forecast where one exists. Stored historical replays
+remain labeled as reconstructions. The final score is presented separately
+from the pregame evidence. Original probabilities and issue times are never
+rewritten, and an unissued game never receives a fabricated original
+forecast. Display-only recovery reconstructs team and player histories
+from games completed strictly before the selected cutoff, preserving the
+daily-slate update ordering. Recovered ratings must match the stored
+pregame ratings before league ranks and player-history values are shown;
+otherwise those details are unavailable. Saved report timing and numerical
+injury covariates are checked before attaching recovered player context.
+The inspected game's outcome and all later results are excluded from its
+calibration and recovered pregame state. This chronological restriction
+does not undo fitting on historical seasons or the source-vintage
+limitations described above.
 
 \section{Reproducibility and live use}
 The repository records source URLs/hashes, validation actions, canonical

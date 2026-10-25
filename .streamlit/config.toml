@@ -18,3 +18,7 @@ toolbarMode = "minimal"
 
 [browser]
 gatherUsageStats = false
+
+[server]
+# Avoid Linux inotify limits leaving imported dashboard modules stale after deploys.
+fileWatcherType = "poll"
