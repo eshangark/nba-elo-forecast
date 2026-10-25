@@ -85,13 +85,13 @@ def forecast_reliability(row, predictions, completions, published_at, now):
             'report_outdated': bool(current and source and current-source > timedelta(hours=16))}
 
 
-def calibration_context(row, evidence, before=None, exact_model=False):
-    """Compare similar confidence, not similar players; never include training replays."""
+def calibration_context(row, evidence, before=None, exact_model=False, allow_replay=False):
+    """Compare probability bands; replay rows require explicit historical-fit opt-in."""
     p = row['home_probability']; confidence = max(p, 1-p)
     target = min(19, int(math.floor(round(confidence*20, 10))))
     selected = []
     for past in evidence:
-        if past.get('kind') not in ['issued_live', 'chronological_backtest']:
+        if past.get('kind') not in (['issued_live', 'chronological_backtest', 'current_method_replay'] if allow_replay else ['issued_live', 'chronological_backtest']):
             continue
         if past.get('home_probability') is None or past.get('home_win') not in (0, 1):
             continue
@@ -134,15 +134,15 @@ def forecast_dependence(row, rankings):
                               'Low-rated favorite' if rank > len(rankings)/2 else 'Upper-half favorite')}
 
 
-def team_calibration_evidence(row, evidence, team, before, exact_model=False, pseudo_count=80):
+def team_calibration_evidence(row, evidence, team, before, exact_model=False, pseudo_count=80, allow_replay=False):
     """Descriptive residual pooling, never a new forecast or confidence percentage."""
     if team not in [row['home'], row['away']] or pseudo_count <= 0:
         raise ValueError('Invalid team or pooling reference')
     probability = row['home_probability'] if team == row['home'] else row['away_probability']
     def index(p):return min(9, int(math.floor(round(p*10,10))))
-    target=index(probability); league=[];own=[];seen=set()
+    target=index(probability); league=[];own=[];own_picks=[];seen=set()
     for past in evidence:
-        if past.get('kind') not in ['issued_live','chronological_backtest']:
+        if past.get('kind') not in (['issued_live', 'chronological_backtest', 'current_method_replay'] if allow_replay else ['issued_live', 'chronological_backtest']):
             continue
         completion=_time(past.get('last_play_at'));cutoff=_time(before)
         if completion is None or cutoff is None or completion >= cutoff:
@@ -160,7 +160,9 @@ def team_calibration_evidence(row, evidence, team, before, exact_model=False, ps
         for name, chance, outcome in [(past['home'],p,y),(past['away'],1-p,1-y)]:
             if index(chance)==target:
                 league.append((chance,outcome))
-                if name==team:own.append((chance,outcome))
+                if name==team:
+                    own.append((chance,outcome))
+                    own_picks.append(int(p >= .5) == y)
     n=len(own);reference=sum(y-p for p,y in league)/len(league) if league else None
     raw=sum(y-p for p,y in own)/n if n else None
     pooled=(sum(y-p for p,y in own)+pseudo_count*reference)/(n+pseudo_count) if reference is not None else None
@@ -171,6 +173,8 @@ def team_calibration_evidence(row, evidence, team, before, exact_model=False, ps
         radius=z*math.sqrt(rate*(1-rate)/n+z*z/(4*n*n))/denominator
         interval=f'{center-radius:.1%}–{center+radius:.1%}'
     return {'team':team,'band':f'{target*10}–{(target+1)*10}%', 'games':n,
+            'wins':sum(y for p,y in own),
+            'winner_accuracy':sum(own_picks)/n if n else None,
             'observed_rate_interval_95':interval,
             'mean_forecast':sum(p for p,y in own)/n if n else None,
             'observed_win_rate':sum(y for p,y in own)/n if n else None,

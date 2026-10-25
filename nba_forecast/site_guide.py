@@ -11,7 +11,7 @@ def home_view():
     st.markdown('**Explore the dashboard**')
     sections = [
         ('Matchup · Focus on one game', 'Search upcoming games and review their saved probabilities, team-strength context, calibration evidence, injury coverage and forecast explanation in one place.'),
-        ('Accuracy · Check the track record', 'Look up a team and season, compare expected with actual wins, and explore probability bands, calibration gaps, sampling intervals, winner accuracy, Brier score and log loss.'),
+        ('Accuracy · Check the track record', 'Explore the latest model across all stored seasons. Look up a team and probability band to compare mean forecast, actual win rate, wins, sampling intervals and winner-pick accuracy. Earlier evaluation records are optional comparisons.'),
         ('Teams · Compare league strength', 'Browse Elo rankings, current-season records and team rating histories. Elo describes relative team strength; a lower-ranked team can still be favored in a particular matchup.'),
         ('Games · Browse the schedule and results', 'Review upcoming forecasts or choose a past date and matchup. Inspect the original issued forecast where available, or a clearly labeled current-method replay, with the final score kept separate from pregame evidence.'),
         ('Methodology · Understand the model', 'Read how Elo, home court, rest, travel, season carryover and injury inputs produce a forecast. Review evaluation results, fitted constants, the technical paper and downloadable season datasets.'),

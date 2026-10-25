@@ -163,3 +163,5 @@ def refresh_current_replays(root, archives=None):
         write_json(directory/'current-model.json', {'season':season,'result':result,'input_sha256':inputs_hash,
                    'source_result_sha256':digest(source['result']),
                    'provenance':'Current-method retrospective reconstruction; original issued forecasts and chronological backtests remain separate.'})
+    from .accuracy_data import write_current_index
+    write_current_index(root, archives)

@@ -68,7 +68,7 @@ jobs:
             echo 'Main changed during collection; refusing to overwrite newer history.'
             exit 1
           fi
-          git add data/seasons/index.json data/seasons/*/live.json data/seasons/*/update_status.json data/seasons/*/current-model.json
+          git add data/seasons/index.json data/seasons/current-model-index.json data/seasons/*/live.json data/seasons/*/update_status.json data/seasons/*/current-model.json
           if git diff --cached --quiet; then
             echo 'No published data changes.'
             exit 0

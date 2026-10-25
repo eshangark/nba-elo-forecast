@@ -1,5 +1,6 @@
 """Focused Matchup and Accuracy tabs; existing dashboard tabs remain intact."""
 import json
+import math
 from datetime import datetime, timezone
 
 import pandas as pd
@@ -47,15 +48,19 @@ def _table(records, *, percentages=()):
 
 def accuracy_lookup(root, entries, original_archive, selected):
     st.subheader('Accuracy explorer')
-    st.write('Use Accuracy to explore the model’s track record by evidence source, season and team. Start with the selectors, then use Season overview, Team overview or Probability ranges for the comparison you need. Winner accuracy measures how often the favored team won; calibration compares mean forecast with actual win rate across games, and a small calibration gap is not an accuracy percentage. Select an upcoming matchup under Accuracy evidence cutoff to restrict evidence to what was available before that forecast. Keep original issued forecasts, chronological backtests and replays separate, and read sample sizes and intervals alongside the rates.')
+    st.write('Explore history recalculated with the latest model. Choose a season and team, then open Probability ranges to compare the team’s mean forecast with how often it actually won in that band. Winner accuracy separately measures how often the model picked the game’s winner. Read the game count and interval alongside each rate. Seasons used to fit the model describe historical fit, not proven performance on unseen games. Earlier-model benchmarks and the original issued track record are available in the optional comparison below.')
     try:
         catalog, notices = accuracy_catalog(root, entries, original_archive)
     except (ValueError, KeyError, OSError) as error:
         st.error(f'Accuracy data integrity check failed: {error}. Scores are withheld rather than combining inconsistent records.')
         return
+    with st.expander('Optional: compare earlier fits or the original issued track record'):
+        source = st.selectbox('Analysis basis', list(SOURCES), format_func=SOURCES.get, key='accuracy_source_v2')
     source_column, cutoff_column = st.columns(2)
-    source = source_column.selectbox('Accuracy evidence source', list(SOURCES), format_func=SOURCES.get, key='accuracy_source')
     source_rows = catalog[source]
+    source_column.markdown('**'+SOURCES[source]+'**')
+    if source_rows and source == 'replay':
+        source_column.caption(f"Model v{source_rows[0]['model_version']} · {source_rows[0]['forecast_model_sha256'][:12]}")
     upcoming = {r['game_id']: r for r in (original_archive or {}).get('upcoming', [])}
     reference = cutoff_column.selectbox('Accuracy evidence cutoff', ['All completed games']+list(upcoming),
                              key=f'accuracy_cutoff_{selected}',
@@ -69,7 +74,7 @@ def accuracy_lookup(root, entries, original_archive, selected):
     elif source == 'issued':
         st.caption('Original probabilities actually issued before tip-off. One scored forecast per completed game; different model versions may appear. Historical replays and unissued games are excluded.')
     else:
-        st.warning('Current-method reconstruction, not the original issued track record. Training seasons measure historical fit. Replay calibration is excluded from reliability evidence.')
+        st.info('Latest-model historical fit: the same current model is applied to stored pregame inputs and compared with actual outcomes. Training seasons measure historical fit, not unseen-game accuracy. Original forecasts remain unchanged in their separate track record.')
     if not source_rows:
         st.info('No evaluated forecasts are available for this evidence source.')
         for note in notices:
@@ -78,7 +83,7 @@ def accuracy_lookup(root, entries, original_archive, selected):
     seasons = sorted({r['season'] for r in source_rows}, reverse=True)
     choices = ['All available seasons']+seasons
     season_column, team_column = st.columns(2)
-    scope = season_column.selectbox('Accuracy season', choices, index=choices.index(selected) if selected in choices else 0,
+    scope = season_column.selectbox('Accuracy season', choices, index=0 if source == 'replay' else choices.index(selected) if selected in choices else 0,
                          key=f'accuracy_season_{source}')
     rows = [r for r in source_rows if scope == choices[0] or r['season'] == scope]
     teams = sorted({r[s] for r in rows for s in ['home', 'away']})
@@ -92,8 +97,8 @@ def accuracy_lookup(root, entries, original_archive, selected):
     cols[3].metric('Log loss', f"{scored['log_loss']:.3f}")
     st.caption('Each game is counted once in these scores. Winner accuracy picks home at exactly 50%, consistently with Games. Lower Brier score and log loss are better. Selecting a team restricts scores to its games.')
     if source == 'replay':
-        roles = sorted({f"{r['season']}: {r.get('evaluation_role') or 'retrospective reconstruction'}" for r in rows})
-        st.caption('Evaluation roles · '+' · '.join(roles))
+        training = sum(r.get('evaluation_role') == 'training_replay' for r in rows)
+        st.caption(f'{training} training-history games and {len(rows)-training} post-fit reconstructed games in this season scope. Per-season roles are shown below.')
     if source == 'issued':
         versions = sorted({str(r.get('model_version') or 'unrecorded') for r in filtered})
         st.caption('Issued model versions in this selection: '+', '.join(versions)+'.')
@@ -105,8 +110,6 @@ def accuracy_lookup(root, entries, original_archive, selected):
         records = team_scores(filtered)
         if team != 'All teams':
             records = [r for r in records if r['Team'] == team]
-        if source == 'replay':
-            records = [{k: r[k] for k in ['Team', 'Games', 'Winner accuracy', 'Brier score', 'Log loss']} for r in records]
         _table(records, percentages=['Winner accuracy', 'Mean forecast', 'Actual win rate'])
         st.caption('Team summaries use that team’s own probabilities and outcomes. Expected wins are the sum of its forecasts. Calibration gap is actual minus predicted in percentage points; positive means more wins than forecast. Winner accuracy still evaluates the game’s favored pick, including when this team was the underdog. Each game appears for two teams; do not sum team game counts as distinct games.')
         if team != 'All teams':
@@ -115,20 +118,31 @@ def accuracy_lookup(root, entries, original_archive, selected):
             for season in seasons:
                 summary = next((r for r in team_scores([r for r in source_rows if r['season'] == season]) if r['Team'] == team), None)
                 if summary:
-                    if source == 'replay':
-                        summary = {k: summary[k] for k in ['Team', 'Games', 'Winner accuracy', 'Brier score', 'Log loss']}
                     trend.append({'Season': season, **summary})
             _table(trend, percentages=['Winner accuracy', 'Mean forecast', 'Actual win rate'])
     with calibration_tab:
-        if source == 'replay':
-            st.info('Calibration reliability tables exclude current-method replays, including seasons used for fitting. Select chronological backtests or original issued forecasts for calibration evidence.')
-        elif team == 'All teams':
+        if team == 'All teams':
             st.markdown('**League calibration by favorite probability**')
-            _table(favorite_calibration(rows), percentages=['Mean forecast', 'Actual win rate', 'Lower 95%', 'Upper 95%'])
+            _table(favorite_calibration(rows), percentages=['Mean forecast', 'Actual win rate', 'Winner accuracy', 'Lower 95%', 'Upper 95%'])
             st.caption('Five-point bands use one favorite per game; these are the same bands used in Games. Select a team above for its own ten-point probability bands.')
         else:
             st.markdown(f'**{team}: calibration by its own probability range**')
-            _table(team_bands(rows, team), percentages=['Mean forecast', 'Actual win rate'])
+            bands = team_bands(rows, team, allow_replay=source == 'replay')
+            options = ['All probability bands']+[r['Probability range'] for r in bands]
+            default = 0
+            if reference in upcoming and team in [upcoming[reference]['home'], upcoming[reference]['away']]:
+                forecast = upcoming[reference]
+                p = forecast['home_probability'] if forecast['home'] == team else forecast['away_probability']
+                default = 1+min(9, int(math.floor(round(p*10, 10))))
+                st.caption(f'{team} has a {p:.1%} forecast in the selected upcoming matchup. Its corresponding band is selected below.')
+            band = st.selectbox('Accuracy probability band', options, index=default,
+                                key=f'accuracy_band_{source}_{scope}_{team}_{reference}')
+            shown = bands if band == options[0] else [r for r in bands if r['Probability range'] == band]
+            _table(shown, percentages=['Mean forecast', 'Actual win rate', 'Winner accuracy'])
+            if len(shown) == 1 and shown[0]['Games']:
+                item = shown[0]
+                st.write(f"{team} won {item['Wins']} of {item['Games']} games in the {item['Probability range']} band: mean forecast {item['Mean forecast']:.1%}, actual win rate {item['Actual win rate']:.1%}.")
+            st.caption('Actual win rate counts this team winning in the displayed band. Winner accuracy counts the model’s favored pick being correct in those games; in underdog bands that usually means the opponent won. They are not interchangeable.')
             st.caption('Ten-point bands include their lower boundary and exclude their upper boundary; the final band includes 100%. Empty bands remain visible. These use the same binning, Wilson intervals and small-sample labels as Games. Match a Games panel’s seasons, pregame cutoff and model fingerprint before comparing counts; this explorer otherwise includes all completed games in its selected scope.')
         st.caption('Intervals describe uncertainty in historical group win rates, not a range for an individual game’s probability. Small samples, changing rosters, game dependence and model uncertainty limit interpretation. A close season average can hide errors that cancel across probability bands.')
     with st.expander('Scored records and source coverage'):

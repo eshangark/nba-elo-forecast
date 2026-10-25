@@ -4,8 +4,8 @@ import math
 from pathlib import Path
 
 from .forecasting import INJURY_FEATURES
-from .live import digest
 from .model import logistic, timestamp
+from .accuracy_data import current_view_matches
 
 
 def elo_ranks(rankings):
@@ -20,8 +20,9 @@ def previous_seasons(archives, entries, season, fingerprint=None):
         candidate_path = Path(archives)/entry['season']/'current-model.json'
         if candidate_path.exists():
             candidate = json.loads(candidate_path.read_text())
-            if (candidate['result']['forecast_model_sha256'] == fingerprint
-                    and candidate['source_result_sha256'] == digest(view)):
+            index_path = Path(archives)/'current-model-index.json'
+            index = json.loads(index_path.read_text()) if index_path.exists() else None
+            if current_view_matches(archive, candidate, fingerprint, index):
                 view = candidate['result']
         result.append({'season': entry['season'], 'ranks': elo_ranks(view['rankings']), 'rankings': view['rankings']})
     return result

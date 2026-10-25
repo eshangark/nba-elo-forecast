@@ -68,10 +68,11 @@ class AppTests(unittest.TestCase):
         stages=[f.value for f in app.dataframe if 'Stage' in f.value.columns]
         self.assertGreaterEqual(len(stages),1)
         self.assertAlmostEqual(stages[0].iloc[-1]['Home win %'],chosen['home_probability']*100)
-        game_counts=[int(m.value) for m in app.metric if m.label=='Games scored']
+        historical = next(t for t in app.tabs if t.label == 'Historical chronological backtests')
+        original_view = next(t for t in app.tabs if t.label == 'Original forecasts this season')
         issued=sum(r.get('kind')=='issued_live' and r.get('home_probability') is not None for r in original['result']['predictions'])
-        self.assertEqual(game_counts[0],3690)
-        self.assertEqual(game_counts[1],issued)
+        self.assertEqual(next(int(m.value) for m in historical.metric if m.label == 'Games scored'),3690)
+        self.assertEqual(next(int(m.value) for m in original_view.metric if m.label == 'Games scored'),issued)
 
     def test_past_matchup_selection_and_original_issued_basis(self):
         from streamlit.testing.v1 import AppTest
@@ -155,9 +156,9 @@ class AppTests(unittest.TestCase):
         lookup_stages = next(f.value for f in matchup.dataframe if 'Stage' in f.value.columns)
         self.assertTrue(games_stages.equals(lookup_stages))
         self.assertAlmostEqual(lookup_stages.iloc[-1]['Home win %'], chosen['home_probability']*100)
-        games_calibration = [f.value for f in games.dataframe if 'Probability range' in f.value.columns][:2]
+        games_calibration = [f.value for f in games.dataframe if 'Probability range' in f.value.columns][:3]
         lookup_calibration = [f.value for f in matchup.dataframe if 'Probability range' in f.value.columns]
-        self.assertEqual(len(lookup_calibration), 2)
+        self.assertEqual(len(lookup_calibration), 3)
         for old, new in zip(games_calibration, lookup_calibration):
             self.assertTrue(old.equals(new))
 
@@ -170,6 +171,8 @@ class AppTests(unittest.TestCase):
         catalog, _ = accuracy_catalog(root, load_index(root/'data/seasons')[0])
         app = AppTest.from_file(str(root/'app.py'), default_timeout=30).run()
         self.assertFalse(app.exception)
+        app.selectbox(key='accuracy_source_v2').select('chronological')
+        app.run(); self.assertFalse(app.exception)
         app.selectbox(key='accuracy_team_chronological_All available seasons').select('New Orleans Pelicans')
         app.run(); self.assertFalse(app.exception)
         accuracy = next(t for t in app.tabs if t.label == 'Accuracy')
@@ -178,20 +181,40 @@ class AppTests(unittest.TestCase):
         self.assertEqual(bands['Games'].tolist(), [r['Games'] for r in expected])
         self.assertEqual(bands['Actual win rate'].fillna(-1).tolist(),
                          [r['Actual win rate'] if r['Actual win rate'] is not None else -1 for r in expected])
-        app.selectbox(key='accuracy_source').select('issued')
+        app.selectbox(key='accuracy_source_v2').select('issued')
         app.run(); self.assertFalse(app.exception)
         accuracy = next(t for t in app.tabs if t.label == 'Accuracy')
         actual_count = next(int(m.value) for m in accuracy.metric if m.label == 'Evaluated games')
         self.assertEqual(actual_count, sum(r['season'] == season for r in catalog['issued']))
-        app.selectbox(key='accuracy_source').select('replay')
+        app.selectbox(key='accuracy_source_v2').select('replay')
         app.run(); self.assertFalse(app.exception)
         app.selectbox(key='accuracy_season_replay').select('2024-25')
         app.run(); self.assertFalse(app.exception)
         accuracy = next(t for t in app.tabs if t.label == 'Accuracy')
-        self.assertTrue(any('Training seasons measure historical fit' in w.value for w in accuracy.warning))
-        self.assertFalse(any('Probability range' in f.value.columns for f in accuracy.dataframe))
-        self.assertTrue(any('Calibration reliability tables exclude' in i.value for i in accuracy.info))
+        self.assertTrue(any('training-history games' in c.value for c in accuracy.caption))
+        self.assertTrue(any('Probability range' in f.value.columns for f in accuracy.dataframe))
+        self.assertTrue(any('Latest-model historical fit' in i.value for i in accuracy.info))
         app.session_state['selected_season'] = {'value': '2024-25'}
         app.run(); self.assertFalse(app.exception)
         matchup = next(t for t in app.tabs if t.label == 'Matchup')
         self.assertTrue(any('No upcoming forecasts' in i.value for i in matchup.info))
+
+    def test_accuracy_defaults_to_latest_model_with_team_band_win_rates(self):
+        import json
+        from streamlit.testing.v1 import AppTest
+        root = Path(__file__).resolve().parents[1]
+        index = json.loads((root/'data/seasons/current-model-index.json').read_text())
+        app = AppTest.from_file(str(root/'app.py'), default_timeout=30).run()
+        self.assertFalse(app.exception)
+        self.assertEqual(app.selectbox(key='accuracy_source_v2').value, 'replay')
+        self.assertEqual(app.selectbox(key='accuracy_season_replay').value, 'All available seasons')
+        accuracy = next(t for t in app.tabs if t.label == 'Accuracy')
+        self.assertEqual(next(int(m.value) for m in accuracy.metric if m.label == 'Evaluated games'), index['summary']['games'])
+        app.selectbox(key='accuracy_team_replay_All available seasons').select('San Antonio Spurs')
+        app.run(); self.assertFalse(app.exception)
+        accuracy = next(t for t in app.tabs if t.label == 'Accuracy')
+        bands = next(f.value for f in accuracy.dataframe if 'Probability range' in f.value.columns)
+        expected = index['team_probability_bands']['San Antonio Spurs']
+        self.assertEqual(bands['Games'].tolist(), [r['Games'] for r in expected])
+        for column in ['Actual win rate', 'Mean forecast', 'Winner accuracy']:
+            self.assertEqual(bands[column].fillna(-1).tolist(), [r[column] if r[column] is not None else -1 for r in expected])

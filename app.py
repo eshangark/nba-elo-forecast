@@ -12,10 +12,10 @@ from nba_forecast import __version__
 from nba_forecast.seasons import load_index, load_season
 from nba_forecast.ui import native_select
 from nba_forecast.forecasting import Forecaster
-from nba_forecast.live import digest
 from nba_forecast.dashboard_views import matchup_overview, performance_view, past_game_details
 from nba_forecast.decision_views import matchup_lookup, accuracy_lookup
 from nba_forecast.site_guide import home_view
+from nba_forecast.accuracy_data import current_view_matches
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -55,8 +55,9 @@ def render_dashboard():
     if archive and replay_path.exists():
         candidate = json.loads(replay_path.read_text())
         bundle = Forecaster(json.loads((ROOT/'models/nba-v0.3/bundle.json').read_text()))
-        if (candidate['result']['forecast_model_sha256'] == bundle.fingerprint
-                and candidate['source_result_sha256'] == digest(archive['result'])):
+        current_index = ARCHIVES/'current-model-index.json'
+        model_index = json.loads(current_index.read_text()) if current_index.exists() else None
+        if current_view_matches(archive, candidate, bundle.fingerprint, model_index):
             current_replay = candidate
             archive['result'] = candidate['result']
         else:

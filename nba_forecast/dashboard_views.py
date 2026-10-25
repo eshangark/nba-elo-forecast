@@ -195,29 +195,49 @@ def reliability_view(row, checks, archive, original_archive, archives, completio
     with st.expander('Inspect forecast reliability', expanded=True):
         evidence_tabs=st.tabs(['Calibration evidence','Player coverage','Forecast inputs'])
         with evidence_tabs[0]:
-            st.markdown('**Historical calibration for this probability range**')
-            audit_path = Path(archives).parents[1]/'models/nba-v0.3/matched-evaluation.json'
-            if audit_path.exists():
-                historical_rows=json.loads(audit_path.read_text())['published_rows']
-                historical_completions={}
-                for prior_season in ['2023-24','2024-25','2025-26']:
-                    games_path=Path(archives)/prior_season/'games.json'
-                    if games_path.exists():
-                        historical_completions.update({g['game_id']:g['last_play_at'] for g in json.loads(games_path.read_text())})
-                evidence = [{**r, 'kind':'chronological_backtest','last_play_at':historical_completions.get(r['game_id'])} for r in historical_rows]
-                evidence=[r for r in evidence if r.get('last_play_at') and timestamp(r['last_play_at'])<timestamp(evidence_cutoff or now)]
-                band = calibration_context(row, evidence)
-                _reliability_band('Retrospective chronological benchmark · 2023–24 through 2025–26', band)
-                st.caption('Grouped by favorite probability, not similar rosters, injury coverage or season stage. Earlier-prefix fitted models differ from the current frozen bundle; these outcomes were previously studied. Training replays are excluded.')
-                team_evidence_view(row,evidence,min(now,evidence_cutoff or now,key=timestamp),'Team calibration · historical chronological forecasts')
-            else:
-                st.info('Historical calibration benchmark unavailable.')
-            evidence = [{**r, 'last_play_at':completions.get(r['game_id'])} for r in issued_rows(original_archive)]
-            cutoff = evidence_cutoff
-            band = calibration_context(row, evidence, before=min(now, cutoff, key=timestamp), exact_model=True) if cutoff else None
-            _reliability_band('Original issued forecasts · same frozen model · completed before this forecast', band)
-            if cutoff:
-                team_evidence_view(row,evidence,min(now,cutoff,key=timestamp),'Team calibration · same-model issued forecasts',exact_model=True)
+            st.markdown('**Latest-model history for this probability range**')
+            from .accuracy_data import accuracy_catalog
+            from .seasons import load_index
+            root = Path(archives).parents[1]
+            try:
+                catalog, notices = accuracy_catalog(root, load_index(archives)[0], original_archive)
+                latest = catalog['replay']
+                cutoff = min(now, evidence_cutoff or now, key=timestamp)
+                band = calibration_context(row, latest, before=cutoff, allow_replay=True)
+                _reliability_band('Latest model · reconstructed history', band)
+                st.caption('Recalculated with the active model, using results completed before this forecast cutoff. Historical training seasons describe model fit, not unseen-game accuracy. These are reconstructed forecasts, not predictions originally issued at the time.')
+                if latest:
+                    if row.get('forecast_model_sha256') != latest[0].get('forecast_model_sha256'):
+                        st.caption('The inspected forecast used a different model; this latest-model history does not validate its original probability.')
+                    team_evidence_view(row, latest, cutoff, 'Team calibration · latest-model historical fit', allow_replay=True)
+                else:
+                    for note in notices: st.caption(note)
+            except (ValueError, KeyError, OSError) as error:
+                st.info(f'Latest-model history is unavailable until its integrity checks pass: {error}')
+            with st.expander('Earlier-fit benchmark and original issued track record'):
+                st.markdown('**Historical calibration for this probability range**')
+                audit_path = Path(archives).parents[1]/'models/nba-v0.3/matched-evaluation.json'
+                if audit_path.exists():
+                    historical_rows=json.loads(audit_path.read_text())['published_rows']
+                    historical_completions={}
+                    for prior_season in ['2023-24','2024-25','2025-26']:
+                        games_path=Path(archives)/prior_season/'games.json'
+                        if games_path.exists():
+                            historical_completions.update({g['game_id']:g['last_play_at'] for g in json.loads(games_path.read_text())})
+                    evidence = [{**r, 'kind':'chronological_backtest','last_play_at':historical_completions.get(r['game_id'])} for r in historical_rows]
+                    evidence=[r for r in evidence if r.get('last_play_at') and timestamp(r['last_play_at'])<timestamp(evidence_cutoff or now)]
+                    band = calibration_context(row, evidence)
+                    _reliability_band('Retrospective chronological benchmark · 2023–24 through 2025–26', band)
+                    st.caption('Grouped by favorite probability, not similar rosters, injury coverage or season stage. Earlier-prefix fitted models differ from the current frozen bundle; these outcomes were previously studied. Training replays are excluded.')
+                    team_evidence_view(row,evidence,min(now,evidence_cutoff or now,key=timestamp),'Team calibration · historical chronological forecasts')
+                else:
+                    st.info('Historical calibration benchmark unavailable.')
+                evidence = [{**r, 'last_play_at':completions.get(r['game_id'])} for r in issued_rows(original_archive)]
+                cutoff = evidence_cutoff
+                band = calibration_context(row, evidence, before=min(now, cutoff, key=timestamp), exact_model=True) if cutoff else None
+                _reliability_band('Original issued forecasts · same frozen model · completed before this forecast', band)
+                if cutoff:
+                    team_evidence_view(row,evidence,min(now,cutoff,key=timestamp),'Team calibration · same-model issued forecasts',exact_model=True)
             st.caption('Intervals describe binomial sampling uncertainty, not model uncertainty, and ignore dependence between games. Counts are shown without assigning a confidence score.')
         with evidence_tabs[1]:
             st.markdown('**Injury coverage and unresolved availability**')
@@ -253,13 +273,13 @@ def reliability_view(row, checks, archive, original_archive, archives, completio
             st.caption('Player-availability scenario sensitivity is unavailable. The captured adjustment is not an uncertainty range or a player-in/player-out forecast; no scenarios are generated here.')
 
 
-def team_evidence_view(row,evidence,before,label,exact_model=False):
+def team_evidence_view(row,evidence,before,label,exact_model=False,allow_replay=False):
     st.markdown('**'+label+'**')
     records=[];details=[]
     for team in [row['home'],row['away']]:
-        item=team_calibration_evidence(row,evidence,team,before,exact_model=exact_model)
-        records.append({'Team':team,'Probability range':item['band'],'Games':item['games'],
-                        'Mean forecast':item['mean_forecast'],'Actual win rate':item['observed_win_rate'],
+        item=team_calibration_evidence(row,evidence,team,before,exact_model=exact_model,allow_replay=allow_replay)
+        records.append({'Team':team,'Probability range':item['band'],'Games':item['games'],'Wins':item['wins'],
+                        'Mean forecast':item['mean_forecast'],'Actual win rate':item['observed_win_rate'],'Winner accuracy':item['winner_accuracy'],
                         'Observed-rate 95% interval':item['observed_rate_interval_95'],
                         'Evidence':item['sample_label'] if item['games']<30 else 'Historical sample'})
         details.append({'Team':team,'Actual − predicted (pp)':item['raw_error_pp'],
@@ -267,6 +287,7 @@ def team_evidence_view(row,evidence,before,label,exact_model=False):
                         'League-reference appearances':item['reference_appearances']})
     st.dataframe(pd.DataFrame(records),hide_index=True,width='stretch',column_config={
         'Team':st.column_config.TextColumn(width=190),
+        'Winner accuracy':st.column_config.NumberColumn(format='percent'),
         'Mean forecast':st.column_config.NumberColumn(format='percent'),
         'Actual win rate':st.column_config.NumberColumn(format='percent')})
     st.caption('Each team uses its own ten-point probability range. The Wilson interval describes uncertainty in its historical win rate, not this game’s chance. It ignores dependence and model uncertainty; roster changes also limit relevance. Fewer than 30 games is marked a small sample.')
@@ -314,7 +335,7 @@ def calibration_view(rows):
 
 def performance_view(root, original_archive, result, season):
     st.subheader('Model performance')
-    historical,issued,replayed=st.tabs(['Historical chronological backtests','Original forecasts this season','Current-method replay'])
+    replayed,historical,issued=st.tabs(['Current-method replay','Historical chronological backtests','Original forecasts this season'])
     with historical:
         st.write('**Earlier-season fits, evaluated on 2023–24 through 2025–26 · 3,690 shared games, including openers.**')
         st.caption('Retrospective chronological evaluation. These outcomes were previously studied, so this is not newly untouched evidence. This is the historical benchmark, not the selected season’s live score.')
@@ -353,4 +374,5 @@ def performance_view(root, original_archive, result, season):
                              format_func=lambda x:'All games, including openers' if x=='all' else 'After ten prior games per team')
         rows=[r for r in result['predictions'] if r.get('home_probability') is not None and (window=='all' or r['eligible_for_evaluation'])]
         scorecard(rows,'No replay games qualify for this window.')
-        st.caption('Replay scores are separate from the historical chronological benchmark and original live scores. Calibration evidence is shown in those two tabs, excluding training replays.')
+        calibration_view(rows)
+        st.caption('Latest-model reconstructed scores and band rates are separate from the earlier-fit benchmark and original live scores. Training-season calibration describes historical fit, not unseen-game accuracy.')
