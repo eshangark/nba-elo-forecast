@@ -1,8 +1,8 @@
-# Parallax
+# Parallax NBA
 
 **Application release: v0.3.0**
 
-Parallax combines a mathematical model for NBA game predictions with a dashboard for understanding probabilities, evaluating historical performance and making informed betting decisions. This project is adapted from work developed for the Wharton Data Science Competition.
+Parallax NBA combines a mathematical model for NBA game predictions with a dashboard for understanding probabilities, evaluating historical performance and making informed betting decisions. This project is adapted from work developed for the Wharton Data Science Competition.
 
 [Application](https://parallax-nba.streamlit.app/) · [Technical paper](paper/main.pdf) · [LaTeX source](paper/main.tex)
 

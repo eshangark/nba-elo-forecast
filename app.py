@@ -34,9 +34,9 @@ def model_frame(records):
         rows.append(row)
     return pd.DataFrame(rows)
 
-st.set_page_config(page_title="Parallax", page_icon="🏀", layout="wide",
-                   menu_items={"About": "Parallax — team ratings and pregame probabilities."})
-st.title("Parallax")
+st.set_page_config(page_title="Parallax NBA", page_icon="🏀", layout="wide",
+                   menu_items={"About": "Parallax NBA — team ratings and pregame probabilities."})
+st.title("Parallax NBA")
 st.caption(f"Team strength, matchup probabilities, and the record behind each forecast. · App v{__version__}")
 
 @st.fragment(run_every="60s")
@@ -271,7 +271,7 @@ def render_dashboard():
         st.markdown("[Technical paper on GitHub](https://github.com/eshangark/parallax/blob/main/paper/main.pdf)")
         with st.expander("Technical manuscript source"):
             st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),
-                               file_name="parallax.tex", mime="text/plain")
+                               file_name="parallax-nba.tex", mime="text/plain")
 
 
 render_dashboard()
