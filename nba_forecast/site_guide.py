@@ -4,8 +4,8 @@ import streamlit as st
 
 def home_view():
     st.subheader('Understand the forecast before you decide')
-    st.write('NBA Elo Forecast brings together team strength, pregame win probabilities and the evidence behind them. Explore upcoming matchups, revisit past predictions and check how forecasts have performed across teams, seasons and probability ranges. Use the tabs above to move between views; the Season selector applies throughout the dashboard.')
-    st.markdown('[Read the technical paper](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.pdf) for the full model specification, evaluation results and limitations.')
+    st.write('Parallax brings together team strength, pregame win probabilities and the evidence behind them. Explore upcoming matchups, revisit past predictions and check how forecasts have performed across teams, seasons and probability ranges. Use the tabs above to move between views; the Season selector applies throughout the dashboard.')
+    st.markdown('[Read the technical paper](https://github.com/eshangark/parallax/blob/main/paper/main.pdf) for the full model specification, evaluation results and limitations.')
     st.markdown('**A useful starting point**')
     st.write('Open Matchup and search for an upcoming game. Read the predicted chances alongside team strength, season evidence and player coverage. Then compare the mean forecast with actual historical win rates in Calibration evidence, checking the sample size and interval. Use Accuracy when you want to explore that record in more detail. A higher win probability alone does not establish that a bet is worth its price.')
     st.markdown('**Explore the dashboard**')

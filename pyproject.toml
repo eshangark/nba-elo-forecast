@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nba-elo-forecast"
+name = "parallax"
 dynamic = ["version"]
-description = "Reproducible NBA team ratings and pregame probability research"
+description = "NBA forecasts and an evidence-driven basketball analytics dashboard"
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
 dependencies = ["tzdata>=2024.1"]

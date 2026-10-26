@@ -34,9 +34,9 @@ def model_frame(records):
         rows.append(row)
     return pd.DataFrame(rows)
 
-st.set_page_config(page_title="NBA Elo Forecast", page_icon="🏀", layout="wide",
-                   menu_items={"About": "NBA Elo Forecast — team ratings and pregame probabilities."})
-st.title("NBA Elo Forecast")
+st.set_page_config(page_title="Parallax", page_icon="🏀", layout="wide",
+                   menu_items={"About": "Parallax — team ratings and pregame probabilities."})
+st.title("Parallax")
 st.caption(f"Team strength, matchup probabilities, and the record behind each forecast. · App v{__version__}")
 
 @st.fragment(run_every="60s")
@@ -268,10 +268,10 @@ def render_dashboard():
         st.caption("Sources: ESPN records archived by SportsDataverse, validated against primary ESPN summaries where needed; official NBA injury reports; GeoNames venue-city coordinates and time zones. Travel is an estimate between cities.")
         with st.expander("Fitted NBA constants"):
             st.json(result['parameters'] if result else json.loads((ROOT / 'models/nba-v0.3/bundle.json').read_text())['core_parameters'])
-        st.markdown("[Technical paper on GitHub](https://github.com/eshangark/nba-elo-forecast/blob/main/paper/main.pdf)")
+        st.markdown("[Technical paper on GitHub](https://github.com/eshangark/parallax/blob/main/paper/main.pdf)")
         with st.expander("Technical manuscript source"):
             st.download_button("Download LaTeX source", (ROOT / "paper" / "main.tex").read_text(),
-                               file_name="nba-elo-forecast.tex", mime="text/plain")
+                               file_name="parallax.tex", mime="text/plain")
 
 
 render_dashboard()

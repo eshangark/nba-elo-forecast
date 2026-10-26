@@ -1,10 +1,10 @@
-# NBA Elo Forecast
+# Parallax
 
 **Application release: v0.3.0**
 
-NBA team ratings and pregame win probabilities, with historical backtesting and automatic after-game updates. This project is adapted from work developed for the Wharton Data Science Competition.
+Parallax combines a mathematical model for NBA game predictions with a dashboard for understanding probabilities, evaluating historical performance and making informed betting decisions. This project is adapted from work developed for the Wharton Data Science Competition.
 
-[Application](https://eshan-nba-elo-forecast.streamlit.app/) · [Technical paper](paper/main.pdf) · [LaTeX source](paper/main.tex)
+[Application](https://parallax-nba.streamlit.app/) · [Technical paper](paper/main.pdf) · [LaTeX source](paper/main.tex)
 
 The application displays its release version beside the introduction. Package metadata reads the same version from `nba_forecast.__version__`. Forecast/model versions are separate: the active model is v0.3.0, while the base Elo engine and retained historical records preserve their original v0.2.0 identifiers.
 
