@@ -45,17 +45,17 @@
     },
     "2026-27": {
       "file": "2026-27/current-model.json",
-      "source_result_sha256": "b72153fa9e200d37a9af3b6e9785671820b36dfb973626cd54e1504b22f72d1b",
-      "input_sha256": "d5c8d27b3fc352ac8397753293e719dde6075fe5f111552aaf9c0b7f53a8c986",
-      "result_sha256": "6a327f4c875ee2b17a7d142d5d16f349465f33097cbecd87e5e06cadf09611a3",
+      "source_result_sha256": "36825ac8e448a89ced134caf4d7d502f62fdceae35243541123957ff0515378f",
+      "input_sha256": "3b4295432d8461d0f4d9a8ed6cf3434b0fa2ea78eb8e1364779f8e6c8f90d0af",
+      "result_sha256": "0eb3d30209b75f6f73a3560b24ff10c95531331c61566e79370ad4f3ec12000b",
       "games": 52,
       "evaluation_role": "post_fit_replay"
     }
   },
   "summary": {
     "games": 6202,
-    "log_loss": 0.6064579298184595,
-    "brier_score": 0.20973067394144576,
+    "log_loss": 0.6064580167797473,
+    "brier_score": 0.20973071500214693,
     "winner_accuracy": 0.6701064172847468,
     "tie_policy": "pick home when probability equals 0.5",
     "calibration": [
@@ -84,7 +84,7 @@
         "lower": 0.3,
         "upper": 0.4,
         "games": 682,
-        "mean_probability": 0.35429173203894365,
+        "mean_probability": 0.3542922207270174,
         "observed_home_win_rate": 0.37976539589442815
       },
       {
@@ -136,8 +136,8 @@
       "Season": "2026-27",
       "Games": 52,
       "Winner accuracy": 0.6538461538461539,
-      "Brier score": 0.20901441737052998,
-      "Log loss": 0.604433951270537,
+      "Brier score": 0.20901931464877274,
+      "Log loss": 0.6044443230764426,
       "Evaluation role": "Post-fit reconstruction"
     },
     {
@@ -2483,14 +2483,14 @@
       "Team": "Memphis Grizzlies",
       "Games": 4,
       "Winner accuracy": 0.75,
-      "Brier score": 0.2008070266773786,
-      "Log loss": 0.5935313103872433,
-      "Expected wins": 2.2192346520351305,
+      "Brier score": 0.20087069129453455,
+      "Log loss": 0.5936661438640156,
+      "Expected wins": 2.2189013667688657,
       "Actual wins": 4,
-      "Wins \u2212 expected": 1.7807653479648695,
-      "Mean forecast": 0.5548086630087826,
+      "Wins \u2212 expected": 1.7810986332311343,
+      "Mean forecast": 0.5547253416922164,
       "Actual win rate": 1.0,
-      "Calibration gap (pp)": 44.51913369912174
+      "Calibration gap (pp)": 44.527465830778354
     },
     {
       "Season": "2026-27",
@@ -2679,14 +2679,14 @@
       "Team": "Utah Jazz",
       "Games": 4,
       "Winner accuracy": 0.75,
-      "Brier score": 0.21995551071953762,
-      "Log loss": 0.6288264506565537,
-      "Expected wins": 1.3304006761679859,
+      "Brier score": 0.22001917533669357,
+      "Log loss": 0.6289612841333261,
+      "Expected wins": 1.3307339614342506,
       "Actual wins": 1,
-      "Wins \u2212 expected": -0.33040067616798585,
-      "Mean forecast": 0.33260016904199646,
+      "Wins \u2212 expected": -0.3307339614342506,
+      "Mean forecast": 0.33268349035856265,
       "Actual win rate": 0.25,
-      "Calibration gap (pp)": -8.260016904199647
+      "Calibration gap (pp)": -8.268349035856264
     },
     {
       "Season": "2026-27",
@@ -4343,10 +4343,10 @@
         "Probability range": "60\u201370%",
         "Games": 54,
         "Wins": 40,
-        "Mean forecast": 0.6479815211719931,
+        "Mean forecast": 0.647975349222618,
         "Actual win rate": 0.7407407407407407,
         "Winner accuracy": 0.7407407407407407,
-        "Calibration gap (pp)": 9.27592195687475,
+        "Calibration gap (pp)": 9.27653915181228,
         "Observed-rate 95% interval": "61.1%\u201383.9%",
         "Evidence": "Read with sampling uncertainty"
       },
@@ -5878,10 +5878,10 @@
         "Probability range": "30\u201340%",
         "Games": 67,
         "Wins": 19,
-        "Mean forecast": 0.34781255002452555,
+        "Mean forecast": 0.3478175244314847,
         "Actual win rate": 0.2835820895522388,
         "Winner accuracy": 0.7164179104477612,
-        "Calibration gap (pp)": -6.423046047228677,
+        "Calibration gap (pp)": -6.4235434879245945,
         "Observed-rate 95% interval": "19.0%\u201340.1%",
         "Evidence": "Read with sampling uncertainty"
       },
