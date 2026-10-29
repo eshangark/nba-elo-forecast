@@ -2,7 +2,7 @@ import copy
 from dataclasses import asdict
 import unittest
 
-from nba_forecast.dashboard_data import elo_ranks, recent_record, probability_steps, data_gaps, issued_rows
+from nba_forecast.dashboard_data import elo_ranks, recent_record, probability_steps, data_gaps, issued_rows, team_game_history
 from nba_forecast.forecasting import Forecaster,FeatureState
 from nba_forecast.model import Engine,Parameters
 from test_forecasting import bundle
@@ -10,6 +10,30 @@ from test_model import game
 
 
 class DashboardDataTests(unittest.TestCase):
+    def test_team_game_history_uses_team_perspective_and_eastern_dates(self):
+        home = dict(game_id='1', start='2026-10-23T00:30:00Z', home='A', away='B',
+                    home_win=1, home_score=110, away_score=100,
+                    home_rating_after=1510, home_rating_change=10,
+                    away_rating_after=1490, away_rating_change=-10)
+        away = dict(home, game_id='2', start='2026-10-25T00:30:00Z', home='B', away='A')
+        unrelated = dict(home, game_id='3', home='C', away='D')
+        incomplete = dict(home, game_id='4', home_score=None)
+        rows = [home, unrelated, away, incomplete]
+        history = team_game_history('A', rows)
+        self.assertEqual(len(history), 2)
+        self.assertEqual(str(history[0]['Date']), '2026-10-24')
+        self.assertEqual(history[0]['Opponent'], 'B')
+        self.assertEqual(history[0]['Home / Away'], 'Away')
+        self.assertEqual(history[0]['Result'], 'L')
+        self.assertEqual(history[0]['Score'], '100–110')
+        self.assertEqual(history[0]['Elo after'], 1490)
+        self.assertEqual(history[0]['Elo change'], -10)
+        self.assertEqual(history[1]['Home / Away'], 'Home')
+        self.assertEqual(history[1]['Result'], 'W')
+        self.assertEqual(history[1]['Score'], '110–100')
+        self.assertEqual(team_game_history('Unknown', rows), [])
+        self.assertEqual(team_game_history('A', []), [])
+
     def test_rank_ties_and_recent_form_exclude_incomplete_or_future_games(self):
         self.assertEqual(elo_ranks([{'team':'A','elo':1600},{'team':'B','elo':1600},{'team':'C','elo':1500}]),{'A':1,'B':1,'C':3})
         rows=[dict(game_id=str(i),home='A',away='B',home_win=i%2,start=f'2026-10-{i+1:02}T12:00:00Z') for i in range(12)]

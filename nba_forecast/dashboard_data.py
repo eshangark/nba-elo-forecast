@@ -4,7 +4,7 @@ import math
 from pathlib import Path
 
 from .forecasting import INJURY_FEATURES
-from .model import logistic, timestamp
+from .model import EASTERN, logistic, timestamp
 from .accuracy_data import current_view_matches
 
 
@@ -35,6 +35,27 @@ def recent_record(team, rows, before, completions=None):
     wins = sum(bool(r['home_win']) if r['home'] == team else not bool(r['home_win']) for r in games)
     return {'games':len(games), 'wins':wins, 'losses':len(games)-wins,
             'label':f'{wins}–{len(games)-wins} ({len(games)} played)' if games else 'No games yet'}
+
+
+def team_game_history(team, rows):
+    """Completed season games, newest first, from the selected team's perspective."""
+    history = []
+    for row in sorted(rows, key=lambda r: (timestamp(r['start']), r['game_id']), reverse=True):
+        side = 'home' if row['home'] == team else 'away' if row['away'] == team else None
+        if side is None or any(row.get(key) is None for key in ('home_score', 'away_score', 'home_win')):
+            continue
+        opponent = 'away' if side == 'home' else 'home'
+        won = bool(row['home_win']) if side == 'home' else not bool(row['home_win'])
+        history.append({
+            'Date': timestamp(row['start']).astimezone(EASTERN).date(),
+            'Opponent': row[opponent],
+            'Home / Away': side.title(),
+            'Result': 'W' if won else 'L',
+            'Score': f"{row[side + '_score']}–{row[opponent + '_score']}",
+            'Elo after': row.get(side + '_rating_after'),
+            'Elo change': row.get(side + '_rating_change'),
+        })
+    return history
 
 
 def injury_label(row):

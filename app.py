@@ -16,6 +16,7 @@ from nba_forecast.dashboard_views import matchup_overview, performance_view, pas
 from nba_forecast.decision_views import matchup_lookup, accuracy_lookup
 from nba_forecast.site_guide import home_view
 from nba_forecast.accuracy_data import current_view_matches
+from nba_forecast.dashboard_data import team_game_history
 
 ROOT = Path(__file__).resolve().parent
 ARCHIVES = ROOT / "data" / "seasons"
@@ -69,7 +70,7 @@ def render_dashboard():
         home_view()
 
     with teams_tab:
-        st.write("Use Teams to compare league-wide strength for the selected season. The table is ordered by Elo, with higher ratings indicating stronger teams, alongside each team's record and game count. Choose a team under Team history to see its rating trajectory. Ratings change after completed games; a rank describes relative strength, not certainty of winning a particular matchup.")
+        st.write("Use Teams to compare league-wide strength for the selected season. The table is ordered by Elo, with higher ratings indicating stronger teams, alongside each team's record and game count. Choose a team under Team history to see its rating trajectory and completed games. Ratings change after completed games; a rank describes relative strength, not certainty of winning a particular matchup.")
     with games_tab:
         st.write("Use Games to browse upcoming forecasts and completed results for the selected season. Select a row or matchup to inspect its explanation and reliability evidence; for past games, choose a date and then a forecast record. " +
                    ("Past-game tables use current-method replays; original issued forecasts remain available in the forecast-record selector where recorded." if current_replay else
@@ -191,6 +192,15 @@ def render_dashboard():
                     history.append({"Date": pd.to_datetime(game["start"]), "Elo": game[side + "_rating_after"]})
             if history:
                 st.line_chart(pd.DataFrame(history).set_index("Date"), y="Elo")
+            st.markdown(f"**Game history · {team}**")
+            team_games = team_game_history(team, result["predictions"])
+            if team_games:
+                st.caption("Selected season · Newest first · Dates in Eastern time. Scores list the selected team first; W / L and Elo changes are from that team's perspective.")
+                st.dataframe(pd.DataFrame(team_games), hide_index=True, width="stretch",
+                             column_config={"Elo after": st.column_config.NumberColumn(format="%.1f"),
+                                            "Elo change": st.column_config.NumberColumn(format="%+.1f")})
+            else:
+                st.info("No completed games for this team in the selected season yet.")
         with games_tab:
             st.subheader("Games")
             st.markdown(

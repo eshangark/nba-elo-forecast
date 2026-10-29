@@ -9,6 +9,27 @@ HAS_STREAMLIT = importlib.util.find_spec("streamlit") is not None
 
 @unittest.skipUnless(HAS_STREAMLIT, "Streamlit not installed")
 class AppTests(unittest.TestCase):
+    def test_team_history_tracks_selected_team_and_season(self):
+        from streamlit.testing.v1 import AppTest
+        from nba_forecast.seasons import load_index, load_season
+        from nba_forecast.dashboard_data import team_game_history
+        root = Path(__file__).resolve().parents[1]
+        app = AppTest.from_file(str(root/'app.py'), default_timeout=30).run()
+        entries, _ = load_index(root/'data/seasons')
+        for season, team in [('2024-25', 'Atlanta Hawks'), ('2024-25', 'Boston Celtics'),
+                             ('2023-24', 'Boston Celtics')]:
+            app.session_state['selected_season'] = {'value': season}
+            app.session_state['team_history'] = {'value': team}
+            app.run()
+            self.assertFalse(app.exception)
+            tables = [f.value for f in app.dataframe if 'Elo after' in f.value.columns]
+            self.assertEqual(len(tables), 1)
+            archive = load_season(root/'data/seasons', next(e for e in entries if e['season'] == season))
+            expected = team_game_history(team, archive['result']['predictions'])
+            self.assertEqual(len(tables[0]), len(expected))
+            for column in ['Date', 'Opponent', 'Home / Away', 'Result', 'Score']:
+                self.assertEqual(tables[0][column].tolist(), [r[column] for r in expected])
+
     def test_only_published_probability_is_available(self):
         from streamlit.testing.v1 import AppTest
         from unittest.mock import patch
@@ -132,10 +153,10 @@ class AppTests(unittest.TestCase):
                 app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / 'app.py'), default_timeout=20).run()
             self.assertFalse(app.exception)
             self.assertEqual(len(app.dataframe[0].value), 2)
-            self.assertEqual(len(app.dataframe[1].value), 1)
-            self.assertIn("Prediction", app.dataframe[1].value.columns)
-            self.assertNotIn("Coverage", app.dataframe[1].value.columns)
-            self.assertEqual(app.dataframe[1].value["Prediction"][0], "Correct" if previous else "Unavailable")
+            past = next(f.value for f in app.dataframe if 'Prediction' in f.value.columns)
+            self.assertEqual(len(past), 1)
+            self.assertNotIn("Coverage", past.columns)
+            self.assertEqual(past["Prediction"][0], "Correct" if previous else "Unavailable")
 
     def test_matchup_lookup_reuses_games_forecast_and_calibration(self):
         import json
